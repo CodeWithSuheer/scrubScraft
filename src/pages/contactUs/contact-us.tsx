@@ -1,10 +1,17 @@
+import { Helmet } from "react-helmet-async";
+import ContactView from "../../sections/contactUs/contact-us-view";
 
 const ContactUsPage = () => {
   return (
-    <div>
-      contactUs
-    </div>
-  )
-}
+    <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Contact Us - ScrubScraft</title>
+      </Helmet>
 
-export default ContactUsPage
+      <ContactView />
+    </>
+  );
+};
+
+export default ContactUsPage;
