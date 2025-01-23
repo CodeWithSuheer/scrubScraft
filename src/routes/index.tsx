@@ -15,11 +15,9 @@ function Routelist() {
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
           {mainRoutes}
-          <Route path="404" element={<Page404 />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="404" element={<Page404 />} />
           <Route path="maintenance" element={<Maintenance />} />
-          <Route path="privacy-policy" element={<Maintenance />} />
-          <Route path="tac" element={<Maintenance />} />
         </Routes>
       </Suspense>
 

@@ -1,15 +1,15 @@
 import { Helmet } from "react-helmet-async";
-import AboutUsView from "../../sections/aboutUs/about-us-view";
+import CartView from "../../sections/cart/cart-view";
 
 const CartPage = () => {
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Cart - ScrubScraft</title>
+        <title>Cart - ScrubsCraft</title>
       </Helmet>
 
-      <AboutUsView />
+      <CartView />
     </>
   );
 };

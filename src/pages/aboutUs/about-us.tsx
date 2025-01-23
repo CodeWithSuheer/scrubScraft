@@ -6,7 +6,7 @@ const AboutUsPage = () => {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>About Us - ScrubScraft</title>
+        <title>About Us - ScrubsCraft</title>
       </Helmet>
 
       <AboutUsView />

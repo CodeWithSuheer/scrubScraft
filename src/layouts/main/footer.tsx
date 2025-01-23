@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { FaInstagram } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FiFacebook } from "react-icons/fi";
@@ -56,7 +57,7 @@ export default function Footer() {
             <p className="text-gray-400">123 Medical Drive</p>
             <p className="text-gray-400">Healthcare City, HC 12345</p>
             <p className="text-gray-400">Phone: (123) 456-7890</p>
-            <p className="text-gray-400">Email: info@scrubscraft.com</p>
+            <p className="text-gray-400">Email: info@ScrubsCraft.com</p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
@@ -92,10 +93,32 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-gray-700 text-center">
-          <p className="text-gray-400">
-            &copy; 2025 ScrubsCraft. All rights reserved.
-          </p>
+        <div className="mt-12 border-t border-gray-100 pt-6">
+          <div className="text-center sm:flex sm:justify-between sm:text-left">
+            <p className="text-sm text-white">
+              <Link
+                to="/privacy-policy"
+                onClick={() => window.scroll(0, 0)}
+                className="inline-block text-white underline transition hover:text-white"
+              >
+                Privacy Policy
+              </Link>
+
+              <span> - </span>
+
+              <Link
+                to="/tac"
+                onClick={() => window.scroll(0, 0)}
+                className="inline-block text-white underline transition hover:text-white"
+              >
+                Terms & Conditions
+              </Link>
+            </p>
+
+            <p className="mt-4 text-sm text-white sm:order-first sm:mt-0">
+              &copy; 2025 All rights reserved
+            </p>
+          </div>
         </div>
       </div>
     </footer>

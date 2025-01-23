@@ -1,38 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-// redux
+import React, { useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getAllProductsAsync } from "../../features/productSlice";
-// icons
-import { FaStar } from "react-icons/fa";
-// helpers
+import { mockedLatestProducts } from "../../mock/productData";
+import TopHeader from "../../components/header/top-header";
+import ProductCard from "../../components/cards/product-card";
 import LoadingScreen from "../../components/loading-screen/loading-screen";
 import NoProducts from "./no-products";
-import { StarRating } from "../../helpers/star-rating";
-//
 import "../sections.css";
+// import { FaStar } from "react-icons/fa";
+// import { StarRating } from "../../helpers/star-rating";
 
-const ProductsView: React.FC = () => {
-  const navigate = useNavigate();
+const AllProducts: React.FC = () => {
   const dispatch = useAppDispatch();
-
-  const [isCategoryVisible, setIsCategoryVisible] = useState(false);
 
   const allproducts = useAppSelector((state) => state.products.products || []);
 
-  const products = allproducts?.productData?.filter(
-    (items: any) => items?.category !== "Bundle"
-  );
+  // const products = allproducts?.productData?.filter(
+  //   (items: any) => items?.category !== "Bundle"
+  // );
 
   const isLoading = useAppSelector((state) => state.products.Productloading);
 
   const [searchParams] = useSearchParams();
   const page: number = parseInt(searchParams.get("page") || "1", 10);
   const category: string = searchParams.get("category") || "All";
-
-  const toggleCategory = () => {
-    setIsCategoryVisible(!isCategoryVisible);
-  };
 
   const renderPaginationLinks = () => {
     const totalPages = allproducts?.totalPages;
@@ -59,16 +51,6 @@ const ProductsView: React.FC = () => {
     dispatch(getAllProductsAsync({ category, page }));
   }, [dispatch, page, category]);
 
-  // HANDLE ITEM CLICK
-  const handleItemClick = (productId: string) => {
-    navigate(`/selectedItem/${productId}`);
-    window.scroll(0, 0);
-  };
-
-  //   const handleCategoryFiltering = (category: string) => {
-  //     navigate(`/products?category=${category}`);
-  //   };
-
   const ToTop = () => {
     window.scrollTo({
       top: 450,
@@ -82,114 +64,24 @@ const ProductsView: React.FC = () => {
         <LoadingScreen />
       ) : (
         <>
-          {/* BANNER IMAGE */}
-          <section className="product_banner">
-            <div className="py-12 sm:py-28 about_cont px-2.5 flex justify-center items-center flex-col">
-              <h2 className="playfair mb-2 text-black text-2xl sm:text-4xl font-bold text-center max-w-xl">
-                Shop
-              </h2>
-              <h2 className="mb-5 text-black text-md sm:text-md font-light text-center max-w-xl">
-                Home / Shop
-              </h2>
-            </div>
-          </section>
+          <TopHeader
+            title="Products"
+            subtitle="SHOP"
+            backgroundClass="contact"
+          />
 
           <section>
             <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-5 xl:px-0">
-              <div className="mt-8 block lg:hidden">
-                <button
-                  type="button"
-                  title="button"
-                  className="flex cursor-pointer items-center gap-2 border-b border-gray-400 pb-1 text-gray-900 transition hover:border-gray-600"
-                  onClick={toggleCategory}
-                >
-                  <span className="text-sm font-medium">
-                    {" "}
-                    Filters & Sorting{" "}
-                  </span>
-
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className={`size-4 ${
-                      isCategoryVisible ? "rotate-180" : "rtl:rotate-180"
-                    }`}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M8.25 4.5l7.5 7.5-7.5 7.5"
-                    />
-                  </svg>
-                </button>
-              </div>
-
               <div className="mt-4 w-full">
-                {/* PRODUCTS GRID */}
                 <div className="products">
-                  <ul className="grid gap-4 grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-                    {!isLoading ? (
+                  <ul className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                    {isLoading ? (
                       <>
-                        {products?.map((data: any, index: number) => (
-                          <li
-                            key={index}
-                            onClick={() => handleItemClick(String(data.id))}
-                          >
-                            <div className="group mb-5 relative group w-full bg-white border border-gray-400 hover-border-2 hover:border-[#EC72AF] cursor-pointer">
-                              <img
-                                className="object-cover w-full min-h-56"
-                                src={data?.image.downloadURL}
-                                alt="products"
-                              />
-
-                              <div className="py-5 text-center">
-                                <h3 className="playfair mb-2 text-md sm:text-lg font-semibold text-gray-800">
-                                  {data?.name}
-                                </h3>
-
-                                <div className="mb-2 flex items-center justify-center gap-1">
-                                  {data?.averageRating === 0 ? (
-                                    <FaStar className="text-white" />
-                                  ) : (
-                                    <StarRating rating={data?.averageRating} />
-                                  )}
-                                </div>
-
-                                <p className="mb-3 text-md text-gray-500">
-                                  (
-                                  {data.category === "Body Care"
-                                    ? "Bodycare"
-                                    : data.category}
-                                  )
-                                </p>
-
-                                {data.sale_price > 0 ? (
-                                  <div className="flex justify-center items-center gap-2">
-                                    <p className="mb-3 text-md font-semibold text-black">
-                                      Rs. {data.sale_price}
-                                    </p>
-                                    <p className="mb-3 text-md font-semibold text-gray-500 line-through">
-                                      Rs. {data.price}
-                                    </p>
-                                  </div>
-                                ) : (
-                                  <>
-                                    <p className="mb-3 text-md font-semibold text-black">
-                                      Rs. {data.price}
-                                    </p>
-                                  </>
-                                )}
-
-                                <button className="hidden group-hover:block absolute w-28 sm:w-40 -bottom-5 left-0 right-0 text-sm mx-auto py-3 bg-[#EC72AF] text-white font-semibold">
-                                  Shop Now
-                                </button>
-                              </div>
-                            </div>
-                          </li>
-                        ))}
+                        {mockedLatestProducts?.map(
+                          (data: any, index: number) => (
+                            <ProductCard data={data} key={index} />
+                          )
+                        )}
                       </>
                     ) : (
                       <NoProducts />
@@ -313,4 +205,4 @@ const ProductsView: React.FC = () => {
   );
 };
 
-export default ProductsView;
+export default AllProducts;

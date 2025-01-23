@@ -1,10 +1,11 @@
-import { motion } from "framer-motion";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import SliderProductCard from "../../components/cards/slider-card";
+import { useNavigate } from "react-router-dom";
+import HeaderV2 from "../../components/header/header-v2";
 // import { useAppSelector } from "../../app/hooks";
 
 interface Image {
@@ -25,9 +26,8 @@ interface Product {
 }
 
 const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
-  const navigate = useNavigate();
-  const [slidesToShow, setSlidesToShow] = useState(4);
   const sliderRef = useRef<Slider>(null);
+  const [slidesToShow, setSlidesToShow] = useState(4);
 
   // const loading = useAppSelector((state) => state.products.Productloading);
 
@@ -77,29 +77,16 @@ const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
     };
   }, []);
 
-  // HANDLE ITEM CLICK
-  const handleItemClick = (productId: string) => {
-    navigate(`/selectedItem/${productId}`);
-    window.scroll(0, 0);
-  };
-
   return (
     <>
       <section className="py-14 sm:py-16 px-5 sm:px-4 xl:px-0">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           {/* HEADER */}
-          <div className="header text-center">
-            <span className="tracking-wide py-1 px-2 font-medium rounded-sm text-white bg-blue-500 text-[11px] lg:text-[13px]">
-              POPULAR
-            </span>
-            <h2 className="mt-2.5 text-2xl font-semibold md:text-4xl lg:text-4xl md:leading-tight">
-              Our Products
-            </h2>
-            <p className="mt-3 text-gray-700">
-              Explore our hottest picks! Discover the most sought-after eyewear
-              styles loved by our customers.
-            </p>
-          </div>
+          <HeaderV2
+            badgeText="LATEST"
+            title="Latest Products"
+            description="Explore our hottest picks! Discover the most sought-after eyewear styles loved by our customers."
+          />
 
           {/* DATA */}
           <div className="data">
@@ -107,31 +94,7 @@ const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
               <>
                 <Slider ref={sliderRef} {...settings}>
                   {latestProducts?.map((data, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleItemClick(String(data.id))}
-                      className="mx-0 pb-7"
-                    >
-                      <motion.div
-                        key={data.name}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: index * 0.1 }}
-                        className="bg-gray-50 rounded-lg shadow-md overflow-hidden mx-3"
-                      >
-                        <img
-                          src={`/placeholder.svg?height=200&width=300&text=${data.name}`}
-                          alt={data.name}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="p-6">
-                          <h3 className="text-xl font-semibold mb-2">
-                            {data.name}
-                          </h3>
-                          <p className="text-gray-600">{data?.description}</p>
-                        </div>
-                      </motion.div>
-                    </div>
+                    <SliderProductCard data={data} key={index} />
                   ))}
                 </Slider>
 
@@ -161,22 +124,9 @@ const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
                 title="arrows"
                 type="button"
                 onClick={previous}
-                className="mx-1.5 inline-block rounded-full border text-[#EC72AF] hover:text-white border-[#EC72AF] hover:bg-[#EC72AF] p-2.5 focus:outline-none"
+                className="mx-1.5 inline-block rounded-full border text-primary border-primary p-2.5 focus:outline-none"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-chevron-left "
-                >
-                  <path d="m15 18-6-6 6-6" />
-                </svg>
+                <IoIosArrowBack size={22} />
               </button>
 
               {/* right arrow */}
@@ -184,22 +134,9 @@ const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
                 title="arrows"
                 type="button"
                 onClick={next}
-                className="mx-1.5 inline-block rounded-full border text-[#EC72AF] hover:text-white border-[#EC72AF] hover:bg-[#EC72AF] p-2.5 focus:outline-none"
+                className="mx-1.5 inline-block rounded-full border text-primary border-primary p-2.5 focus:outline-none"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="lucide lucide-chevron-right "
-                >
-                  <path d="m9 18 6-6-6-6" />
-                </svg>
+                <IoIosArrowForward size={22} />
               </button>
             </div>
           </div>

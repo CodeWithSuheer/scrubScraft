@@ -1,17 +1,17 @@
 import { Helmet } from "react-helmet-async";
-import AboutUsView from "../../sections/aboutUs/about-us-view";
+import OrdersView from "../../sections/orders/orders-view";
 
-const OrderPage = () => {
+const OrdersPage = () => {
   return (
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Orders - ScrubScraft</title>
+        <title>Orders - ScrubsCraft</title>
       </Helmet>
 
-      <AboutUsView />
+      <OrdersView />
     </>
   );
 };
 
-export default OrderPage;
+export default OrdersPage;

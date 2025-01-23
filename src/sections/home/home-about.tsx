@@ -8,23 +8,25 @@ export default function HomeAbout() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl font-bold text-center mb-8"
+          className="mb-4 text-2xl text-gray-800 font-bold md:text-4xl lg:text-[2.75rem] md:leading-tight text-center"
         >
           About ScrubsCraft
         </motion.h2>
-        <div className="flex flex-col md:flex-row items-center">
+
+        <div className="flex flex-col md:flex-row items-center justify-center">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="md:w-1/2 mb-8 md:mb-0"
+            className="md:w-1/2 mb-8 md:mb-0 flex justify-center items-center"
           >
             <img
-              src="/placeholder.svg?height=400&width=600"
+              src=""
               alt="ScrubsCraft team"
-              className="rounded-lg shadow-lg"
+              className="w-[60%]"
             />
           </motion.div>
+
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}

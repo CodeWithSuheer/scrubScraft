@@ -1,18 +1,21 @@
 import { ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { RiMenu3Fill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getCartTotal } from "../../features/ActionsSlice";
+import { navigation } from "./navigation-links";
 
 export default function Header() {
-  const [state, setState] = useState(false);
+  const dispatch = useAppDispatch();
 
-  const navigation = [
-    { title: "Home", path: "/" },
-    { title: "Shop", path: "/products" },
-    { title: "About", path: "/about" },
-    { title: "Contact", path: "/contact" },
-  ];
+  const [state, setState] = useState(false);
+  const { cart, totalQuantity } = useAppSelector((state) => state.actions);
+
+  useEffect(() => {
+    dispatch(getCartTotal());
+  }, [cart]);
 
   return (
     <nav className="bg-white border-b w-full md:static md:text-sm md:border-none">
@@ -22,6 +25,7 @@ export default function Header() {
             <h1 className="text-2xl font-bold text-blue-600">ScrubsCraft</h1>
           </Link>
 
+          {/* HAMBURGER BUTTON */}
           <div className="md:hidden">
             <button
               type="button"
@@ -55,8 +59,8 @@ export default function Header() {
               <Link to="/cart" className="block tracking-wide">
                 <span className="relative">
                   <ShoppingCart size={21} className="text-gray-700" />
-                  <span className="absolute -right-3 -top-3 rounded-full bg-red-500 px-1 py-0 text-[0.65rem] text-white">
-                    13
+                  <span className="absolute -right-2.5 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
+                    {totalQuantity || ""}
                   </span>
                 </span>
               </Link>

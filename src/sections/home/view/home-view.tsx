@@ -3,8 +3,7 @@ import CTA from "../cta";
 import FAQ from "../faqs";
 import HeroSection from "../hero-section";
 import HomeAbout from "../home-about";
-import LatestProducts from "../LatestProducts";
-// import Products from "../products";
+import OurProducts from "../OurProducts";
 import Testimonials from "../testimonials";
 import WhyChooseUs from "../why-choose";
 
@@ -13,12 +12,11 @@ const HomeView = () => {
     <>
       <HeroSection />
       <HomeAbout />
-      <LatestProducts latestProducts={mockedLatestProducts} />
-      {/* <Products /> */}
+      <OurProducts latestProducts={mockedLatestProducts} />
       <WhyChooseUs />
-      <Testimonials />
       <CTA />
       <FAQ />
+      <Testimonials />
     </>
   );
 };

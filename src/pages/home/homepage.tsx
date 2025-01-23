@@ -6,7 +6,7 @@ const Homepage = () => {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Home - ScrubScraft</title>
+        <title>Home - ScrubsCraft</title>
       </Helmet>
 
       <HomeView />

@@ -4,6 +4,7 @@ import { IoMail } from "react-icons/io5";
 import "../sections.css";
 import axios from "axios";
 import { Label } from "../../components/label/label";
+import TopHeader from "../../components/header/top-header";
 
 const ContactView: React.FC = () => {
   const [formdata, setFormdata] = useState({
@@ -34,20 +35,14 @@ const ContactView: React.FC = () => {
 
   return (
     <>
-      {/* BANNER IMAGE */}
-      <section className="contact">
-        <div className="py-12 sm:py-32 about_cont px-2.5 flex justify-center items-center flex-col">
-          <h2 className="mb-2 text-white text-2xl sm:text-4xl font-semibold text-center max-w-xl">
-            Contact Us
-          </h2>
-          <h2 className="mb-5 text-white text-md sm:text-md font-light text-center max-w-xl">
-            Home / Contact Us
-          </h2>
-        </div>
-      </section>
+      <TopHeader
+        title="Contact Us"
+        subtitle="CONTACT US"
+        backgroundClass="contact"
+      />
 
       {/* CONTACT SECTION */}
-      <section id="here" className="pt-0 sm:pt-0 bg-white px-0 sm:px-4">
+      <section className="pt-0 sm:pt-0 bg-white px-0 sm:px-4">
         <div className="xl:max-w-6xl lg:max-w-5xl max-w-xl mx-auto min-h-screen flex items-center">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 w-full shadow-2xl">
             {/* --------------- LEFT --------------- */}
@@ -79,10 +74,10 @@ const ContactView: React.FC = () => {
                   <p className="flex items-start">
                     <IoMail className="text-white size-9 p-2" />
                     <a
-                      href="mailto:support@scrubscraft.com"
+                      href="mailto:support@ScrubsCraft.com"
                       className="mx-3 mt-1 text-white text-wrap"
                     >
-                      support@scrubscraft.com
+                      support@ScrubsCraft.com
                     </a>
                   </p>
                 </div>
