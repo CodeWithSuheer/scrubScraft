@@ -32,7 +32,7 @@ export default function WhyChooseUs() {
               className="flex items-start"
             >
               <CheckCircle className="text-gray-50 mr-4 flex-shrink-0" />
-              <p className="text-lg">{reason}</p>
+              <p className="text-md sm:text-lg">{reason}</p>
             </motion.div>
           ))}
         </div>

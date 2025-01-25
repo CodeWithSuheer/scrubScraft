@@ -148,7 +148,7 @@ const CheckoutDetails: React.FC = () => {
 
   return (
     <>
-      <section className="w-full bg-gray-50 py-14 sm:py-12 px-0 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
+      <section className="w-full bg-gray-50 py-14 sm:py-12 px-2 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
         <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
           <div className="overflow-hidden rounded-xl">
             <div className="grid grid-cols-1 md:grid-cols-2 pb-5 gap-6">

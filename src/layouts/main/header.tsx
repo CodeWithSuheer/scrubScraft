@@ -1,5 +1,5 @@
 import { CircleUserRound, ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RiMenu3Fill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
@@ -8,11 +8,23 @@ import { getCartTotal } from "../../features/ActionsSlice";
 import { navigation } from "./navigation-links";
 
 export default function Header() {
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  let user = true;
+
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const isOnHomePage = location.pathname === "/";
 
   const [state, setState] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setMenuOpen] = useState(false);
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
+
+  const handleCloseNavbar = () => {
+    setState(false);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -22,28 +34,53 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const handleClickOutside = (event: any) => {
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(event.target) &&
+      menuButtonRef.current &&
+      !menuButtonRef.current.contains(event.target)
+    ) {
+      setMenuOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     dispatch(getCartTotal());
   }, [cart]);
 
-  const location = useLocation();
-  const isOnHomePage = location.pathname === "/";
-
   return (
     <nav
       className={`fixed w-full z-50 transition-all duration-300  
-        ${
-          isOnHomePage
-            ? scrolled
-              ? "bg-white shadow-lg py-4"
-              : "bg-transparent py-6"
-            : "bg-white shadow-none py-4"
-        }`}
+      ${
+        state
+          ? "bg-white text-black py-4"
+          : isOnHomePage
+          ? scrolled
+            ? "bg-white shadow-lg py-4"
+            : "bg-transparent py-6"
+          : "bg-white shadow-none py-4"
+      }`}
     >
       <div className={`items-center px-4 container mx-auto md:flex md:px-8`}>
         <div className="flex items-center justify-between py-0 md:py-0.5 md:block">
-          <Link to="/" onClick={() => window.scroll(0, 0)}>
-            <h1 className="text-2xl font-bold text-blue-600">ScrubsCraft</h1>
+          <Link
+            to="/"
+            onClick={() => window.scroll(0, 0)}
+            className="flex items-center space-x-2"
+          >
+            <img src="/src/assets/logo/logo.png" alt="logo" className="h-6" />
+            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+              ScrubsCraft
+            </h1>
           </Link>
 
           {/* HAMBURGER BUTTON */}
@@ -51,9 +88,13 @@ export default function Header() {
             <button
               type="button"
               className={`mt-1 ${
-                scrolled
-                  ? "text-gray-600 hover:text-gray-800"
-                  : "text-gray-100 hover:text-white"
+                state
+                  ? "text-gray-700"
+                  : isOnHomePage
+                  ? scrolled
+                    ? "text-gray-600 hover:text-gray-800"
+                    : "text-gray-100 hover:text-white"
+                  : "text-gray-700"
               }`}
               onClick={() => setState(!state)}
             >
@@ -68,7 +109,9 @@ export default function Header() {
         >
           <ul
             className={`justify-end items-center space-y-6 md:flex md:space-x-6 md:space-y-0 ${
-              isOnHomePage
+              state
+                ? "text-gray-700"
+                : isOnHomePage
                 ? scrolled
                   ? "text-gray-700"
                   : "text-gray-50"
@@ -78,20 +121,30 @@ export default function Header() {
             {navigation.map((item, idx) => {
               return (
                 <li key={idx} className={`text-[1rem]`}>
-                  <Link to={item.path} className="block tracking-wide">
+                  <Link
+                    to={item.path}
+                    onClick={handleCloseNavbar}
+                    className="block tracking-wide"
+                  >
                     {item.title}
                   </Link>
                 </li>
               );
             })}
 
-            <li className="text-[1rem] text-gray-700 hover:text-indigo-600 flex items-center space-x-6">
-              <Link to="/cart" className="block tracking-wide">
+            <li className="text-[1rem] text-gray-700 hover:text-indigo-600 flex items-center space-x-7">
+              <Link
+                to="/cart"
+                onClick={handleCloseNavbar}
+                className="block tracking-wide"
+              >
                 <span className="relative">
                   <ShoppingCart
                     size={21}
                     className={`${
-                      isOnHomePage
+                      state
+                        ? "text-gray-700"
+                        : isOnHomePage
                         ? scrolled
                           ? "text-gray-700"
                           : "text-gray-50"
@@ -103,20 +156,104 @@ export default function Header() {
                   </span>
                 </span>
               </Link>
-              <Link to="/profile" className="block tracking-wide">
-                <span className="relative">
-                  <CircleUserRound
-                    size={22}
-                    className={`${
-                      isOnHomePage
-                        ? scrolled
+
+              {user ? (
+                <Link
+                  to="/login"
+                  onClick={handleCloseNavbar}
+                  className="block tracking-wide"
+                >
+                  <span className="relative">
+                    <CircleUserRound
+                      size={23}
+                      className={`${
+                        state
                           ? "text-gray-700"
-                          : "text-gray-50"
-                        : "text-gray-700"
-                    } `}
-                  />
-                </span>
-              </Link>
+                          : isOnHomePage
+                          ? scrolled
+                            ? "text-gray-700"
+                            : "text-gray-50"
+                          : "text-gray-700"
+                      } `}
+                    />
+                  </span>
+                </Link>
+              ) : (
+                <div className="relative">
+                  <div>
+                    <button
+                      title="button"
+                      id="menu-button"
+                      type="button"
+                      className="p-0 m-0 flex justify-center items-center"
+                      onClick={() => setMenuOpen(!isMenuOpen)}
+                      ref={menuButtonRef}
+                    >
+                      <CircleUserRound
+                        size={23}
+                        className={` ${
+                          state
+                            ? "text-gray-700"
+                            : isOnHomePage
+                            ? scrolled
+                              ? "text-gray-700"
+                              : "text-gray-50"
+                            : "text-gray-700"
+                        } `}
+                      />
+                    </button>
+                  </div>
+                  <div
+                    aria-labelledby="menu-button"
+                    aria-orientation="vertical"
+                    className={`${
+                      isMenuOpen ? "" : "hidden"
+                    } absolute right-0 z-10 mt-5 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+                    role="menu"
+                    ref={menuRef}
+                  >
+                    <div className="py-1" role="none">
+                      <Link
+                        to="/profile"
+                        onClick={handleCloseNavbar}
+                        className="text-gray-900 block w-full px-4 py-2 text-left hover:bg-gray-200"
+                        id="menu-item-3"
+                        role="menuitem"
+                        type="submit"
+                      >
+                        <span className="flex text-md font-normal gap-2">
+                          Profile
+                        </span>
+                      </Link>
+
+                      <Link
+                        to="/orders"
+                        onClick={handleCloseNavbar}
+                        className="text-gray-900 block w-full px-4 py-2 text-left hover:bg-gray-200"
+                        id="menu-item-3"
+                        role="menuitem"
+                        type="submit"
+                      >
+                        <span className="flex text-md font-normal gap-2">
+                          My Orders
+                        </span>
+                      </Link>
+
+                      <button
+                        // onClick={handleLogout}
+                        className="text-red-700 block w-full px-4 py-2 text-left hover:bg-gray-200"
+                        id="menu-item-3"
+                        role="menuitem"
+                        type="submit"
+                      >
+                        <span className="flex text-md font-normal gap-2">
+                          Logout
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </li>
           </ul>
         </div>

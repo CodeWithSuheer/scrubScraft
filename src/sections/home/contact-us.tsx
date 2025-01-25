@@ -4,7 +4,7 @@ export default function ContactUs() {
   return (
     <>
       <section className="py-20">
-        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto px-0">
+        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto px-4 sm:px-0">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
               <h2 className="text-4xl font-bold mb-8">Get in Touch</h2>
@@ -38,7 +38,8 @@ export default function ContactUs() {
                 </div>
               </div>
             </div>
-            <form className="bg-white p-8 rounded-2xl border border-gray-200 shadow-lg">
+
+            <form className="bg-white p-4 sm:p-8 rounded-2xl border border-gray-200 shadow-lg">
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

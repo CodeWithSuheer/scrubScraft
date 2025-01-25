@@ -1,11 +1,11 @@
-import { ArrowRight, Heart, Shield, Truck } from "lucide-react";
+import { Heart, Shield, Truck } from "lucide-react";
 
 const WhyChooseV2 = () => {
   return (
     <>
       <section className="py-20 bg-gray-50 relative overflow-hidden">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:4rem_4rem]"></div>
-        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto px-6 relative">
+        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto px-4 sm:px-6 relative">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-4xl font-bold mb-6">Why Choose ScrubsCraft?</h2>
             <p className="text-gray-600 text-lg">
@@ -45,13 +45,7 @@ const WhyChooseV2 = () => {
                   <feature.icon className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-600 mb-6">{feature.desc}</p>
-                <a
-                  href="#"
-                  className="inline-flex items-center text-blue-600 hover:text-blue-700 transition-colors"
-                >
-                  Learn more <ArrowRight className="ml-2 w-4 h-4" />
-                </a>
+                <p className="text-gray-600">{feature.desc}</p>
               </div>
             ))}
           </div>

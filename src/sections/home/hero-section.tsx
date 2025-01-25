@@ -38,7 +38,7 @@ export default function HeroSection() {
               <button
                 onClick={handleNavigateToShop}
                 type="button"
-                className="group bg-white text-blue-900 px-8 py-4 rounded-full font-semibold hover:bg-blue-50 transition flex items-center"
+                className="group bg-white text-blue-900 px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-blue-50 transition flex items-center"
               >
                 Explore Collection
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition" />

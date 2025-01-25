@@ -14,7 +14,7 @@ function Routelist() {
       <ScrollToTop />
       <Suspense fallback={<LoadingScreen />}>
         <Routes>
-          {mainRoutes}
+          {...mainRoutes}
           <Route path="*" element={<NotFound />} />
           <Route path="404" element={<Page404 />} />
           <Route path="maintenance" element={<Maintenance />} />
