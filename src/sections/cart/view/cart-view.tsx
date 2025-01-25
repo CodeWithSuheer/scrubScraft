@@ -1,5 +1,5 @@
-import TopHeader from "../../components/header/top-header";
-import CartDetails from "./cart-details";
+import TopHeader from "../../../components/header/top-header";
+import CartDetails from "../cart-details";
 
 const CartView = () => {
   return (

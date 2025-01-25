@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { FaHome } from "react-icons/fa";
 import { IoIosArrowForward } from "react-icons/io";
 import { BlueLabel } from "../label/label";
+import { TfiArrowCircleDown } from "react-icons/tfi";
 
 interface ReusableSectionProps {
   title: string;
@@ -17,10 +18,17 @@ const TopHeader: React.FC<ReusableSectionProps> = ({
   subtitle,
   backgroundClass,
 }) => {
+  const scrollDown = () => {
+    window.scrollBy({
+      top: 370,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section className={`${backgroundClass} relative`}>
       <div className="px-0 md:px-7 xl:px-0 max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
-        <div className="py-24 lg:py-12 grid place grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 min-h-[45vh]">
+        <div className="py-24 lg:py-12 grid place grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-8 min-h-[55vh]">
           {/* LEFT SIDE */}
           <div className="flex items-end lg:items-center justify-center lg:justify-start">
             <div className="content text-center lg:text-start">
@@ -47,6 +55,18 @@ const TopHeader: React.FC<ReusableSectionProps> = ({
           </div>
         </div>
       </div>
+
+      <button
+        title="button"
+        type="button"
+        onClick={scrollDown}
+        className="absolute bottom-5 left-1/2 transform -translate-x-1/2"
+      >
+        <TfiArrowCircleDown
+          size={30}
+          className="text-gray-50 font-semibold cursor-pointer animate-bounce"
+        />
+      </button>
     </section>
   );
 };

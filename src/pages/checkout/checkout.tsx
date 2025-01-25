@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import CheckoutView from "../../sections/checkout/checkout-view";
+import CheckoutView from "../../sections/checkout/view/checkout-view";
 
 const CheckoutPage = () => {
   return (

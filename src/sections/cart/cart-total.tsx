@@ -7,7 +7,7 @@ interface CartTotalProps {
 export default function CartTotal({ totalPrice }: CartTotalProps) {
   return (
     <>
-      <div className="shadow-lg p-6 lg:sticky lg:top-0 h-max bg-white border border-gray-200 rounded-xl">
+      <div className="shadow-lg p-6 lg:sticky lg:top-0 h-max bg-white border border-gray-200 rounded-lg">
         <h3 className="text-lg font-bold text-gray-800 border-b pb-2">
           Cart Total
         </h3>
@@ -26,7 +26,7 @@ export default function CartTotal({ totalPrice }: CartTotalProps) {
           <Link
             to="/checkout"
             onClick={() => window.scroll(0, 0)}
-            className="mt-2 px-6 py-2.5 text-center hover:bg-black bg-primary text-white w-full"
+            className="mt-2 px-6 py-2.5 text-center hover:bg-primary/90 bg-primary text-white w-full rounded-md"
           >
             Checkout
           </Link>

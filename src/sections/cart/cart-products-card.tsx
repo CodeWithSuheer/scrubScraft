@@ -25,22 +25,21 @@ export default function CartProductCard({
   return (
     <div
       key={product.id}
-      className="grid md:grid-cols-4 items-center gap-8 px-4 py-6 mb-4 shadow-lg bg-white border border-gray-200 rounded-xl"
+      className="grid md:grid-cols-4 items-center gap-8 px-4 py-4 mb-4 shadow-lg bg-white border border-gray-200 rounded-lg"
     >
       {/* Product Image and Info */}
-      <div className="md:col-span-2 flex flex-wrap sm:flex-nowrap items-center justify-center sm:justify-start gap-4 sm:gap-4">
+      <div className="md:col-span-2 flex flex-wrap sm:flex-nowrap items-start justify-center sm:justify-start gap-4 sm:gap-4">
         <div className="shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
           <img
-            className="w-28 h-22 object-contain rounded-md"
+            className="w-28 min-h-32 object-cover rounded-md"
             src={product?.image?.downloadURL}
             alt={product?.name}
           />
         </div>
 
         <div>
-          <h3 className="Noto text-lg tracking-wide font-bold text-[#333]">
-            {product?.name}{" "}
-            <span className="text-base Noto">({product?.name})</span>
+          <h3 className="text-center md:text-start text-md tracking-wide font-bold text-[#333]">
+            {product?.name} <span className="text-base">({product?.name})</span>
           </h3>
           <h6 className="text-md text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
             Price:{" "}
@@ -98,7 +97,7 @@ export default function CartProductCard({
           onClick={() => onRemove(product.id)}
           className="w-3 mr-4 cursor-pointer shrink-0 ml-auto"
         >
-          <BsFillTrash3Fill size={20} className="text-red-600" />
+          <BsFillTrash3Fill size={18} className="text-red-600" />
         </div>
       </div>
     </div>

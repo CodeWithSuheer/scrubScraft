@@ -1,22 +1,24 @@
 import { mockedLatestProducts } from "../../../mock/productData";
+import ContactUs from "../contact-us";
 import CTA from "../cta";
-import FAQ from "../faqs";
 import HeroSection from "../hero-section";
-import HomeAbout from "../home-about";
+import LatestProducts from "../LatestProducts";
 import OurProducts from "../OurProducts";
-import Testimonials from "../testimonials";
+import Trusted from "../trusted";
 import WhyChooseUs from "../why-choose";
+import WhyChooseV2 from "../why-choose-v2";
 
 const HomeView = () => {
   return (
     <>
       <HeroSection />
-      <HomeAbout />
+      <WhyChooseV2 />
       <OurProducts latestProducts={mockedLatestProducts} />
-      <WhyChooseUs />
+      <Trusted />
       <CTA />
-      <FAQ />
-      <Testimonials />
+      <LatestProducts latestProducts={mockedLatestProducts} />
+      <WhyChooseUs />
+      <ContactUs />
     </>
   );
 };

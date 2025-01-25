@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import CartView from "../../sections/cart/cart-view";
+import CartView from "../../sections/cart/view/cart-view";
 
 const CartPage = () => {
   return (
