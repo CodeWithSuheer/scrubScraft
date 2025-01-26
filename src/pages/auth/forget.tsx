@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import LoginView from "../../sections/auth/login-view";
+import ForgetView from "../../sections/auth/forget-view";
 
 const ForgetPage = () => {
   return (
@@ -9,7 +9,7 @@ const ForgetPage = () => {
         <title>Forget - ScrubsCraft</title>
       </Helmet>
 
-      <LoginView />
+      <ForgetView />
     </>
   );
 };

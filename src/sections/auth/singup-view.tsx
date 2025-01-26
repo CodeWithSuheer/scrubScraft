@@ -1,37 +1,41 @@
-import { FormEvent, useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import React, { useState, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { createuserAsync } from "../../features/authSlice";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { loginuserAsync } from "../../features/authSlice";
 import AuthButton from "./components/auth-button";
 
-export interface LoginFormData {
+export interface SignupFormData {
+  name: string;
   email: string;
   password: string;
 }
 
-const LoginView = () => {
-  const navigate = useNavigate();
+const SignupView: React.FC = () => {
   const dispatch = useAppDispatch();
-  const location = useLocation();
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { user } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<LoginFormData>({
+  const { signupLoading } = useAppSelector((state) => state.auth);
+  console.log("signupLoading", signupLoading);
+
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [formData, setFormData] = useState<SignupFormData>({
+    name: "",
     email: "",
     password: "",
   });
 
-  useEffect(() => {
-    if (user?.login) {
-      const fromCart =
-        new URLSearchParams(location.search).get("from") === "cart";
-      navigate(fromCart ? "/cart" : "/");
-    }
-  });
-
   const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    dispatch(loginuserAsync(formData));
+    dispatch(createuserAsync(formData)).then((res) => {
+      if (res.payload.success) {
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+        });
+        navigate("/login");
+      }
+    });
   };
 
   const togglePasswordVisibility = (): void => {
@@ -54,18 +58,34 @@ const LoginView = () => {
 
             {/* FORM SIDE */}
             <div className="min-w-[60%] md:min-w-[50%]">
-              <h1 className="max-w-xs sm:max-w-full mb-5 text-4xl sm:text-4xl font-bold">
-                Login Your Account
+              <h1 className="playfair max-w-xs sm:max-w-full mb-5 text-4xl sm:text-4xl font-bold">
+                Signup Your Account
               </h1>
 
               <p className="max-w-full mb-5 text-md">
-                Welcome back! Enter your details to continue.
+                Join us today and enjoy exclusive benefits.
               </p>
-              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-4">
+                {/* NAME */}
+                <div>
+                  <input
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full px-3 py-3"
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter Your Name"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    required
+                  />
+                </div>
+
                 {/* EMAIL */}
                 <div>
                   <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-3"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full px-3 py-3"
                     type="email"
                     id="email"
                     name="email"
@@ -81,7 +101,7 @@ const LoginView = () => {
                 {/* PASSWORD */}
                 <div>
                   <input
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full p-3"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-md block w-full px-3 py-3"
                     type={showPassword ? "text" : "password"}
                     id="password"
                     name="password"
@@ -108,30 +128,23 @@ const LoginView = () => {
                     </div>
                     <div className="ml-3 text-sm">
                       <label
-                        className="text-gray-800 select-none cursor-pointer"
+                        className="text-gray-900 select-none cursor-pointer"
                         htmlFor="remember"
                       >
                         show password
                       </label>
                     </div>
                   </div>
-                  <Link
-                    to="/forget"
-                    className="text-sm font-medium text-primary hover:underline"
-                  >
-                    Forgot password?
-                  </Link>
                 </div>
-
                 {/* <button
                   type="submit"
                   className="w-full h-11 items-center mx-auto bg-primary text-white flex justify-center tracking-wide"
                 >
-                  LOGIN NOW
+                  SIGNUP NOW
                 </button> */}
 
                 <AuthButton
-                  text="Login Now"
+                  text="Signup Now"
                   type="submit"
                   isLoading={false}
                   onClick={() => console.log("Button clicked")}
@@ -139,15 +152,13 @@ const LoginView = () => {
                 />
 
                 <p className="text-sm font-light text-gray-800">
-                  Don’t have an account yet?{" "}
+                  Already have an account ?{" "}
                   <Link
-                    to="/signup"
-                    onClick={() =>
-                      window.scrollTo({ top: 0, behavior: "smooth" })
-                    }
+                    to="/login"
+                    onClick={() => window.scroll(0, 0)}
                     className="font-semibold text-primary hover:underline"
                   >
-                    Sign up
+                    Login
                   </Link>
                 </p>
               </form>
@@ -159,4 +170,4 @@ const LoginView = () => {
   );
 };
 
-export default LoginView;
+export default SignupView;

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import LoginView from "../../sections/auth/login-view";
+import OtpView from "../../sections/auth/opt-view";
 
 const OtpPage = () => {
   return (
@@ -9,7 +9,7 @@ const OtpPage = () => {
         <title>Otp - ScrubsCraft</title>
       </Helmet>
 
-      <LoginView />
+      <OtpView />
     </>
   );
 };

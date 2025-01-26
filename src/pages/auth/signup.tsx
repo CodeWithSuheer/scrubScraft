@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import LoginView from "../../sections/auth/login-view";
+import SignupView from "../../sections/auth/singup-view";
 
 const SignupPage = () => {
   return (
@@ -9,7 +9,7 @@ const SignupPage = () => {
         <title>Signup - ScrubsCraft</title>
       </Helmet>
 
-      <LoginView />
+      <SignupView />
     </>
   );
 };
