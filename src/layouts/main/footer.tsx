@@ -5,6 +5,20 @@ import { FiFacebook } from "react-icons/fi";
 import { LuLinkedin } from "react-icons/lu";
 
 export default function Footer() {
+  const quickLinks = [
+    { name: "Home", href: "/" },
+    { name: "Products", href: "products" },
+    { name: "About Us", href: "about" },
+    { name: "Contact", href: "contact" },
+  ];
+
+  const socialLinks = [
+    { icon: <FiFacebook size={22} />, href: "#", title: "Facebook" },
+    { icon: <FaXTwitter size={22} />, href: "#", title: "Twitter" },
+    { icon: <FaInstagram size={22} />, href: "#", title: "Instagram" },
+    { icon: <LuLinkedin size={22} />, href: "#", title: "LinkedIn" },
+  ];
+
   return (
     <footer className="bg-gray-800 text-white py-12">
       <div className="max-w-7xl mx-auto px-4">
@@ -18,78 +32,46 @@ export default function Footer() {
           <div>
             <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition duration-300"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition duration-300"
-                >
-                  Products
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition duration-300"
-                >
-                  About Us
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-white transition duration-300"
-                >
-                  Contact
-                </a>
-              </li>
+              {quickLinks.map((link, index) => (
+                <li key={index}>
+                  <Link
+                    to={link.href}
+                    className="text-gray-400 hover:text-white transition duration-300"
+                  >
+                    {link.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
-          <div>
+          <div className="flex flex-col">
             <h4 className="text-lg font-semibold mb-4">Contact Us</h4>
-            <p className="text-gray-400">123 Medical Drive</p>
-            <p className="text-gray-400">Healthcare City, HC 12345</p>
-            <p className="text-gray-400">Phone: (123) 456-7890</p>
-            <p className="text-gray-400">Email: info@ScrubsCraft.com</p>
+            <a href="tel:+92 311 4075017" className="pb-2 text-gray-400">
+              0311 4075017
+            </a>
+            <a
+              href="mailto:scrubscraft75@gmail.com"
+              className="pb-2 text-gray-400"
+            >
+              scrubscraft75@gmail.com
+            </a>
+            <p className="text-gray-400">
+              Awan Market, Main Ferozepur Road, Lahore, Pakistan
+            </p>
           </div>
           <div>
             <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
             <div className="flex space-x-4">
-              <a
-                title="socialLinks"
-                href="#"
-                className="text-gray-400 hover:text-white transition duration-300"
-              >
-                <FiFacebook size={22} />
-              </a>
-              <a
-                href="#"
-                title="socialLinks"
-                className="text-gray-400 hover:text-white transition duration-300"
-              >
-                <FaXTwitter size={22} />
-              </a>
-              <a
-                href="#"
-                title="socialLinks"
-                className="text-gray-400 hover:text-white transition duration-300"
-              >
-                <FaInstagram size={22} />
-              </a>
-              <a
-                href="#"
-                title="socialLinks"
-                className="text-gray-400 hover:text-white transition duration-300"
-              >
-                <LuLinkedin size={22} />
-              </a>
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  title={social.title}
+                  className="text-gray-400 hover:text-white transition duration-300"
+                >
+                  {social.icon}
+                </a>
+              ))}
             </div>
           </div>
         </div>

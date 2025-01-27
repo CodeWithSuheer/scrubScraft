@@ -28,9 +28,6 @@ interface User {
   };
 }
 
-
-
-
 // CREATE ASYNC THUNK
 export const createuserAsync = createAsyncThunk(
   "user/create",

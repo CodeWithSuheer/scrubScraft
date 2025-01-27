@@ -157,7 +157,7 @@ export default function Header() {
                 </span>
               </Link>
 
-              {user ? (
+              {!user ? (
                 <Link
                   to="/login"
                   onClick={handleCloseNavbar}
@@ -215,7 +215,7 @@ export default function Header() {
                     <div className="py-1" role="none">
                       <Link
                         to="/profile"
-                        onClick={handleCloseNavbar}
+                        onClick={() => setMenuOpen(!isMenuOpen)}
                         className="text-gray-900 block w-full px-4 py-2 text-left hover:bg-gray-200"
                         id="menu-item-3"
                         role="menuitem"
@@ -228,7 +228,7 @@ export default function Header() {
 
                       <Link
                         to="/orders"
-                        onClick={handleCloseNavbar}
+                        onClick={() => setMenuOpen(!isMenuOpen)}
                         className="text-gray-900 block w-full px-4 py-2 text-left hover:bg-gray-200"
                         id="menu-item-3"
                         role="menuitem"

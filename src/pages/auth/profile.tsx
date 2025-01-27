@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import LoginView from "../../sections/auth/login-view";
+import ProfileView from "../../sections/auth/profile-view";
 
 const ProfilePage = () => {
   return (
@@ -9,7 +9,7 @@ const ProfilePage = () => {
         <title>Profile - ScrubsCraft</title>
       </Helmet>
 
-      <LoginView />
+      <ProfileView />
     </>
   );
 };

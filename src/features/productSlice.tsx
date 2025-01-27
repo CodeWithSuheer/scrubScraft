@@ -1,10 +1,10 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Base_url } from "./constant";
 
-// API URLs
-const getAllProductUrl = `/api/products/getProducts`;
-const getProductById = `/api/products/getProductById`;
-const getLatestProductUrl = "/api/products/getLatestPRoducts";
+const getAllProductUrl = `${Base_url}/products/getProducts`;
+const getProductById = `${Base_url}/products/getProductById`;
+const getLatestProductUrl = `${Base_url}/products/getLatestPRoducts`;
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
@@ -65,14 +65,14 @@ interface BundleDetails {
   main_description: string;
   main_heading: string;
   product_details: ProductDetails[];
-  why_choose_us: string[]; 
+  why_choose_us: string[];
 }
 
 export interface ProductDetails {
   name: string;
   description: string;
-  key_benefits: string[]; 
-  key_ingrediants: string; 
+  key_benefits: string[];
+  key_ingrediants: string;
 }
 
 interface Product {

@@ -1,12 +1,19 @@
 import { FormEvent, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+// Icons
 import { MdPhone } from "react-icons/md";
 import { IoMail } from "react-icons/io5";
-import "../sections.css";
-import axios from "axios";
-import { Label } from "../../components/label/label";
+import { FaAddressBook } from "react-icons/fa";
+// Local components
 import TopHeader from "../../components/header/top-header";
+import { Button } from "../../components/buttons/button";
+import { Label } from "../../components/label/label";
+import "../sections.css";
 
 const ContactView: React.FC = () => {
+  const [loading, setLoading] = useState(false);
+
   const [formdata, setFormdata] = useState({
     name: "",
     email: "",
@@ -17,8 +24,15 @@ const ContactView: React.FC = () => {
   // HANDLE SUBMIT
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const response = await axios.post("/api/contact/createContact", formdata);
+      const response = await axios.post(
+        "https://api.client.scrubscraft.shop/contact/createContact",
+        formdata
+      );
+      console.log("response", response);
+      toast.success(response?.data?.msg);
+
       if (response.status === 201) {
         setFormdata({
           name: "",
@@ -26,10 +40,11 @@ const ContactView: React.FC = () => {
           phone: "",
           message: "",
         });
-        // toast.success(response.data.msg);
       }
     } catch (error: any) {
       throw new Error(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -64,21 +79,27 @@ const ContactView: React.FC = () => {
                   <p className="flex items-start">
                     <MdPhone className="text-white size-9 p-2" />
                     <a
-                      href="tel:+92 310 5015888"
+                      href="tel:+92 311 4075017"
                       className="mt-1 mx-3 text-white tracking-wide"
                     >
-                      +92 300 4818907
+                      0311 4075017
                     </a>
                   </p>
 
                   <p className="flex items-start">
                     <IoMail className="text-white size-9 p-2" />
                     <a
-                      href="mailto:support@ScrubsCraft.com"
+                      href="mailto:scrubscraft75@gmail.com"
                       className="mx-3 mt-1 text-white text-wrap"
                     >
-                      support@ScrubsCraft.com
+                      scrubscraft75@gmail.com
                     </a>
+                  </p>
+                  <p className="flex items-start">
+                    <FaAddressBook className="text-white size-9 p-2" />
+                    <span className="mt-1 mx-3 text-white text-wrap">
+                      Awan Market, Main Ferozepur Road, Lahore, Pakistan
+                    </span>
                   </p>
                 </div>
               </div>
@@ -147,12 +168,13 @@ const ContactView: React.FC = () => {
                   </div>
 
                   <div className="mt-5 flex justify-start items-center">
-                    <button
+                    <Button
+                      loadingText="Submiting..."
                       type="submit"
-                      className="h-10 px-10 w-full sm:max-w-32 bg-primary rounded-sm text-white"
+                      loading={loading}
                     >
                       Submit
-                    </button>
+                    </Button>
                   </div>
                 </form>
               </div>

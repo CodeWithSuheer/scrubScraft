@@ -1,6 +1,49 @@
-import { ArrowRight, Mail, MapPin, Phone } from "lucide-react";
+import { FormEvent, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+// Icons
+import { Mail, MapPin, Phone } from "lucide-react";
+// Local components
+import { Button } from "../../components/buttons/button";
+import "../sections.css";
 
 export default function ContactUs() {
+  const [loading, setLoading] = useState(false);
+
+  const [formdata, setFormdata] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+
+  // HANDLE SUBMIT
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await axios.post(
+        "https://api.client.scrubscraft.shop/contact/createContact",
+        formdata
+      );
+      console.log("response", response);
+      toast.success(response?.data?.msg);
+
+      if (response.status === 201) {
+        setFormdata({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+      }
+    } catch (error: any) {
+      throw new Error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <section className="py-20">
@@ -17,14 +60,20 @@ export default function ContactUs() {
                   <Phone className="w-6 h-6 text-blue-600 mr-4" />
                   <div>
                     <div className="font-medium">Phone</div>
-                    <div className="text-gray-600">1-800-SCRUBS</div>
+                    <div className="text-gray-600">
+                      <a href="tel:+92 311 4075017">0311 4075017</a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center p-4 bg-gray-50 rounded-xl">
                   <Mail className="w-6 h-6 text-blue-600 mr-4" />
                   <div>
                     <div className="font-medium">Email</div>
-                    <div className="text-gray-600">support@scrubscraft.com</div>
+                    <div className="text-gray-600">
+                      <a href="mailto:scrubscraft75@gmail.com">
+                        scrubscraft75@gmail.com
+                      </a>
+                    </div>
                   </div>
                 </div>
                 <div className="flex items-center p-4 bg-gray-50 rounded-xl">
@@ -32,14 +81,17 @@ export default function ContactUs() {
                   <div>
                     <div className="font-medium">Address</div>
                     <div className="text-gray-600">
-                      123 Medical Drive, Healthcare City, HC 12345
+                      Awan Market, Main Ferozepur Road, Lahore, Pakistan
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <form className="bg-white p-4 sm:p-8 rounded-2xl border border-gray-200 shadow-lg">
+            <form
+              onSubmit={handleSubmit}
+              className="bg-white p-4 sm:p-8 rounded-2xl border border-gray-200 shadow-lg"
+            >
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -49,6 +101,11 @@ export default function ContactUs() {
                     type="text"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                     placeholder="Enter your name"
+                    value={formdata.name}
+                    onChange={(e) =>
+                      setFormdata({ ...formdata, name: e.target.value })
+                    }
+                    required
                   />
                 </div>
                 <div>
@@ -56,9 +113,14 @@ export default function ContactUs() {
                     Your Email
                   </label>
                   <input
-                    type="email"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                     placeholder="Enter your email"
+                    type="email"
+                    value={formdata.email}
+                    onChange={(e) =>
+                      setFormdata({ ...formdata, email: e.target.value })
+                    }
+                    required
                   />
                 </div>
                 <div>
@@ -66,9 +128,14 @@ export default function ContactUs() {
                     Your Phone
                   </label>
                   <input
-                    type="email"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                     placeholder="Enter your phone number"
+                    type="number"
+                    value={formdata.phone}
+                    onChange={(e) =>
+                      setFormdata({ ...formdata, phone: e.target.value })
+                    }
+                    required
                   />
                 </div>
                 <div>
@@ -79,15 +146,22 @@ export default function ContactUs() {
                     rows={4}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                     placeholder="How can we help you?"
+                    value={formdata.message}
+                    onChange={(e) =>
+                      setFormdata({ ...formdata, message: e.target.value })
+                    }
                   ></textarea>
                 </div>
-                <button
-                  type="button"
-                  className="w-full bg-blue-600 text-white py-4 rounded-xl hover:bg-blue-700 transition flex items-center justify-center gap-2"
+              </div>
+              <div className="button mt-2">
+                <Button
+                  loadingText="Submiting..."
+                  type="submit"
+                  loading={loading}
+                  className="w-full py-2.5"
                 >
-                  Send Message
-                  <ArrowRight className="w-5 h-5" />
-                </button>
+                  Submit
+                </Button>
               </div>
             </form>
           </div>
