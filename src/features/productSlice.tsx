@@ -20,7 +20,7 @@ export const getAllProductsAsync = createAsyncThunk(
         : "";
     try {
       const response = await axios.post(
-        `${getAllProductUrl}?category=${data.category}&page=${data.page}${searchQuery}`
+        `${getAllProductUrl}?page=${data.page}${searchQuery}`
       );
       return response.data;
     } catch (error: any) {
@@ -79,6 +79,7 @@ interface Product {
   id: string;
   name: string;
   category: string;
+  product_code: string;
   image: Image;
   averageRating: number;
   description: string;

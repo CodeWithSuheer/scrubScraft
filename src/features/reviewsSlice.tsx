@@ -1,16 +1,17 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Base_url } from "./constant";
 import toast from "react-hot-toast";
-import { CreateReviewPayload, UpdateReviewPayload } from "../pages/selectedItem/SelectedItem";
-
+import {
+  CreateReviewPayload,
+  UpdateReviewPayload,
+} from "../sections/single-product/product-details";
 
 // API URLs
-const createReviewUrl = "/api/reviews/createReview";
-const updateReviewUrl = "/api/reviews/updateReview";
-const deleteReviewUrl = "/api/reviews/deleteReview";
-const getAllReviewsByProductUrl =
-  "/api/reviews/getAllReviewsByProduct";
-
+const createReviewUrl = `${Base_url}/reviews/createReview`;
+const updateReviewUrl = `${Base_url}/reviews/updateReview`;
+const deleteReviewUrl = `${Base_url}/reviews/deleteReview`;
+const getAllReviewsByProductUrl = `${Base_url}/reviews/getAllReviewsByProduct`;
 
 // CREATE REVIEWS ASYNC THUNK
 export const createreviewsAsync = createAsyncThunk(
@@ -21,21 +22,20 @@ export const createreviewsAsync = createAsyncThunk(
       toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-    toast.error(error.response.data.message)
-      }
+      toast.error(error.response.data.message);
+    }
   }
 );
 
 // GET ALL REVIEWS BY PRODUCT ASYNC THUNK
 export const getallreviewsAsync = createAsyncThunk(
   "reviews/getall",
-  async (id:any) => {
+  async (id: any) => {
     try {
       const response = await axios.post(getAllReviewsByProductUrl, { id });
       return response.data;
     } catch (error: any) {
-      throw new Error(error)
-
+      throw new Error(error);
     }
   }
 );
@@ -57,7 +57,7 @@ export const updatereviewsAsync = createAsyncThunk(
 // DELETE REVIEWS PRODUCT ASYNC THUNK
 export const deletereviewsAsync = createAsyncThunk(
   "reviews/delete",
-  async (id:string) => {
+  async (id: string) => {
     try {
       const response = await axios.post(deleteReviewUrl, { id });
       return response.data;
@@ -103,13 +103,13 @@ const reviewsSlice = createSlice({
         state.allReviews = action.payload;
       })
 
-        // UPDATE REVIEW
-        .addCase(updatereviewsAsync.pending, (state) => {
-          state.loading = true;
-        })
-        .addCase(updatereviewsAsync.fulfilled, (state) => {
-          state.loading = false;
-        });
+      // UPDATE REVIEW
+      .addCase(updatereviewsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updatereviewsAsync.fulfilled, (state) => {
+        state.loading = false;
+      });
   },
 });
 

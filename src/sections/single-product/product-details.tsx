@@ -1,15 +1,30 @@
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { StarRating } from "./StarRating";
-import { ReviewForm } from "./ReviewForm";
-import type { Product, Review } from "../types/product";
+import type { Product } from "../types/product";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart } from "../../features/ActionsSlice";
 import toast from "react-hot-toast";
-import { singleProductData } from "../../mock/singleProduct";
-import { mockedLatestProducts } from "../../mock/productData";
+import { getProductByIdAsync } from "../../features/productSlice";
+import AllReviews from "./all-reviews";
+import {
+  createreviewsAsync,
+  getallreviewsAsync,
+} from "../../features/reviewsSlice";
+
+export interface ReviewFormData {
+  review: string;
+  rating: number;
+}
+export interface CreateReviewPayload extends ReviewFormData {
+  productID: string | undefined;
+  userID: string | undefined;
+}
+export interface UpdateReviewPayload extends ReviewFormData {
+  id: string | undefined;
+}
 
 const product: Product = {
   id: "1",
@@ -47,43 +62,70 @@ const product: Product = {
 };
 
 export const ProductPage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
-
-  const selectedItem = mockedLatestProducts?.find((data) => data?.id === id);
-  console.log("selectedItem", selectedItem);
-
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { id } = useParams<{ id: string }>();
+
+  const [formData, setFormData] = useState<ReviewFormData>({
+    review: "",
+    rating: 1,
+  });
+
+  useEffect(() => {
+    if (id) {
+      dispatch(getProductByIdAsync(id));
+      dispatch(getallreviewsAsync(id));
+    }
+  }, [id]);
+
   const [selectedImage, setSelectedImage] = useState(product.images[0]);
-  const [reviews, setReviews] = useState<Review[]>([]);
 
-  // const singleProduct = useAppSelector((state) => state.products.singleProduct);
+  const user = useAppSelector((state) => state.auth.user);
+  const userID = user?.user?.id;
 
-  // let singleProduct = singleProductData;
+  const { singleProduct, singleProductloading } = useAppSelector(
+    (state) => state.products
+  );
+
+  // console.log("singleProduct", singleProduct);
+  // console.log("singleProductloading", singleProductloading);
 
   const handleAddToCart = () => {
-    if (selectedItem) {
-      dispatch(addToCart(selectedItem));
+    if (singleProduct) {
+      dispatch(addToCart(singleProduct));
       navigate("/products");
       toast.success("Item Added to Cart");
     }
   };
 
-  const handleReviewSubmit = ({
-    rating,
-    comment,
-  }: {
-    rating: number;
-    comment: string;
-  }) => {
-    const newReview: Review = {
-      id: Date.now().toString(),
-      rating,
-      comment,
-      createdAt: new Date(),
-    };
-    setReviews([newReview, ...reviews]);
+  const handleStarClick = (starValue: number) => {
+    setFormData((prevData) => ({ ...prevData, rating: starValue }));
+  };
+
+  const handleSubmitReview = async () => {
+    const productID = id;
+
+    console.log("formData", formData);
+
+    if (!formData.review || formData.rating === 0) {
+      toast.error("Please leave a review to rate the product");
+      return;
+    }
+
+    try {
+      const response = await dispatch(
+        createreviewsAsync({ productID, userID, ...formData })
+      );
+      console.log("response ", response);
+      if (response.payload !== undefined) {
+        await dispatch(getallreviewsAsync(id));
+      }
+    } catch (error) {
+      toast.error("Failed to submit review");
+    } finally {
+      // setFormData({ review: "", rating: 1 });
+    }
   };
 
   return (
@@ -97,7 +139,7 @@ export const ProductPage: React.FC = () => {
             {/* MAIN IMAGE */}
             <div className="mb-2 sm:mb-0 img_cont">
               <img
-                src={selectedItem?.image?.downloadURL}
+                src={singleProduct?.image?.downloadURL}
                 alt="Product"
                 className="w-full h-full sm:h-[28rem] sm:w-[28rem] rounded-md object-cover border border-gray-300"
               />
@@ -157,42 +199,75 @@ export const ProductPage: React.FC = () => {
         {/* Product Info */}
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">
-              {selectedItem?.name}
+            <h1 className="text-3xl font-bold text-gray-900 capitalize">
+              {singleProduct?.name}
             </h1>
             <div className="mt-4 flex items-center gap-4 flex-wrap">
               {/* PRICE */}
-              <div className="flex items-baseline gap-2">
-                <span className="text-2xl font-bold text-gray-900">
-                  ${selectedItem?.price}
+              {/* <div className="flex items-baseline gap-2">
+                <span
+                  className={`text-2xl font-bold ${
+                    singleProduct?.sale_price ? "text-red-600" : "text-gray-900"
+                  }`}
+                >
+                  ${singleProduct?.sale_price}
                 </span>
-                {product.originalPrice && (
+
+                {singleProduct?.sale_price && (
                   <span className="text-lg text-gray-500 line-through">
-                    ${selectedItem?.sale_price}
+                    ${singleProduct?.sale_price}
                   </span>
                 )}
-              </div>
+              </div> */}
+
+              <h6 className="text-gray-600">
+                {singleProduct?.sale_price ? (
+                  <>
+                    <span className="font-medium text-sm line-through text-gray-500">
+                      Rs.
+                    </span>
+                    <span className="font-semibold text-[0.90rem] line-through text-gray-500">
+                      {singleProduct?.price}
+                    </span>
+                    <span className="pl-2 font-semibold text-[1.15rem] text-red-600">
+                      Rs.
+                    </span>
+                    <span className="font-semibold text-[1.15rem] text-red-600">
+                      {singleProduct?.sale_price}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="font-medium text-[1.15rem] text-gray-800">
+                      Rs.
+                    </span>
+                    <span className="font-semibold text-[1.15rem] text-gray-800">
+                      {singleProduct?.price}
+                    </span>
+                  </>
+                )}
+              </h6>
 
               {/* RATING */}
               <div className="flex items-center gap-2 flex-wrap">
-                <StarRating rating={product.ratings} readonly />
+                <StarRating rating={singleProduct?.averageRating} readonly />
                 <span className="text-sm text-gray-500">
-                  ({product.numberOfRatings} ratings)
+                  ({singleProduct?.averageRating} ratings)
                 </span>
               </div>
             </div>
           </div>
 
-          <p className="text-gray-600">{product.description}</p>
+          <p className="text-gray-600">{singleProduct?.description}</p>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <span className="font-medium text-gray-900">Product Code</span>
-              <p className="text-gray-600">{product.code}</p>
+              <p className="text-gray-600">{singleProduct?.product_code}</p>
             </div>
             <div>
               <span className="font-medium text-gray-900">Category</span>
-              <p className="text-gray-600">{product.category}</p>
+              <p className="text-gray-600">{singleProduct?.category}</p>
             </div>
           </div>
 
@@ -211,33 +286,13 @@ export const ProductPage: React.FC = () => {
       </div>
 
       {/* Reviews Section */}
-      <div className="mt-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Reviews</h2>
-        {reviews.length > 0 ? (
-          <div className="space-y-8">
-            {reviews.map((review) => (
-              <div key={review.id} className="border-b pb-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <StarRating rating={review.rating} readonly />
-                  <span className="text-sm text-gray-500">
-                    {new Date(review.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-                <p className="text-gray-600">{review.comment}</p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">No Reviews</p>
-        )}
-
-        <div className="mt-12">
-          <h3 className="text-xl font-bold text-gray-900 mb-6">
-            Write a Review
-          </h3>
-          <ReviewForm onSubmit={handleReviewSubmit} />
-        </div>
-      </div>
+      <AllReviews
+        handleSubmitReview={handleSubmitReview}
+        handleStarClick={handleStarClick}
+        formData={formData}
+        setFormData={setFormData}
+        userID={userID}
+      />
     </div>
   );
 };
