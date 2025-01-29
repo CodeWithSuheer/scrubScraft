@@ -13,6 +13,7 @@ const LoginView = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const location = useLocation();
+
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { user } = useAppSelector((state) => state.auth);
 
@@ -20,6 +21,9 @@ const LoginView = () => {
     email: "",
     password: "",
   });
+
+  const { loginLoading } = useAppSelector((state) => state.auth);
+  console.log("loginLoading", loginLoading);
 
   useEffect(() => {
     if (user?.login) {
@@ -133,8 +137,7 @@ const LoginView = () => {
                 <AuthButton
                   text="Login Now"
                   type="submit"
-                  isLoading={false}
-                  onClick={() => console.log("Button clicked")}
+                  isLoading={loginLoading}
                   className="text-white bg-blue-500 hover:bg-blue-600"
                 />
 

@@ -17,10 +17,10 @@ const ForgetView = () => {
   });
 
   const { forgetLoading } = useAppSelector((state) => state.auth);
-  console.log("forgetLoading", forgetLoading);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+
     dispatch(forgetuserAsync(formData)).then((res: any) => {
       if (res.error) {
         ("");
@@ -80,8 +80,7 @@ const ForgetView = () => {
                 <AuthButton
                   text="Submit"
                   type="submit"
-                  isLoading={false}
-                  onClick={() => console.log("Button clicked")}
+                  isLoading={forgetLoading}
                   className="text-white bg-blue-500 hover:bg-blue-600"
                 />
 

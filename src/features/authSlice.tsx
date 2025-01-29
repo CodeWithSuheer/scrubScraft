@@ -1,20 +1,21 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { SignupFormData } from "../auth/Signup";
-import { LoginFormData } from "../auth/Login";
-import { FormData } from "../auth/OtpChecker";
-import { ForgetPassData } from "../auth/ForgetPass";
+import { Base_url } from "./constant";
+import { SignupFormData } from "../sections/auth/singup-view";
+import { LoginFormData } from "../sections/auth/login-view";
+import { ForgetPassData } from "../sections/auth/forget-view";
+import { FormData } from "../sections/auth/opt-view";
 
 // API URLs
-const signupUrl = "/api/users/signup";
-const loginUrl = "/api/users/login";
-const updateUrl = "/api/users/updateUserInformation";
-const logoutUrl = "/api/users/logout";
-const userSessionUrl = "/api/users/persistUserSession";
-const forgetPassUrl = "/api/users/sendResetPasswordOTP";
-const verifyOtpPassUrl = "/api/users/verifyOtp";
-const resetPassUrl = "/api/users/updatePassword";
+const signupUrl = `${Base_url}/users/signup`;
+const loginUrl = `${Base_url}/users/login`;
+const updateUrl = `${Base_url}/users/updateUserInformation`;
+const logoutUrl = `${Base_url}/users/logout`;
+const userSessionUrl = `${Base_url}/users/persistUserSession`;
+const forgetPassUrl = `${Base_url}/users/sendResetPasswordOTP`;
+const verifyOtpPassUrl = `${Base_url}/users/verifyOtp`;
+const resetPassUrl = `${Base_url}/users/updatePassword`;
 
 // Interfaces
 interface User {
@@ -74,6 +75,7 @@ export const updateuserAsync = createAsyncThunk(
 export const userSessionAsync = createAsyncThunk("user/session", async () => {
   try {
     const response = await axios.get(userSessionUrl);
+    console.log("response", response);
     return response.data;
   } catch (error: any) {
     throw error;
@@ -108,7 +110,7 @@ export const forgetuserAsync = createAsyncThunk(
 // VERIFY ASYNC THUNK
 export const verifyOtpAsync = createAsyncThunk(
   "user/verify",
-  async (formData:FormData) => {
+  async (formData: FormData) => {
     try {
       const response = await axios.post<User>(verifyOtpPassUrl, formData);
       // toast.success(response.data.message);
@@ -145,7 +147,7 @@ interface AuthState {
   signupLoading: boolean;
   loginLoading: boolean;
   forgetLoading: boolean;
-  updateLoading:boolean;
+  updateLoading: boolean;
   forgetPasswordEmail: string | null;
   resetPassword: string | null;
   validateToken: string | null;
@@ -157,7 +159,7 @@ const initialState: AuthState = {
   signupLoading: false,
   loginLoading: false,
   forgetLoading: false,
-  updateLoading:false,
+  updateLoading: false,
   forgetPasswordEmail: null,
   resetPassword: null,
   validateToken: null,
@@ -179,13 +181,13 @@ const authSlice = createSlice({
         state.signupLoading = false;
       })
 
-        // UPDATE CASE
-        .addCase(updateuserAsync.pending, (state) => {
-          state.updateLoading = true;
-        })
-        .addCase(updateuserAsync.fulfilled, (state, _action) => {
-          state.updateLoading = false;
-        })
+      // UPDATE CASE
+      .addCase(updateuserAsync.pending, (state) => {
+        state.updateLoading = true;
+      })
+      .addCase(updateuserAsync.fulfilled, (state, _action) => {
+        state.updateLoading = false;
+      })
 
       // LOGIN ADD CASE
       .addCase(loginuserAsync.pending, (state) => {

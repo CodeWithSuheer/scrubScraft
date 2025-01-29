@@ -3,10 +3,12 @@ import { createRoot } from "react-dom/client";
 import { HelmetProvider } from "react-helmet-async";
 import { Provider } from "react-redux";
 import { store } from "./app/store.tsx";
+import axios from "axios";
 import App from "./App.tsx";
 import "./index.css";
 import { Toaster } from "react-hot-toast";
-// import { Toaster } from "sonner";
+
+axios.defaults.withCredentials = true;
 
 createRoot(document.getElementById("root")!).render(
   <HelmetProvider>
@@ -14,6 +16,5 @@ createRoot(document.getElementById("root")!).render(
       <App />
     </Provider>
     <Toaster />
-    {/* <Toaster expand={false} position="top-right" richColors /> */}
   </HelmetProvider>
 );

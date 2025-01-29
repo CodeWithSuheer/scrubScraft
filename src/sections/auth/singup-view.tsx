@@ -146,8 +146,7 @@ const SignupView: React.FC = () => {
                 <AuthButton
                   text="Signup Now"
                   type="submit"
-                  isLoading={false}
-                  onClick={() => console.log("Button clicked")}
+                  isLoading={signupLoading}
                   className="text-white bg-blue-500 hover:bg-blue-600"
                 />
 

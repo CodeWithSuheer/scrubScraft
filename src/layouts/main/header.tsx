@@ -6,12 +6,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCartTotal } from "../../features/ActionsSlice";
 import { navigation } from "./navigation-links";
+import { logoutUserAsync } from "../../features/authSlice";
 
 export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-
-  let user = true;
 
   const dispatch = useAppDispatch();
   const location = useLocation();
@@ -20,7 +19,10 @@ export default function Header() {
   const [state, setState] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setMenuOpen] = useState(false);
+
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
+  const user = useAppSelector((state) => state.auth.user);
+  console.log("user", user);
 
   const handleCloseNavbar = () => {
     setState(false);
@@ -56,6 +58,11 @@ export default function Header() {
   useEffect(() => {
     dispatch(getCartTotal());
   }, [cart]);
+
+  const handleLogout = () => {
+    dispatch(logoutUserAsync());
+    setMenuOpen(!isMenuOpen);
+  };
 
   return (
     <nav
@@ -157,39 +164,18 @@ export default function Header() {
                 </span>
               </Link>
 
-              {!user ? (
-                <Link
-                  to="/login"
-                  onClick={handleCloseNavbar}
-                  className="block tracking-wide"
-                >
-                  <span className="relative">
-                    <CircleUserRound
-                      size={23}
-                      className={`${
-                        state
-                          ? "text-gray-700"
-                          : isOnHomePage
-                          ? scrolled
-                            ? "text-gray-700"
-                            : "text-gray-50"
-                          : "text-gray-700"
-                      } `}
-                    />
-                  </span>
-                </Link>
-              ) : (
+              {user && user?.login ? (
                 <div className="relative">
                   <div>
                     <button
                       title="button"
                       id="menu-button"
                       type="button"
-                      className="p-0 m-0 flex justify-center items-center"
+                      className="p-0 m-0 flex justify-center items-center capitalize"
                       onClick={() => setMenuOpen(!isMenuOpen)}
                       ref={menuButtonRef}
                     >
-                      <CircleUserRound
+                      {/* <CircleUserRound
                         size={23}
                         className={` ${
                           state
@@ -200,7 +186,20 @@ export default function Header() {
                               : "text-gray-50"
                             : "text-gray-700"
                         } `}
-                      />
+                      /> */}
+                      <p
+                        className={` ${
+                          state
+                            ? "text-gray-700"
+                            : isOnHomePage
+                            ? scrolled
+                              ? "text-gray-700"
+                              : "text-gray-50"
+                            : "text-gray-700"
+                        } `}
+                      >
+                        {user?.user?.name}
+                      </p>
                     </button>
                   </div>
                   <div
@@ -240,7 +239,7 @@ export default function Header() {
                       </Link>
 
                       <button
-                        // onClick={handleLogout}
+                        onClick={handleLogout}
                         className="text-red-700 block w-full px-4 py-2 text-left hover:bg-gray-200"
                         id="menu-item-3"
                         role="menuitem"
@@ -253,6 +252,27 @@ export default function Header() {
                     </div>
                   </div>
                 </div>
+              ) : (
+                <Link
+                  to="/login"
+                  onClick={handleCloseNavbar}
+                  className="block tracking-wide"
+                >
+                  <span className="relative">
+                    <CircleUserRound
+                      size={23}
+                      className={`${
+                        state
+                          ? "text-gray-700"
+                          : isOnHomePage
+                          ? scrolled
+                            ? "text-gray-700"
+                            : "text-gray-50"
+                          : "text-gray-700"
+                      } `}
+                    />
+                  </span>
+                </Link>
               )}
             </li>
           </ul>
