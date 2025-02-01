@@ -48,7 +48,7 @@ export const updatereviewsAsync = createAsyncThunk(
       toast.success(response.data.message);
       return response.data;
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data?.message);
       throw new Error(error);
     }
   }
@@ -57,12 +57,14 @@ export const updatereviewsAsync = createAsyncThunk(
 // DELETE REVIEWS PRODUCT ASYNC THUNK
 export const deletereviewsAsync = createAsyncThunk(
   "reviews/delete",
-  async (id: string) => {
+  async (id: any) => {
     try {
-      const response = await axios.post(deleteReviewUrl, { id });
+      const response = await axios.post(deleteReviewUrl, id);
+      toast.success(response.data.message);
+      console.log("response", response);
       return response.data;
     } catch (error: any) {
-      toast.error(error.response.data.error);
+      toast.error(error.response?.data?.message);
     }
   }
 );
@@ -79,11 +81,17 @@ interface Review {
 // INITIAL STATE
 interface ReviewsState {
   loading: boolean;
+  createReviewLoading: boolean;
+  updateReviewLoading: boolean;
+  deleteReviewLoading: boolean;
   allReviews: Review[];
 }
 
 const initialState: ReviewsState = {
   loading: false,
+  createReviewLoading: false,
+  updateReviewLoading: false,
+  deleteReviewLoading: false,
   allReviews: [],
 };
 
@@ -94,6 +102,17 @@ const reviewsSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
+      // DELETE REVIEW
+      .addCase(createreviewsAsync.pending, (state) => {
+        state.createReviewLoading = true;
+      })
+      .addCase(createreviewsAsync.fulfilled, (state) => {
+        state.createReviewLoading = false;
+      })
+      .addCase(createreviewsAsync.rejected, (state) => {
+        state.createReviewLoading = false;
+      })
+
       // GET ALL REVIEWS ADD CASE
       .addCase(getallreviewsAsync.pending, (state) => {
         state.loading = true;
@@ -102,13 +121,30 @@ const reviewsSlice = createSlice({
         state.loading = false;
         state.allReviews = action.payload;
       })
+      .addCase(getallreviewsAsync.rejected, (state) => {
+        state.loading = false;
+      })
 
       // UPDATE REVIEW
       .addCase(updatereviewsAsync.pending, (state) => {
-        state.loading = true;
+        state.updateReviewLoading = true;
       })
       .addCase(updatereviewsAsync.fulfilled, (state) => {
-        state.loading = false;
+        state.updateReviewLoading = false;
+      })
+      .addCase(updatereviewsAsync.rejected, (state) => {
+        state.updateReviewLoading = false;
+      })
+
+      // DELETE REVIEW
+      .addCase(deletereviewsAsync.pending, (state) => {
+        state.deleteReviewLoading = true;
+      })
+      .addCase(deletereviewsAsync.fulfilled, (state) => {
+        state.deleteReviewLoading = false;
+      })
+      .addCase(deletereviewsAsync.rejected, (state) => {
+        state.deleteReviewLoading = false;
       });
   },
 });

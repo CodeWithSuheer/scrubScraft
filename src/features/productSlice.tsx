@@ -61,6 +61,13 @@ interface Image {
   type: string;
 }
 
+interface Images {
+  primary: Image;
+  image2?: Image;
+  image3?: Image;
+  image4?: Image;
+}
+
 interface BundleDetails {
   main_description: string;
   main_heading: string;
@@ -80,7 +87,9 @@ interface Product {
   name: string;
   category: string;
   product_code: string;
-  image: Image;
+  sizes: Array<string>;
+  fabric_type: Array<string>;
+  images: Images;
   averageRating: number;
   description: string;
   bundleDescription: BundleDetails;
@@ -95,7 +104,7 @@ interface ProductState {
   Productloading: boolean;
   singleProductloading: boolean;
   products: Product[] | any;
-  latestProducts: Product[];
+  latestProducts: Product[] | any;
   singleProduct: Product | null;
 }
 

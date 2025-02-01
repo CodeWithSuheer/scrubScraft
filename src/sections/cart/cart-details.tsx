@@ -32,7 +32,7 @@ const CartDetails: React.FC = () => {
   return (
     <>
       <section className="w-full py-10 sm:py-14 px-4 sm:px-8 lg:px-10 xl:px-0 bg-gray-50 min-h-[90vh]">
-        <div className="max-w-5xl xl:max-w-6xl xxl:max-w-7xl mx-auto">
+        <div className="max-w-5xl xl:max-w-7xl mx-auto">
           {/* HEADER */}
           <div className="header">
             <div className="flex justify-end items-center">

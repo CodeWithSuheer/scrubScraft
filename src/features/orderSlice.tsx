@@ -1,13 +1,14 @@
 import axios from "axios";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { data } from "../pages/myOrders/MyOrders";
-import { RequestData } from "../pages/checkout/Checkout";
+import { Base_url } from "./constant";
+import { RequestData } from "../sections/checkout/checkout-details";
+import { data } from "../sections/orders/orders-view";
 
 // API URLs
-const createOrderUrl = "/api/orders/createOrder";
-const getAllOrderUrl = "/api/orders/getAllOrdersForUser";
-const updateOrderUrl = "/api/orders/updateOrder";
+const createOrderUrl = `${Base_url}/orders/createOrder`;
+const getAllOrderUrl = `${Base_url}/orders/getAllOrdersForUser`;
+const updateOrderUrl = `${Base_url}/orders/updateOrder`;
 
 // CREATE REVIEWS ASYNC THUNK
 export const createOrderAsync = createAsyncThunk(
@@ -40,7 +41,7 @@ export const updateOrderAsync = createAsyncThunk(
   async (formData: data) => {
     try {
       const response = await axios.post(updateOrderUrl, formData);
-      if(response.data.message === "Order Data Updated") {
+      if (response.data.message === "Order Data Updated") {
         toast.success("Order Status Updated");
       }
       return response.data;
@@ -49,6 +50,7 @@ export const updateOrderAsync = createAsyncThunk(
     }
   }
 );
+
 interface Image {
   downloadURL: string;
   name: string;
@@ -77,13 +79,13 @@ interface Orders {
 // INITIAL STATE
 interface ReviewsState {
   loading: boolean;
-  updateLoading:boolean;
+  updateLoading: boolean;
   allOrders: Orders[];
 }
 
 const initialState: ReviewsState = {
   loading: false,
-  updateLoading:false,
+  updateLoading: false,
   allOrders: [],
 };
 
@@ -103,8 +105,8 @@ const orderSlice = createSlice({
         state.allOrders = action.payload;
       })
 
-       // UPDATE ORDER
-       .addCase(updateOrderAsync.pending, (state) => {
+      // UPDATE ORDER
+      .addCase(updateOrderAsync.pending, (state) => {
         state.updateLoading = true;
       })
       .addCase(updateOrderAsync.fulfilled, (state) => {

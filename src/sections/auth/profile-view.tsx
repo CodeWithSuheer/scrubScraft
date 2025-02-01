@@ -1,23 +1,25 @@
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { updateuserAsync, userSessionAsync } from "../../features/authSlice";
 import toast from "react-hot-toast";
+import AuthButton from "./components/auth-button";
 
 const ProfileView = () => {
   const dispatch = useAppDispatch();
-  //   const navigate = useNavigate();
-  const user = useAppSelector((state: any) => state.auth.user);
-  const { updateLoading } = useAppSelector((state: any) => state.auth);
+  const navigate = useNavigate();
+
+  const { user, updateLoading } = useAppSelector((state: any) => state.auth);
+  console.log("user", user);
   console.log("updateLoading", updateLoading);
 
   const userID = user?.user?.id;
 
-  //   useEffect(() => {
-  //     if (!user) {
-  //       navigate("/login");
-  //     }
-  //   }, [navigate, user]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+  }, [navigate, user]);
 
   const [formData, setFormData] = useState<any>({
     name: user?.user?.name || "",
@@ -65,6 +67,8 @@ const ProfileView = () => {
       return;
     }
 
+    console.log("updatedFields", updatedFields);
+
     dispatch(updateuserAsync({ id, ...updatedFields })).then((res) => {
       if (res.payload.message === "Update Successfull") {
         toast.success(res.payload.message);
@@ -75,10 +79,10 @@ const ProfileView = () => {
 
   return (
     <>
-      <section className="w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white py-14 sm:py-0 px-2 sm:px-8 lg:px-10 min-h-[100vh] flex items-center justify-center">
+      <section className="w-full bg-gradient-to-r from-blue-600 to-blue-800 text-white py-14 sm:py-0 px-3 sm:px-8 lg:px-10 min-h-[100vh] flex items-center justify-center">
         <div className="w-full">
-          <div className="mt-12 content py-6 px-3 sm:p-8 max-w-4xl mx-auto bg-[#f5f5f5] border border-gray-200 rounded-xl">
-            <div className="mb-8">
+          <div className="mt-12 content py-4 px-3 sm:p-8 max-w-3xl mx-auto bg-[#f5f5f5] border border-gray-200 rounded-xl">
+            <div className="mb-4 sm:mb-8">
               <h2 className="mb-3 playfair text-2xl font-bold text-gray-800">
                 Personal Information
               </h2>
@@ -86,6 +90,7 @@ const ProfileView = () => {
                 Manage your name, password and account settings.
               </p>
             </div>
+
             <form onSubmit={handleSubmit} className="w-full">
               <div className="grid sm:grid-cols-12 gap-2 sm:gap-6">
                 {/* full name label */}
@@ -94,7 +99,7 @@ const ProfileView = () => {
                     className="inline-block text-sm text-gray-800 mt-2.5"
                     htmlFor="af-account-full-name"
                   >
-                    Full name
+                    Fullname
                   </label>
                 </div>
 
@@ -183,12 +188,12 @@ const ProfileView = () => {
               </div>
 
               <div className="w-full mt-7 flex justify-end items-center gap-x-2">
-                <button
+                <AuthButton
+                  text="Save changes"
                   type="submit"
-                  className="w-40 h-11 mx-auto bg-primary rounded-lg text-white tracking-wide"
-                >
-                  Save changes
-                </button>
+                  isLoading={updateLoading}
+                  className="max-w-40 h-11 mx-auto bg-primary rounded-lg text-white tracking-wide"
+                />
               </div>
             </form>
           </div>

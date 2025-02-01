@@ -5,51 +5,51 @@ import Marquee from "react-fast-marquee";
 const reviews = [
   {
     id: 1,
-    name: "Dr. Jessica Lee",
+    name: "Dr. Ayesha K.",
     role: "Cardiologist",
     rating: 5,
     comment:
-      "ScrubsCraft scrubs are a game-changer! The fabric is incredibly comfortable, and the fit is perfect for long shifts.",
+      "The quality of ScrubsCraft uniforms is outstanding! Super comfortable and perfect for long shifts.",
     avatar:
       "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },
   {
     id: 2,
-    name: "Nurse David Thompson",
+    name: "Imran R.",
     role: "ER Nurse",
     rating: 5,
     comment:
-      "I love how durable these scrubs are. They've held up great after countless washes and still look professional.",
+      "As a surgeon, I need flexibility and comfort in my uniform. ScrubsCraft delivers on both!",
     avatar:
       "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img04.png?v=1737191604",
   },
   {
     id: 3,
-    name: "Dr. Samantha Patel",
+    name: "Dr. Sarah M.",
     role: "Pediatrician",
     rating: 4,
     comment:
-      "The variety of colors and patterns is fantastic. My young patients love the fun designs!",
+      "Absolutely love the fit and feel of these scrubs. They make me feel more professional and confident at work!",
     avatar:
       "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },
   {
     id: 4,
-    name: "Nurse David Thompson",
+    name: "Nurse Uzma",
     role: "ER Nurse",
     rating: 5,
     comment:
-      "I love how durable these scrubs are. They've held up great after countless washes and still look professional.",
+      "I've tried many scrubs before, but ScrubsCraft sets a new standard in quality and design.",
     avatar:
       "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img04.png?v=1737191604",
   },
   {
     id: 5,
-    name: "Dr. Samantha Patel",
+    name: "Dr. Anaya P.",
     role: "Pediatrician",
     rating: 4,
     comment:
-      "The variety of colors and patterns is fantastic. My young patients love the fun designs!",
+      "The attention to detail in these scrubs is amazing! Functional pockets, strong stitching, and premium fabric.",
     avatar:
       "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },

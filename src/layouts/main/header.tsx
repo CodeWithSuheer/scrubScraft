@@ -22,7 +22,7 @@ export default function Header() {
 
   const { cart, totalQuantity } = useAppSelector((state) => state.actions);
   const user = useAppSelector((state) => state.auth.user);
-  console.log("user", user);
+  // console.log("user", user);
 
   const handleCloseNavbar = () => {
     setState(false);
@@ -85,7 +85,17 @@ export default function Header() {
             className="flex items-center space-x-2"
           >
             <img src="/src/assets/logo/logo.png" alt="logo" className="h-6" />
-            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+            <h1
+              className={`text-xl sm:text-2xl font-bold ${
+                state
+                  ? "text-blue-600"
+                  : isOnHomePage
+                  ? scrolled
+                    ? "text-blue-600"
+                    : "text-blue-100"
+                  : "text-blue-600"
+              }`}
+            >
               ScrubsCraft
             </h1>
           </Link>
@@ -139,7 +149,7 @@ export default function Header() {
               );
             })}
 
-            <li className="text-[1rem] text-gray-700 hover:text-indigo-600 flex items-center space-x-7">
+            <li className="text-[1rem] text-gray-700 hover:text-indigo-600 flex flex-col md:flex-row justify-start items-start sm:items-center space-y-4 md:space-y-0 md:space-x-7">
               <Link
                 to="/cart"
                 onClick={handleCloseNavbar}
@@ -175,31 +185,20 @@ export default function Header() {
                       onClick={() => setMenuOpen(!isMenuOpen)}
                       ref={menuButtonRef}
                     >
-                      {/* <CircleUserRound
-                        size={23}
-                        className={` ${
-                          state
-                            ? "text-gray-700"
-                            : isOnHomePage
-                            ? scrolled
-                              ? "text-gray-700"
-                              : "text-gray-50"
-                            : "text-gray-700"
-                        } `}
-                      /> */}
-                      <p
-                        className={` ${
-                          state
-                            ? "text-gray-700"
-                            : isOnHomePage
-                            ? scrolled
-                              ? "text-gray-700"
-                              : "text-gray-50"
-                            : "text-gray-700"
-                        } `}
+                      <div
+                        className={`w-9 h-9 flex items-center justify-center rounded-full font-semibold 
+                           ${
+                             state
+                               ? "bg-blue-500 text-gray-100"
+                               : isOnHomePage
+                               ? scrolled
+                                 ? "bg-blue-500 text-gray-100"
+                                 : "bg-gray-100 text-blue-800"
+                               : "bg-blue-500 text-gray-100"
+                           }`}
                       >
-                        {user?.user?.name}
-                      </p>
+                        {user?.user?.name.charAt(0)}
+                      </div>
                     </button>
                   </div>
                   <div

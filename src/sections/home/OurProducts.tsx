@@ -6,7 +6,6 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SliderProductCard from "../../components/cards/slider-card";
 import { useNavigate } from "react-router-dom";
 import HeaderV2 from "../../components/header/header-v2";
-// import { useAppSelector } from "../../app/hooks";
 
 interface Image {
   downloadURL: string;
@@ -30,8 +29,6 @@ const OurProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
 
   const sliderRef = useRef<Slider>(null);
   const [slidesToShow, setSlidesToShow] = useState(4);
-
-  // const loading = useAppSelector((state) => state.products.Productloading);
 
   const next = () => {
     if (sliderRef.current) {

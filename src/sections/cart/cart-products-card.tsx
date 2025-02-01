@@ -22,35 +22,49 @@ export default function CartProductCard({
   onDecrease,
   onRemove,
 }: CartProductCardProps) {
+  console.log("cart product", product);
+
   return (
     <div
       key={product.id}
-      className="grid md:grid-cols-4 items-center gap-8 px-4 py-4 mb-4 shadow-lg bg-white border border-gray-200 rounded-lg"
+      className="grid md:grid-cols-4 items-center gap-8 px-4 py-4 mb-4 shadow-lg bg-white border border-gray-200 rounded-xl"
     >
       {/* Product Image and Info */}
       <div className="md:col-span-2 flex flex-wrap sm:flex-nowrap items-start justify-center sm:justify-start gap-4 sm:gap-4">
-        <div className="shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
+        <div className="w-28 h-full shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
           <img
-            className="w-28 min-h-32 object-cover rounded-md"
-            src={product?.image?.downloadURL}
+            className="aspect-[3/4] object-cover rounded-md"
+            src={product?.images?.primary?.downloadURL}
             alt={product?.name}
           />
         </div>
 
         <div>
           <h3 className="text-center md:text-start text-md tracking-wide font-bold text-[#333]">
-            {product?.name} <span className="text-base">({product?.name})</span>
+            {product?.name}{" "}
+            <span className="text-base">({product?.category})</span>
           </h3>
           <h6 className="text-md text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
-            Price:{" "}
-            <strong className="ml-2 flex items-center">
-              {product?.sale_price && product?.sale_price > 0 ? (
-                <p className="">Rs. {product?.sale_price}</p>
-              ) : (
-                <p className="">Rs. {product?.price}</p>
-              )}
-            </strong>
+            <strong className="mr-1 flex items-center">Price:</strong>
+            {product?.sale_price && product?.sale_price > 0 ? (
+              <p className="">Rs. {product?.sale_price}</p>
+            ) : (
+              <p className="">Rs. {product?.price}</p>
+            )}
           </h6>
+
+          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
+            <strong className="mr-1 flex items-center">Fabric:</strong>
+            {product?.fabric_type}
+          </h3>
+          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
+            <strong className="mr-1 flex items-center">Sizes:</strong>
+            {product?.sizes}
+          </h3>
+          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
+            <strong className="mr-1 flex items-center">Color:</strong>
+            {product?.colors[0]?.label}
+          </h3>
         </div>
       </div>
 

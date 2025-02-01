@@ -4,6 +4,7 @@ import { StarRating } from "../../helpers/star-rating";
 
 export default function ProductCard({ data }: { data: any }) {
   const navigate = useNavigate();
+  console.log("data", data);
 
   const handleItemClick = (productId: string) => {
     navigate(`/selectedItem/${productId}`);
@@ -18,7 +19,7 @@ export default function ProductCard({ data }: { data: any }) {
       >
         <div className="bg-gray-100 w-full overflow-hidden">
           <img
-            src={data?.image?.downloadURL}
+            src={data?.images?.primary?.downloadURL}
             alt={data?.name}
             className="aspect-[3/4] w-full object-cover object-top hover:scale-110 transition-all duration-700"
           />
@@ -63,7 +64,7 @@ export default function ProductCard({ data }: { data: any }) {
               )}
             </h6>
 
-            <div className="flex items-center gap-y-2 flex-wrap gap-x-1">
+            <div className="flex items-center gap-y-2 flex-wrap gap-x-0">
               <StarRating rating={data.averageRating} />
               <span className="text-sm text-gray-500">
                 ({data.averageRating} ratings)

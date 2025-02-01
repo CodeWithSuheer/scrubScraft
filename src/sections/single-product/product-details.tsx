@@ -2,7 +2,6 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { StarRating } from "./StarRating";
-import type { Product } from "../types/product";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart } from "../../features/ActionsSlice";
@@ -26,46 +25,18 @@ export interface UpdateReviewPayload extends ReviewFormData {
   id: string | undefined;
 }
 
-const product: Product = {
-  id: "1",
-  name: "Luxury Sunglasses",
-  description:
-    "These luxury sunglasses exude sophistication with their elegant design and premium lenses. Offering superior UV protection and exceptional comfort, they are perfect for a refined and stylish appearance.",
-  price: 299.99,
-  originalPrice: 349.99,
-  code: "LUX001",
-  category: "Accessories",
-  images: [
-    {
-      id: "1",
-      url: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
-      alt: "Luxury sunglasses front view",
-    },
-    {
-      id: "2",
-      url: "https://images.unsplash.com/photo-1614715838608-dd527c46231f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
-      alt: "Luxury sunglasses side view",
-    },
-    {
-      id: "3",
-      url: "https://images.unsplash.com/photo-1629803236371-299f85d0c349?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
-      alt: "Luxury sunglasses angle view",
-    },
-    {
-      id: "4",
-      url: "https://images.unsplash.com/photo-1604785846291-2cd9192b1bef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1160&q=80",
-      alt: "Luxury sunglasses detail view",
-    },
-  ],
-  ratings: 4.5,
-  numberOfRatings: 128,
-};
-
 export const ProductPage: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const [mainImage, setMainImage] = useState<string | null>(null);
+
   const { id } = useParams<{ id: string }>();
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
+  const handleSizeClick = (size: string) => {
+    setSelectedSize((prevSize) => (prevSize === size ? null : size));
+  };
 
   const [formData, setFormData] = useState<ReviewFormData>({
     review: "",
@@ -79,8 +50,6 @@ export const ProductPage: React.FC = () => {
     }
   }, [id]);
 
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
-
   const user = useAppSelector((state) => state.auth.user);
   const userID = user?.user?.id;
 
@@ -91,9 +60,35 @@ export const ProductPage: React.FC = () => {
   // console.log("singleProduct", singleProduct);
   // console.log("singleProductloading", singleProductloading);
 
+  // Update mainImage when product changes
+  useEffect(() => {
+    if (singleProduct?.images?.primary?.downloadURL) {
+      setMainImage(null); // Clear the image first
+      setMainImage(singleProduct?.images?.primary?.downloadURL);
+    }
+  }, [singleProduct]);
+
+  // Handle image click to update the main image
+  const handleImageClick = (url: string) => {
+    setMainImage(url);
+  };
+
+  // Extract images from product object
+  const { primary, ...otherImages } = singleProduct?.images || {};
+
   const handleAddToCart = () => {
+    if (!selectedSize) {
+      toast.error("Size selection required!");
+      return;
+    }
+
     if (singleProduct) {
-      dispatch(addToCart(singleProduct));
+      const productToCart = {
+        ...singleProduct,
+        sizes: [selectedSize],
+      };
+
+      dispatch(addToCart(productToCart));
       navigate("/products");
       toast.success("Item Added to Cart");
     }
@@ -124,7 +119,7 @@ export const ProductPage: React.FC = () => {
     } catch (error) {
       toast.error("Failed to submit review");
     } finally {
-      // setFormData({ review: "", rating: 1 });
+      setFormData({ review: "", rating: 1 });
     }
   };
 
@@ -134,36 +129,37 @@ export const ProductPage: React.FC = () => {
         {/* Product Images */}
         <div className="space-y-4">
           <div className="w-full overflow-hidden lg:sticky top-0 sm:flex gap-2"></div>
+          <div className="w-full lg:sticky top-0">
+            <div className="flex flex-row gap-2">
+              <div className="flex flex-col gap-2 w-16 max-sm:w-14 shrink-0">
+                {primary && (
+                  <img
+                    src={primary.downloadURL}
+                    alt={primary.name}
+                    className="w-full h-16 sm:h-20 object-cover cursor-pointer rounded-sm border border-gray-300"
+                    onClick={() => handleImageClick(primary.downloadURL)}
+                  />
+                )}
 
-          <div className="w-full sm:flex-row-reverse sm:flex justify-center gap-3">
-            {/* MAIN IMAGE */}
-            <div className="mb-2 sm:mb-0 img_cont">
-              <img
-                src={singleProduct?.image?.downloadURL}
-                alt="Product"
-                className="w-full h-full sm:h-[28rem] sm:w-[28rem] rounded-md object-cover border border-gray-300"
-              />
-            </div>
-
-            {/* SIDE IMAGES 1 */}
-            <div className="mt-0 sm:space-y-3 w-[3.5rem] sm:w-[4.5rem] max-sm:flex sm:flex-col max-sm:mb-4 max-sm:gap-4">
-              {selectedImage && (
+                {Object.keys(otherImages).map((key) => (
+                  <img
+                    key={key}
+                    src={otherImages[key].downloadURL}
+                    alt={otherImages[key].name}
+                    className="w-full h-16 sm:h-20 object-cover cursor-pointer rounded-sm border border-gray-300"
+                    onClick={() =>
+                      handleImageClick(otherImages[key].downloadURL)
+                    }
+                  />
+                ))}
+              </div>
+              <div className="flex-1">
                 <img
-                  src={selectedImage.url}
-                  alt={selectedImage.alt}
-                  className="w-full h-16 sm:h-20 object-cover cursor-pointer rounded-sm border border-gray-300"
-                  // onClick={() => handleImageClick(primary.downloadURL)}
+                  src={mainImage || ""}
+                  alt="Product"
+                  className="w-full  aspect-[548/590] object-cover rounded-md"
                 />
-              )}
-              {product.images.slice(0, 3).map((key, index) => (
-                <img
-                  key={index}
-                  src={selectedImage.url}
-                  alt={selectedImage.alt}
-                  className="w-full h-16 sm:h-20 object-cover cursor-pointer rounded-sm border border-gray-300"
-                  // onClick={() => handleImageClick(otherImages[key].downloadURL)}
-                />
-              ))}
+              </div>
             </div>
           </div>
 
@@ -197,29 +193,13 @@ export const ProductPage: React.FC = () => {
         </div>
 
         {/* Product Info */}
-        <div className="space-y-6">
+        <div className="space-y-4 pt-3">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 capitalize">
               {singleProduct?.name}
             </h1>
             <div className="mt-4 flex items-center gap-4 flex-wrap">
               {/* PRICE */}
-              {/* <div className="flex items-baseline gap-2">
-                <span
-                  className={`text-2xl font-bold ${
-                    singleProduct?.sale_price ? "text-red-600" : "text-gray-900"
-                  }`}
-                >
-                  ${singleProduct?.sale_price}
-                </span>
-
-                {singleProduct?.sale_price && (
-                  <span className="text-lg text-gray-500 line-through">
-                    ${singleProduct?.sale_price}
-                  </span>
-                )}
-              </div> */}
-
               <h6 className="text-gray-600">
                 {singleProduct?.sale_price ? (
                   <>
@@ -258,8 +238,6 @@ export const ProductPage: React.FC = () => {
             </div>
           </div>
 
-          <p className="text-gray-600">{singleProduct?.description}</p>
-
           <div className="grid grid-cols-2 gap-4">
             <div>
               <span className="font-medium text-gray-900">Product Code</span>
@@ -271,17 +249,90 @@ export const ProductPage: React.FC = () => {
             </div>
           </div>
 
+          <div className="mt-6">
+            <h3 className="text-lg font-bold text-gray-800">Choose a Color</h3>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {["black", "gray-400", "orange-400", "red-400"].map((color) => (
+                <button
+                  key={color}
+                  type="button"
+                  title="button"
+                  className={`w-9 h-9 bg-${color} border-2 border-white hover:border-gray-800 rounded-full shrink-0`}
+                ></button>
+              ))}
+            </div>
+          </div>
+
+          {/* FABRIC TYPE */}
+          <div>
+            <div className="header flex justify-between items-center">
+              <h3 className="text-sm font-semibold text-gray-700">
+                Available Fabric
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap gap-2 mt-2">
+              {singleProduct?.fabric_type?.map((fabric: string) => (
+                <button
+                  key={fabric}
+                  type="button"
+                  className={`px-4 h-9 border-none outline-none text-sm shadow-sm rounded-md flex items-center justify-center shrink-0 
+              ${
+                selectedSize === fabric
+                  ? "bg-primary text-gray-50"
+                  : "bg-gray-200 text-black"
+              }
+            `}
+                  onClick={() => handleSizeClick(fabric)}
+                >
+                  {fabric}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* SIZES */}
+          <div>
+            <div className="header flex justify-between items-center">
+              <h3 className="text-sm font-semibold text-gray-700">Sizes</h3>
+              <h3 className="text-sm font-semibold text-primary hover:underline underline-offset-2 cursor-pointer">
+                See sizing chart
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap gap-3 mt-2">
+              {singleProduct?.sizes?.map((size: string) => (
+                <button
+                  key={size}
+                  type="button"
+                  className={`w-12 h-9 border-none outline-none text-sm shadow-sm rounded-md flex items-center justify-center shrink-0 
+              ${
+                selectedSize === size
+                  ? "bg-primary text-gray-50"
+                  : "bg-gray-200 text-black"
+              }
+            `}
+                  onClick={() => handleSizeClick(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div className="flex gap-4">
             <button
               title="button"
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
+              className="mt-1.5 flex-1 bg-primary text-white py-3 px-4 rounded-md hover:bg-primary/90 transition-colors flex items-center justify-center gap-2"
             >
               <FaShoppingCart />
               Add To Cart
             </button>
           </div>
+
+          <p className="text-gray-600">{singleProduct?.description}</p>
         </div>
       </div>
 
@@ -292,6 +343,7 @@ export const ProductPage: React.FC = () => {
         formData={formData}
         setFormData={setFormData}
         userID={userID}
+        productID={id}
       />
     </div>
   );

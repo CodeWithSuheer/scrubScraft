@@ -75,7 +75,7 @@ export const updateuserAsync = createAsyncThunk(
 export const userSessionAsync = createAsyncThunk("user/session", async () => {
   try {
     const response = await axios.get(userSessionUrl);
-    console.log("response", response);
+    // console.log("response", response);
     return response.data;
   } catch (error: any) {
     throw error;

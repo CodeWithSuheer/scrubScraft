@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import SliderProductCard from "../../components/cards/slider-card";
 import HeaderV2 from "../../components/header/header-v2";
-// import { useAppSelector } from "../../app/hooks";
 
 interface Image {
   downloadURL: string;
@@ -27,8 +26,6 @@ interface Product {
 const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
   const sliderRef = useRef<Slider>(null);
   const [slidesToShow, setSlidesToShow] = useState(4);
-
-  // const loading = useAppSelector((state) => state.products.Productloading);
 
   const next = () => {
     if (sliderRef.current) {
@@ -70,7 +67,6 @@ const LatestProducts = ({ latestProducts }: { latestProducts: Product[] }) => {
 
     window.addEventListener("resize", handleResize);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener("resize", handleResize);
     };
