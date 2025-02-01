@@ -193,6 +193,8 @@ const AllReviews: React.FC<AllReviewsProps> = ({
         onConfirm={handleDeleteReview}
         onCancel={closeModal}
         isLoading={deleteReviewLoading}
+        buttonName="Delete"
+        buttonLoadingName="Deleting..."
       />
     </>
   );

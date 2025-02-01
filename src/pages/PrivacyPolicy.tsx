@@ -8,7 +8,7 @@ const PrivacyPolicy = () => {
         <title>Privacy Policy - ScrubsCraft</title>
       </Helmet>
 
-      <section className="bg-[#f5f5f5]">
+      <section className="bg-[#f5f5f5] pt-14">
         <div className="max-w-6xl px-4 sm:px-6 py-16 mx-auto min-h-screen">
           <h2 className="text-3xl lg:text-4xl font-bold tracking-wide">
             Privacy Policy - ScrubsCraft
@@ -110,7 +110,7 @@ const PrivacyPolicy = () => {
             If you have questions about this Privacy Policy or how we handle
             your information, please reach out to us at{" "}
             <a href="mailto:support@scrubscraft.com" target="_blank">
-              support@scrubscraft.com.
+              scrubscraft75@gmail.com
             </a>
           </p>
         </div>

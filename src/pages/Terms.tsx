@@ -8,7 +8,7 @@ const Terms = () => {
         <title>Terms & Conditions - ScrubsCraft</title>
       </Helmet>
 
-      <section className="bg-[#f5f5f5]">
+      <section className="bg-[#f5f5f5] pt-14">
         <div className="max-w-6xl px-4 sm:px-6 py-16 mx-auto min-h-screen">
           <h2 className="poppin text-3xl lg:text-4xl font-bold tracking-wide">
             Terms and Conditions - ScrubsCraft
@@ -90,16 +90,16 @@ const Terms = () => {
           <h2 className="mt-6 text-2xl font-bold mb-2">Governing Law</h2>
           <p className="mb-4">
             These Terms and Conditions are governed by and construed in
-            accordance with the laws of Pakistan. Any disputes
-            arising from the use of our website or services will be subject to
-            the exclusive jurisdiction of the courts in Pakistan.
+            accordance with the laws of Pakistan. Any disputes arising from the
+            use of our website or services will be subject to the exclusive
+            jurisdiction of the courts in Pakistan.
           </p>
           <h2 className="mt-6 text-2xl font-bold mb-2">Contact Us</h2>
           <p className="mb-4">
             If you have any questions about these Terms and Conditions, please
             contact us at{" "}
             <a href="mailto:support@scrubscraft.com" target="_blank">
-              support@scrubscraft.com.
+              scrubscraft75@gmail.com
             </a>
           </p>
         </div>

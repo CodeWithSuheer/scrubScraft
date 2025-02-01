@@ -8,20 +8,15 @@ const getLatestProductUrl = `${Base_url}/products/getLatestPRoducts`;
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
-  "Shop/getProduts",
-  async (data: {
-    category: string | undefined;
-    page: number;
-    search?: string;
-  }) => {
-    const searchQuery =
-      data?.search !== undefined && data?.search !== null
-        ? `&search=${data?.search}`
-        : "";
+  "products/fetchAll",
+  async (filters: ProductState["filters"]) => {
+    // const searchQuery =
+    //   data?.search !== undefined && data?.search !== null
+    //     ? `&search=${data?.search}`
+    //     : "";
     try {
-      const response = await axios.post(
-        `${getAllProductUrl}?page=${data.page}${searchQuery}`
-      );
+      const queryString = new URLSearchParams(filters as any).toString();
+      const response = await axios.post(`${getAllProductUrl}?${queryString}`);
       return response.data;
     } catch (error: any) {
       throw new Error(error);
@@ -106,6 +101,13 @@ interface ProductState {
   products: Product[] | any;
   latestProducts: Product[] | any;
   singleProduct: Product | null;
+  filters: {
+    category: string;
+    fabric_type: string;
+    color: string;
+    size: string;
+    page: number;
+  };
 }
 
 const initialState: ProductState = {
@@ -115,12 +117,23 @@ const initialState: ProductState = {
   products: [],
   latestProducts: [],
   singleProduct: null,
+  filters: {
+    category: "",
+    fabric_type: "",
+    color: "",
+    size: "",
+    page: 1,
+  },
 };
 
 const productSlice = createSlice({
   name: "productSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    setFilters: (state, action) => {
+      state.filters = { ...state.filters, ...action.payload };
+    },
+  },
   extraReducers: (builder) => {
     builder
 
@@ -156,4 +169,5 @@ const productSlice = createSlice({
   },
 });
 
+export const { setFilters } = productSlice.actions;
 export default productSlice.reducer;

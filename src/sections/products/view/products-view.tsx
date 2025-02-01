@@ -1,4 +1,5 @@
 import { useAppSelector } from "../../../app/hooks";
+import TopHeader from "../../../components/header/top-header";
 import AllProducts from "../all-products";
 import LatestProducts from "../LatestProducts";
 
@@ -7,6 +8,8 @@ const ProductsView = () => {
 
   return (
     <>
+      <TopHeader title="Products" subtitle="SHOP" backgroundClass="contact" />
+      
       <AllProducts />
       <LatestProducts latestProducts={latestProducts} />
     </>

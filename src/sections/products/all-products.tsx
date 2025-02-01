@@ -1,31 +1,29 @@
 import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAllProductsAsync } from "../../features/productSlice";
-import TopHeader from "../../components/header/top-header";
+import { getAllProductsAsync, setFilters } from "../../features/productSlice";
 import ProductCard from "../../components/cards/product-card";
 import NoProducts from "./no-products";
 import "../sections.css";
+import ProductFilters from "./filters";
 
 const AllProducts: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { products: allproducts, Productloading } = useAppSelector(
+  // const { products: allproducts, Productloading } = useAppSelector(
+  //   (state) => state.products
+  // );
+
+  const { products, Productloading, filters } = useAppSelector(
     (state) => state.products
   );
-
-  // console.log("allproducts", allproducts);
-
-  // const products = allproducts?.productData?.filter(
-  //   (items: any) => items?.category !== "Bundle"
-  // );
 
   const [searchParams] = useSearchParams();
   const page: number = parseInt(searchParams.get("page") || "1", 10);
   const category: string = searchParams.get("category") || "All";
 
   const renderPaginationLinks = () => {
-    const totalPages = allproducts?.totalPages;
+    const totalPages = products?.totalPages;
     const paginationLinks = [];
     for (let i = 1; i <= totalPages; i++) {
       paginationLinks.push(
@@ -35,7 +33,7 @@ const AllProducts: React.FC = () => {
             className={`flex items-center justify-center px-3 h-8 leading-tight text-gray-500 border border-gray-300 ${
               i === page ? "bg-primary text-white" : "hover:bg-gray-100"
             }`}
-            onClick={() => dispatch(getAllProductsAsync({ category, page: i }))}
+            onClick={() => dispatch(getAllProductsAsync(filters))}
           >
             {i}
           </Link>
@@ -45,9 +43,17 @@ const AllProducts: React.FC = () => {
     return paginationLinks;
   };
 
+  // useEffect(() => {
+  //   dispatch(getAllProductsAsync({ category, page }));
+  // }, [dispatch, page, category]);
+
   useEffect(() => {
-    dispatch(getAllProductsAsync({ category, page }));
-  }, [dispatch, page, category]);
+    dispatch(getAllProductsAsync(filters));
+  }, [dispatch, filters]);
+
+  const handleFilterChange = (filterType: string, value: string) => {
+    dispatch(setFilters({ [filterType]: value }));
+  };
 
   const ToTop = () => {
     window.scrollTo({
@@ -58,22 +64,20 @@ const AllProducts: React.FC = () => {
 
   return (
     <>
-      <TopHeader title="Products" subtitle="SHOP" backgroundClass="contact" />
+      <ProductFilters onFilterChange={handleFilterChange} />
 
       <section>
-        <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-5 xl:px-0">
+        <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-3 sm:px-6 sm:py-0 lg:px-5 xl:px-0">
           <div className="mt-4 w-full">
             <div className="products">
-              <ul className="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+              <ul className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                 {Productloading ? (
                   <NoProducts />
                 ) : (
                   <>
-                    {allproducts?.productData?.map(
-                      (data: any, index: number) => (
-                        <ProductCard data={data} key={index} />
-                      )
-                    )}
+                    {products?.productData?.map((data: any, index: number) => (
+                      <ProductCard data={data} key={index} />
+                    ))}
                   </>
                 )}
               </ul>
@@ -82,7 +86,7 @@ const AllProducts: React.FC = () => {
                 <nav aria-label="Page navigation example">
                   <ul className="flex items-center -space-x-px h-8 py-10 text-sm">
                     <li>
-                      {allproducts?.page > 1 ? (
+                      {products?.page > 1 ? (
                         <Link
                           onClick={ToTop}
                           to={`/products?category=${category}&page=${page - 1}`}
@@ -131,7 +135,7 @@ const AllProducts: React.FC = () => {
                     </li>
                     {renderPaginationLinks()}
                     <li>
-                      {allproducts?.totalPages !== page ? (
+                      {products?.totalPages !== page ? (
                         <Link
                           onClick={ToTop}
                           to={`/products?category=${category}&page=${page + 1}`}

@@ -1,6 +1,8 @@
 interface DeleteModalProps {
   title: string;
   desc: string;
+  buttonName: string;
+  buttonLoadingName: string;
   onConfirm: () => void;
   onCancel: () => void;
   isOpen: boolean;
@@ -14,6 +16,8 @@ export default function DeleteModal({
   onCancel,
   isOpen,
   isLoading,
+  buttonName = "Delete",
+  buttonLoadingName = "Deleting...",
 }: DeleteModalProps) {
   return (
     <>
@@ -62,7 +66,7 @@ export default function DeleteModal({
                   isLoading ? "cursor-not-allowed" : "cursor-pointer"
                 } w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm`}
               >
-                {isLoading ? "Deleting..." : "Delete"}
+                {isLoading ? buttonLoadingName : buttonName}
               </button>
               <button
                 type="button"

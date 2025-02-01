@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getallOrderAsync, updateOrderAsync } from "../../features/orderSlice";
 import { useNavigate } from "react-router-dom";
+import DeleteModal from "../../components/custom-dialog/delete-modal";
+import LoadingScreen from "../../components/loading-screen/loading-screen";
 
 export interface data {
   id: string | undefined;
@@ -50,13 +52,11 @@ const OrdersView = () => {
     }
   }, [navigate, user]);
 
-  const allOrder = useAppSelector((state) => state.orders.allOrders);
-  console.log("allOrder", allOrder);
+  const { allOrders, loading } = useAppSelector((state) => state.orders);
+  console.log("allOrder", allOrders);
 
-  const loading = useAppSelector((state) => state.orders.loading);
   const updateLoading = useAppSelector((state) => state.orders.updateLoading);
-
-  const selectedOrder = allOrder.find((data) => data?.id === orderId);
+  const selectedOrder = allOrders.find((data) => data?.id === orderId);
 
   useEffect(() => {
     if (userID) {
@@ -73,7 +73,7 @@ const OrdersView = () => {
     };
     dispatch(updateOrderAsync(formData)).then((res) => {
       const id = userID;
-      if (res.payload.message === "Order Data Updated") {
+      if (res.payload.message === "Order Updated") {
         dispatch(getallOrderAsync(id));
         closeModal();
       }
@@ -101,146 +101,164 @@ const OrdersView = () => {
 
   return (
     <>
-      <section className="w-full  py-14 sm:py-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[90vh]">
-        <div className="max-w-5xl xl:max-w-6xl mx-auto">
-          {allOrder?.length === 0 ? (
-            <>
-              <span className="playfair text-3xl font-semibold uppercase">
-                No Orders
-              </span>
-            </>
-          ) : (
-            <>
-              <h2 className="playfair text-3xl font-bold">Order Details</h2>
-              <div className="mt-3 text-sm">
-                Check the status of recent and old orders
-              </div>
-              {allOrder.map((data: any) => (
-                <div
-                  key={data?.OrderID}
-                  className="mt-8 flex flex-col overflow-hidden rounded-xl border border-[#EB72AF] md:flex-row"
-                >
-                  {/* ORDER DETAILS */}
-                  <div className="w-full border-r border-gray-300 bg-[#FFF3F9] md:max-w-xs">
-                    <div className="parent py-6 px-6 flex flex-col justify-between h-full gap-y-10">
-                      {/* ORDER DETAILS */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Order ID
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            {data?.OrderID}
-                          </div>
-                        </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Date
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            {new Date(data?.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Total Amount
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            Rs. {data?.totalAmount}
-                          </div>
-                        </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Order Status
-                          </div>
-                          <div
-                            className={`text-md font-medium ${getStatusColor(
-                              data?.orderProgress
-                            )}`}
-                          >
-                            {data?.orderProgress}
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* ORDER CANCEL BUTTON */}
-                      <div className="button">
-                        {data?.orderProgress &&
-                          data?.orderProgress === "Pending" && (
-                            <div>
-                              <button
-                                onClick={() => openModal(data?.id)}
-                                className="mt-5 flex items-center gap-2 bg-[#EB72AF] text-white px-4 py-2 rounded-lg"
-                              >
-                                <span>Cancel Order</span>
-                              </button>
-                            </div>
-                          )}
-                      </div>
-                    </div>
+      {loading ? (
+        <LoadingScreen />
+      ) : (
+        <>
+          <section className="w-full pt-14 pb-14 sm:pt-24 sm:pb-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[100vh] bg-gray-50">
+            <div className="max-w-5xl xl:max-w-6xl mx-auto">
+              {allOrders?.length === 0 ? (
+                <>
+                  <span className="playfair text-3xl font-semibold uppercase">
+                    No Orders
+                  </span>
+                </>
+              ) : (
+                <>
+                  <h2 className="playfair text-3xl font-bold">Order Details</h2>
+                  <div className="mt-3 text-sm">
+                    Check the status of recent and old orders
                   </div>
+                  {allOrders.map((data: any) => (
+                    <div
+                      key={data?.OrderID}
+                      className="mt-8 flex flex-col overflow-hidden rounded-xl hover:shadow-blue-100 hover:shadow-md border border-primary/50 md:flex-row"
+                    >
+                      {/* ORDER DETAILS */}
+                      <div className="w-full border-r border-gray-300 bg-[#f3f7ff] md:max-w-xs">
+                        <div className="parent py-6 px-6 flex flex-col justify-between h-full gap-y-10">
+                          {/* ORDER DETAILS */}
+                          <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
+                            <div className="mb-4">
+                              <div className="text-md sm:text-md font-semibold">
+                                Order ID
+                              </div>
+                              <div className="text-md font-medium text-gray-700">
+                                {data?.OrderID}
+                              </div>
+                            </div>
+                            <div className="mb-4">
+                              <div className="text-md sm:text-md font-semibold">
+                                Date
+                              </div>
+                              <div className="text-md font-medium text-gray-700">
+                                {new Date(data?.createdAt).toLocaleDateString()}
+                              </div>
+                            </div>
+                            <div className="mb-4">
+                              <div className="text-md sm:text-md font-semibold">
+                                Total Amount
+                              </div>
+                              <div className="text-md font-medium text-gray-700">
+                                Rs. {data?.totalAmount}
+                              </div>
+                            </div>
+                            <div className="mb-4">
+                              <div className="text-md sm:text-md font-semibold">
+                                Order Status
+                              </div>
+                              <div
+                                className={`text-md font-medium ${getStatusColor(
+                                  data?.orderProgress
+                                )}`}
+                              >
+                                {data?.orderProgress}
+                              </div>
+                            </div>
+                          </div>
 
-                  {/* ORDER ITEMS */}
-                  <div className="flex-1 bg-white">
-                    <div className="py-6 px-3 sm:px-6">
-                      <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-                        {data &&
-                          data?.items?.map((product: Product) => (
-                            <li
-                              key={product?.id}
-                              className="flex px-3 flex-col justify-between space-x-5 py-7 md:flex-row border rounded-xl bg-[#FFF3F9]"
-                            >
-                              <div className="flex flex-1 items-stretch">
-                                <div className="flex-shrink-0">
-                                  <img
-                                    className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
-                                    src={product?.image.downloadURL}
-                                    alt="order_img"
-                                  />
+                          {/* ORDER CANCEL BUTTON */}
+                          <div className="button">
+                            {data?.orderProgress &&
+                              data?.orderProgress === "Pending" && (
+                                <div>
+                                  <button
+                                    type="button"
+                                    onClick={() => openModal(data?.id)}
+                                    className="mt-5 flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg"
+                                  >
+                                    <span>Cancel Order</span>
+                                  </button>
                                 </div>
+                              )}
+                          </div>
+                        </div>
+                      </div>
 
-                                <div className="ml-5 flex flex-col justify-between">
-                                  <div className="flex-1">
-                                    <p className="text-sm font-bold text-gray-900">
-                                      {product?.name}
-                                    </p>
-                                    <p className="mt-1.5 text-sm font-medium text-gray-500">
-                                      {product?.category}
-                                    </p>
+                      {/* ORDER ITEMS */}
+                      <div className="flex-1 bg-white">
+                        <div className="py-6 px-3 sm:px-6">
+                          <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                            {data &&
+                              data?.items?.map((product: Product) => (
+                                <li
+                                  key={product?.name}
+                                  className="flex px-3 py-5 flex-col justify-between space-x-5 md:flex-row border rounded-xl bg-[#f3f7ff]"
+                                >
+                                  <div className="flex flex-1 items-stretch">
+                                    <div className="flex-shrink-0">
+                                      <img
+                                        className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
+                                        src={product?.image?.downloadURL}
+                                        alt="order_img"
+                                      />
+                                    </div>
+
+                                    <div className="ml-5 flex flex-col justify-between">
+                                      <div className="flex-1">
+                                        <p className="text-sm font-bold text-gray-900">
+                                          {product?.name}
+                                        </p>
+                                        <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                          {product?.category}
+                                        </p>
+                                      </div>
+
+                                      <p className="mt-4 text-sm font-medium text-gray-500">
+                                        x {product?.quantity}
+                                      </p>
+                                    </div>
                                   </div>
 
-                                  <p className="mt-4 text-sm font-medium text-gray-500">
-                                    x {product?.quantity}
-                                  </p>
-                                </div>
-                              </div>
-
-                              <div className="ml-auto flex flex-col items-end justify-between">
-                                <p className="text-right text-sm font-bold text-gray-900">
-                                  {product?.sale_price !== 0 ||
-                                  product?.sale_price > 0 ? (
-                                    <>
-                                      <p className="">
-                                        Rs. {product?.sale_price}
-                                      </p>
-                                    </>
-                                  ) : (
-                                    <p className="">Rs. {product?.price}</p>
-                                  )}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
+                                  <div className="ml-auto flex flex-col items-end justify-between">
+                                    <p className="text-right text-sm font-bold text-gray-900">
+                                      {(product?.sale_price &&
+                                        product?.sale_price !== 0) ||
+                                      (product?.sale_price ?? 0) > 0 ? (
+                                        <>
+                                          <p className="">
+                                            Rs. {product?.sale_price}
+                                          </p>
+                                        </>
+                                      ) : (
+                                        <p className="">Rs. {product?.price}</p>
+                                      )}
+                                    </p>
+                                  </div>
+                                </li>
+                              ))}
+                          </ul>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      </section>
+                  ))}
+                </>
+              )}
+            </div>
+          </section>
 
+          <DeleteModal
+            isOpen={isOpen}
+            title="Are You Sure?"
+            desc="Do you really want to cancel this order?"
+            onConfirm={() => handleDelete(selectedOrder?.id)}
+            onCancel={closeModal}
+            isLoading={updateLoading}
+            buttonName="Cancel Order"
+            buttonLoadingName="Cancelling..."
+          />
+        </>
+      )}
       {/* ORDER CANCEL MODAL */}
       {/* <Modal isOpen={isOpen} onClose={closeModal}>
         <Modal.Body className="space-y-3">
@@ -269,7 +287,7 @@ const OrdersView = () => {
                 </Button>
                 <Button
                   onClick={() => handleDelete(selectedOrder?.id)}
-                  className="bg-[#EB72AF] hover:bg-[#EB72AF]"
+                  className="bg-primary hover:bg-primary"
                   size="sm"
                 >
                   Confirm
