@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import Marquee from "react-fast-marquee";
+import user from "./user.png";
 
 const reviews = [
   {
@@ -10,8 +11,6 @@ const reviews = [
     rating: 5,
     comment:
       "The quality of ScrubsCraft uniforms is outstanding! Super comfortable and perfect for long shifts.",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },
   {
     id: 2,
@@ -20,8 +19,6 @@ const reviews = [
     rating: 5,
     comment:
       "As a surgeon, I need flexibility and comfort in my uniform. ScrubsCraft delivers on both!",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img04.png?v=1737191604",
   },
   {
     id: 3,
@@ -30,8 +27,6 @@ const reviews = [
     rating: 4,
     comment:
       "Absolutely love the fit and feel of these scrubs. They make me feel more professional and confident at work!",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },
   {
     id: 4,
@@ -40,8 +35,6 @@ const reviews = [
     rating: 5,
     comment:
       "I've tried many scrubs before, but ScrubsCraft sets a new standard in quality and design.",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img04.png?v=1737191604",
   },
   {
     id: 5,
@@ -50,8 +43,6 @@ const reviews = [
     rating: 4,
     comment:
       "The attention to detail in these scrubs is amazing! Functional pockets, strong stitching, and premium fabric.",
-    avatar:
-      "https://cdn.shopify.com/s/files/1/0704/6378/2946/files/img06.png?v=1737191604",
   },
 ];
 
@@ -81,7 +72,7 @@ export default function Testimonials() {
             >
               <div className="flex items-center mb-4">
                 <img
-                  src={review.avatar || "/placeholder.svg"}
+                  src={user}
                   alt={review.name}
                   className="w-12 h-12 rounded-full mr-4"
                 />

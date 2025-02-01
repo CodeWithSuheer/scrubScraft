@@ -1,46 +1,47 @@
 import { Star } from "lucide-react";
 import Marquee from "react-fast-marquee";
+import user from "./user.png";
 
 const reviews = [
   {
-    name: "Dr. Sarah Johnson",
-    role: "Pediatrician",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80",
-    text: "The most comfortable scrubs I've ever worn. Perfect for long shifts.",
+    id: 1,
+    name: "Dr. Ayesha K.",
+    role: "Cardiologist",
     rating: 5,
+    comment:
+      "The quality of ScrubsCraft uniforms is outstanding! Super comfortable and perfect for long shifts.",
   },
   {
-    name: "Dr. Michael Chen",
-    role: "Surgeon",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80",
-    text: "Premium quality that maintains its professional look even after multiple washes.",
-    rating: 5,
-  },
-  {
-    name: "Dr. Sarah Johnson",
-    role: "Pediatrician",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80",
-    text: "The most comfortable scrubs I've ever worn. Perfect for long shifts.",
-    rating: 5,
-  },
-  {
-    name: "Dr. Michael Chen",
-    role: "Surgeon",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80",
-    text: "Premium quality that maintains its professional look even after multiple washes.",
-    rating: 5,
-  },
-  {
-    name: "Nurse Emma Wilson",
+    id: 2,
+    name: "Imran R.",
     role: "ER Nurse",
-    image:
-      "https://images.unsplash.com/photo-1571772996211-2f02c9727629?auto=format&fit=crop&q=80",
-    text: "Finally found scrubs that combine style with functionality. Absolutely love them!",
     rating: 5,
+    comment:
+      "As a surgeon, I need flexibility and comfort in my uniform. ScrubsCraft delivers on both!",
+  },
+  {
+    id: 3,
+    name: "Dr. Sarah M.",
+    role: "Pediatrician",
+    rating: 4,
+    comment:
+      "Absolutely love the fit and feel of these scrubs. They make me feel more professional and confident at work!",
+  },
+  {
+    id: 4,
+    name: "Nurse Uzma",
+    role: "ER Nurse",
+    rating: 5,
+    comment:
+      "I've tried many scrubs before, but ScrubsCraft sets a new standard in quality and design.",
+  },
+  {
+    id: 5,
+    name: "Dr. Anaya P.",
+    role: "Pediatrician",
+    rating: 4,
+    comment:
+      "The attention to detail in these scrubs is amazing! Functional pockets, strong stitching, and premium fabric.",
   },
 ];
 
@@ -60,17 +61,20 @@ export default function Trusted() {
           </div>
 
           <div className="Marquee">
-            <Marquee direction="left" className="testimonial_marquee mt-14 pb-10">
+            <Marquee
+              direction="left"
+              className="testimonial_marquee mt-14 pb-10"
+            >
               {reviews.map((testimonial, index) => (
                 <div
                   key={index}
-                  className="bg-white p-8 rounded-2xl max-w-md mx-6 shadow-sm hover:shadow-xl transition-all duration-300"
+                  className="bg-white p-5 rounded-2xl max-w-md mx-6 shadow-sm hover:shadow-xl transition-all duration-300"
                 >
                   <div className="flex items-center gap-4 mb-6">
                     <img
-                      src={testimonial.image}
+                      src={user}
                       alt={testimonial.name}
-                      className="w-16 h-16 rounded-full object-cover"
+                      className="w-12 h-12 rounded-full object-cover"
                     />
                     <div>
                       <h4 className="font-semibold text-lg">
@@ -87,7 +91,9 @@ export default function Trusted() {
                       />
                     ))}
                   </div>
-                  <p className="text-gray-600 italic">"{testimonial.text}"</p>
+                  <p className="text-gray-600 italic">
+                    "{testimonial.comment}"
+                  </p>
                 </div>
               ))}
             </Marquee>

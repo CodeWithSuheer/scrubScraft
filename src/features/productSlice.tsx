@@ -84,6 +84,7 @@ interface Product {
   product_code: string;
   sizes: Array<string>;
   fabric_type: Array<string>;
+  colors: Array<string>;
   images: Images;
   averageRating: number;
   description: string;
