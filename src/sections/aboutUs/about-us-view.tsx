@@ -2,7 +2,6 @@ import { BlueLabel } from "../../components/label/label";
 import TopHeader from "../../components/header/top-header";
 //
 import "../sections.css";
-import MissionVision from "./mission-vision";
 import Testimonials from "../home/testimonials";
 
 const AboutUsView = () => {

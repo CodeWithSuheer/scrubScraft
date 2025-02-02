@@ -111,16 +111,16 @@ export const ProductPage: React.FC = () => {
           : "no-engraving",
       ].join("-");
 
-      const productToCart = {
+      const productToCart: any = {
         ...singleProduct,
         sizes: selectedSize,
         color: selectedColor,
         fabric_type: selectedFabric,
-        name_engraving: nameEngraving ? nameEngraving : false,
+        name_engraving: nameEngraving ? nameEngraving : null,
         custom_size: false,
         uniqueId,
-        quantity: 1, // Add default quantity
-        _id: singleProduct.id, // Add _id property
+        quantity: 1,
+        _id: singleProduct.id,
       };
 
       dispatch(addToCart(productToCart));
@@ -206,10 +206,11 @@ export const ProductPage: React.FC = () => {
                     <div className="flex-1">
                       <InnerImageZoom
                         src={mainImage || ""}
-                        sources={[{
-                          // srcSet: '/path/to/large-image.jpg, /path/to/large-image-2x.jpg 2x',
-                          media: '(min-width: 768px)'
-                        }]}
+                        sources={[
+                          {
+                            media: "(min-width: 768px)",
+                          },
+                        ]}
                       />
                     </div>
                   </div>

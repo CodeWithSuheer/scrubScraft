@@ -12,17 +12,19 @@ import {
   getAllProductsAsync,
   getLatestProductsAsync,
 } from "../../../features/productSlice";
-import { useSearchParams } from "react-router-dom";
+// import { useSearchParams } from "react-router-dom";
 
 const HomeView = () => {
   const dispatch = useAppDispatch();
 
-  const [searchParams] = useSearchParams();
-  const page: number = parseInt(searchParams.get("page") || "1", 10);
-  const category: string = searchParams.get("category") || "All";
+  // const [searchParams] = useSearchParams();
+  // const page: number = parseInt(searchParams.get("page") || "1", 10);
+  // const category: string = searchParams.get("category") || "All";
+
+  const { filters } = useAppSelector((state) => state.products);
 
   useEffect(() => {
-    dispatch(getAllProductsAsync({ category, page }));
+    dispatch(getAllProductsAsync(filters));
     dispatch(getLatestProductsAsync());
   }, []);
 

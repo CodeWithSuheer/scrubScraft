@@ -15,8 +15,10 @@ const RelatedProducts = ({ category }: { category: string | undefined }) => {
   const sliderRef = useRef<Slider>(null);
   const page = 1;
 
+  const { filters } = useAppSelector((state) => state.products);
+
   useEffect(() => {
-    dispatch(getAllProductsAsync({ category, page }));
+    dispatch(getAllProductsAsync(filters));
   }, [dispatch, category, page]);
 
   const allproducts = useAppSelector((state) => state.products.products);

@@ -54,7 +54,7 @@ export function FilterDropdown({
               <button
                 type="button"
                 key={option}
-                onClick={(e) => {
+                onClick={() => {
                   onSelect(option);
                   setIsOpen(false);
                 }}

@@ -15,20 +15,24 @@ interface Product {
   price: number;
   stock: number;
   color: string;
-  sizes: string[];
+  sizes: string | string[];
   colors: { label: string; value: string }[];
-  fabric_type: string[];
+  fabric_type:  string | string[];
   description: string;
   product_code: string;
+  custom_size: boolean;
 }
 
 interface CartItem extends Product {
   quantity: number;
   uniqueId: string;
-  name_engraving: {
-    name: string;
-    position: "left" | "right";
-  } | null;
+  name_engraving:
+    | {
+        name: string;
+        position: "left" | "right";
+      }
+    | false
+    | null;
 }
 
 interface ActionsState {
