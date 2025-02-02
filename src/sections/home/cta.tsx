@@ -1,6 +1,13 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 export default function CTA() {
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/products");
+  };
+
   return (
     <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
       <div className="max-w-7xl mx-auto px-4 text-center">
@@ -22,6 +29,7 @@ export default function CTA() {
           ScrubsCraft for their workwear needs.
         </motion.p>
         <motion.button
+          onClick={handleNavigate}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}

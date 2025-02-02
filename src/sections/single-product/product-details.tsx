@@ -2,12 +2,14 @@ import type React from "react";
 import { useEffect, useState } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { StarRating } from "./StarRating";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addToCart } from "../../features/ActionsSlice";
 import toast from "react-hot-toast";
 import { getProductByIdAsync } from "../../features/productSlice";
 import AllReviews from "./all-reviews";
+import InnerImageZoom from "react-inner-image-zoom";
+import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import {
   createreviewsAsync,
   getallreviewsAsync,
@@ -25,6 +27,13 @@ export interface CreateReviewPayload extends ReviewFormData {
 }
 export interface UpdateReviewPayload extends ReviewFormData {
   id: string | undefined;
+}
+
+interface OtherImages {
+  [key: string]: {
+    downloadURL: string;
+    name: string;
+  };
 }
 
 export const ProductPage: React.FC = () => {
@@ -65,24 +74,25 @@ export const ProductPage: React.FC = () => {
   const { singleProduct, singleProductloading } = useAppSelector(
     (state) => state.products
   );
+  // console.log("singleProduct", singleProduct);
 
-  console.log("singleProduct", singleProduct);
-
-  // Update mainImage when product changes
   useEffect(() => {
     if (singleProduct?.images?.primary?.downloadURL) {
-      setMainImage(null); // Clear the image first
+      setMainImage(null);
       setMainImage(singleProduct?.images?.primary?.downloadURL);
     }
   }, [singleProduct]);
 
-  // Handle image click to update the main image
   const handleImageClick = (url: string) => {
     setMainImage(url);
   };
 
-  // Extract images from product object
-  const { primary, ...otherImages } = singleProduct?.images || {};
+  const { primary, ...otherImages } =
+    singleProduct?.images ||
+    ({} as {
+      primary: { downloadURL: string; name: string };
+      [key: string]: { downloadURL: string; name: string };
+    });
 
   const handleAddToCart = () => {
     if (!selectedSize || !selectedColor || !selectedFabric) {
@@ -91,18 +101,8 @@ export const ProductPage: React.FC = () => {
     }
 
     if (singleProduct) {
-      let finalPrice =
-        singleProduct.sale_price > 0
-          ? singleProduct.sale_price
-          : singleProduct.price;
-
-      if (nameEngraving) {
-        finalPrice += 200; // Additional charge for engraving
-      }
-
-      // Creating a truly unique identifier
       const uniqueId = [
-        singleProduct._id,
+        singleProduct.id,
         selectedSize,
         selectedColor,
         selectedFabric,
@@ -113,12 +113,14 @@ export const ProductPage: React.FC = () => {
 
       const productToCart = {
         ...singleProduct,
-        sizes: selectedSize, // Ensure size is stored correctly
-        color: selectedColor, // Store color as a string
+        sizes: selectedSize,
+        color: selectedColor,
         fabric_type: selectedFabric,
-        name_engraving: nameEngraving,
-        price: finalPrice,
-        uniqueId, // This will differentiate products properly
+        name_engraving: nameEngraving ? nameEngraving : false,
+        custom_size: false,
+        uniqueId,
+        quantity: 1, // Add default quantity
+        _id: singleProduct.id, // Add _id property
       };
 
       dispatch(addToCart(productToCart));
@@ -127,42 +129,6 @@ export const ProductPage: React.FC = () => {
     }
   };
 
-  // const handleAddToCart = () => {
-  //   if (!selectedSize || !selectedColor || !selectedFabric) {
-  //     toast.error("Please select size, color, and fabric type!");
-  //     return;
-  //   }
-
-  //   if (singleProduct) {
-  //     let finalPrice =
-  //       singleProduct.sale_price > 0
-  //         ? singleProduct.sale_price
-  //         : singleProduct.price;
-
-  //     if (nameEngraving) {
-  //       finalPrice += 200;
-  //     }
-
-  //     const productToCart = {
-  //       ...singleProduct,
-  //       sizes: selectedSize, // Save size as a string
-  //       color: selectedColor, // Save color label as a string
-  //       fabric_type: selectedFabric,
-  //       name_engraving: nameEngraving,
-  //       price: finalPrice,
-  //       uniqueId: `${
-  //         singleProduct._id
-  //       }-${selectedSize}-${selectedColor}-${selectedFabric}-${
-  //         nameEngraving ? nameEngraving.name : "no-engraving"
-  //       }`, // Unique identifier for each item
-  //     };
-
-  //     dispatch(addToCart(productToCart));
-  //     navigate("/products");
-  //     toast.success("Item Added to Cart");
-  //   }
-  // };
-
   const handleColorClick = (color: { label: string; value: string }) => {
     setSelectedColor(color.label);
   };
@@ -170,24 +136,6 @@ export const ProductPage: React.FC = () => {
   const handleFabricClick = (fabric: string) => {
     setSelectedFabric(fabric);
   };
-
-  // const handleAddToCart = () => {
-  //   if (!selectedSize) {
-  //     toast.error("Size selection required!");
-  //     return;
-  //   }
-
-  //   if (singleProduct) {
-  //     const productToCart = {
-  //       ...singleProduct,
-  //       sizes: [selectedSize],
-  //     };
-
-  //     dispatch(addToCart(productToCart));
-  //     navigate("/products");
-  //     toast.success("Item Added to Cart");
-  //   }
-  // };
 
   const handleStarClick = (starValue: number) => {
     setFormData((prevData) => ({ ...prevData, rating: starValue }));
@@ -225,13 +173,13 @@ export const ProductPage: React.FC = () => {
       ) : (
         <>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Product Images */}
-              <div className="space-y-4">
+              <div className="space-y-0">
                 <div className="w-full overflow-hidden lg:sticky top-0 sm:flex gap-2"></div>
                 <div className="w-full lg:sticky top-0">
-                  <div className="flex flex-row gap-2">
-                    <div className="flex flex-col gap-2 w-16 max-sm:w-14 shrink-0">
+                  <div className="flex flex-col-reverse sm:flex-row gap-2">
+                    <div className="flex flex-row sm:flex-col gap-2 w-16 max-sm:w-14 shrink-0">
                       {primary && (
                         <img
                           src={primary.downloadURL}
@@ -244,42 +192,41 @@ export const ProductPage: React.FC = () => {
                       {Object.keys(otherImages).map((key) => (
                         <img
                           key={key}
-                          src={otherImages[key].downloadURL}
-                          alt={otherImages[key].name}
+                          src={(otherImages as OtherImages)[key].downloadURL}
+                          alt={(otherImages as OtherImages)[key].name}
                           className="w-full h-16 sm:h-20 object-cover cursor-pointer rounded-sm border border-gray-300"
                           onClick={() =>
-                            handleImageClick(otherImages[key].downloadURL)
+                            handleImageClick(
+                              (otherImages as OtherImages)[key].downloadURL
+                            )
                           }
                         />
                       ))}
                     </div>
                     <div className="flex-1">
-                      <img
+                      <InnerImageZoom
                         src={mainImage || ""}
-                        alt="Product"
-                        className="w-full  aspect-[548/590] object-cover rounded-md"
+                        sources={[{
+                          // srcSet: '/path/to/large-image.jpg, /path/to/large-image-2x.jpg 2x',
+                          media: '(min-width: 768px)'
+                        }]}
                       />
                     </div>
-                    {/* <ImageMagnifier
-                src={mainImage || "/placeholder.svg"}
-                alt={'Product Image' || "/placeholder.svg"}
-                width={600}
-                height={600}
-              /> */}
                   </div>
                 </div>
               </div>
 
               {/* Product Info */}
-              <div className="space-y-4 pt-3">
+              <div className="space-y-3 sm:space-y-4 pt-3">
                 <div>
-                  <h1 className="text-3xl font-bold text-gray-900 capitalize">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 capitalize">
                     {singleProduct?.name}
                   </h1>
-                  <div className="mt-4 flex items-center gap-4 flex-wrap">
+                  <div className="mt-3 sm:mt-4 flex items-center gap-4 flex-wrap">
                     {/* PRICE */}
                     <h6 className="text-gray-600">
-                      {singleProduct?.sale_price ? (
+                      {singleProduct?.sale_price &&
+                      singleProduct?.sale_price !== 0 ? (
                         <>
                           <span className="font-medium text-sm line-through text-gray-500">
                             Rs.
@@ -291,8 +238,7 @@ export const ProductPage: React.FC = () => {
                             Rs.
                           </span>
                           <span className="font-semibold text-[1.15rem] text-red-600">
-                            {singleProduct?.sale_price +
-                              (nameEngraving ? 200 : 0)}
+                            {singleProduct?.sale_price}
                           </span>
                         </>
                       ) : (
@@ -301,7 +247,7 @@ export const ProductPage: React.FC = () => {
                             Rs.
                           </span>
                           <span className="font-semibold text-[1.15rem] text-gray-800">
-                            {singleProduct?.price + (nameEngraving ? 200 : 0)}
+                            {singleProduct?.price}
                           </span>
                         </>
                       )}
@@ -335,8 +281,9 @@ export const ProductPage: React.FC = () => {
                   </div>
                 </div>
 
+                {/* COLOR */}
                 <div className="mt-6">
-                  <h3 className="text-lg font-bold text-gray-800">
+                  <h3 className="text-sm font-semibold text-gray-700">
                     Choose a Color
                   </h3>
                   <div className="flex flex-wrap gap-2 mt-2">
@@ -391,9 +338,12 @@ export const ProductPage: React.FC = () => {
                     <h3 className="text-sm font-semibold text-gray-700">
                       Sizes
                     </h3>
-                    <h3 className="text-sm font-semibold text-primary hover:underline underline-offset-2 cursor-pointer">
+                    <Link
+                      to="/size-chart"
+                      className="text-sm font-semibold text-primary hover:underline underline-offset-2 cursor-pointer"
+                    >
                       See sizing chart
-                    </h3>
+                    </Link>
                   </div>
 
                   <div className="flex flex-wrap gap-3 mt-2">

@@ -1,3 +1,6 @@
+import { useAppSelector } from "../../app/hooks";
+import { useState } from "react";
+import ConfirmCheckoutModal from "./components/confirm-checkout-modal";
 import { Link } from "react-router-dom";
 
 interface CartTotalProps {
@@ -5,6 +8,15 @@ interface CartTotalProps {
 }
 
 export default function CartTotal({ totalPrice }: CartTotalProps) {
+  const user = useAppSelector((state) => state.auth.user);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => setIsOpen(false);
   return (
     <>
       <div className="shadow-lg p-6 lg:sticky lg:top-0 h-max bg-white border border-gray-200 rounded-lg">
@@ -23,15 +35,26 @@ export default function CartTotal({ totalPrice }: CartTotalProps) {
 
         {/* BUTTONS */}
         <div className="buttons flex justify-center items-center">
-          <Link
-            to="/checkout"
-            onClick={() => window.scroll(0, 0)}
-            className="mt-2 px-6 py-2.5 text-center hover:bg-primary/90 bg-primary text-white w-full rounded-md"
-          >
-            Checkout
-          </Link>
+          {user?.login && user?.user ? (
+            <Link
+              to="/checkout"
+              className="mt-2 px-6 py-2.5 text-center hover:bg-primary/90 bg-primary text-white w-full rounded-md"
+            >
+              Checkout
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={openModal}
+              className="mt-2 px-6 py-2.5 text-center hover:bg-primary/90 bg-primary text-white w-full rounded-md"
+            >
+              Checkout
+            </button>
+          )}
         </div>
       </div>
+
+      <ConfirmCheckoutModal isOpen={isOpen} onCancel={closeModal} />
     </>
   );
 }

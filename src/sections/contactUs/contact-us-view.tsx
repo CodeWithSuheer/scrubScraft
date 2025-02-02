@@ -75,7 +75,7 @@ const ContactView: React.FC = () => {
                   back to you promptly.
                 </p>
 
-                <div className="mt-6 space-y-2 md:mt-6 flex flex-col justify-center items-center sm:block">
+                <div className="mt-6 space-y-2 md:mt-6 flex flex-col justify-center items-start sm:block">
                   <p className="flex items-start">
                     <MdPhone className="text-white size-9 p-2" />
                     <a

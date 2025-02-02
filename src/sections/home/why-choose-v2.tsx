@@ -25,7 +25,7 @@ const WhyChooseV2 = () => {
               {
                 icon: Truck,
                 title: "Fast Delivery",
-                desc: "Free shipping on orders over $100",
+                desc: "Free shipping on orders over 5000 PKR",
                 color: "bg-green-100 text-green-600",
               },
               {
@@ -37,7 +37,7 @@ const WhyChooseV2 = () => {
             ].map((feature, index) => (
               <div
                 key={index}
-                className="group bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+                className="group bg-white px-6 py-8 rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
               >
                 <div
                   className={`${feature.color} w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}

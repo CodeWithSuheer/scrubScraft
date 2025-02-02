@@ -39,13 +39,13 @@ export default function NameEngravingForm({
 
   return (
     <div className="max-w-xl space-y-4">
-      <div className="space-y-2">
+      <div className="space-y-2 text-sm">
         <div className="flex items-center gap-1">
           <span className="text-gray-900">
             Do You want to Engrave Name Tag?
           </span>
           <span className="text-red-500">*</span>
-          <span className="text-gray-600">(+ Rs.200.00 PKR)</span>
+          {/* <span className="text-gray-600">(+ Rs.200.00 PKR)</span> */}
         </div>
 
         <div className="space-y-2">
@@ -85,7 +85,7 @@ export default function NameEngravingForm({
         <div className="space-y-4">
           <div className="space-y-2">
             <div className="flex items-center gap-1">
-              <label htmlFor="engraving-text" className="text-gray-900">
+              <label htmlFor="engraving-text" className="text-gray-900 text-sm">
                 Please specify what you want to be engraved
               </label>
               <span className="text-red-500">*</span>
@@ -102,7 +102,9 @@ export default function NameEngravingForm({
 
           <div className="space-y-2">
             <div className="flex items-center gap-1">
-              <span className="text-gray-900">Select engraving position</span>
+              <span className="text-gray-900 text-sm">
+                Select engraving position
+              </span>
               <span className="text-red-500">*</span>
             </div>
             <div className="flex gap-6">
@@ -116,7 +118,10 @@ export default function NameEngravingForm({
                   onChange={() => setEngravingPosition("left")}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <label htmlFor="position-left" className="text-gray-900">
+                <label
+                  htmlFor="position-left"
+                  className="text-gray-900 text-sm"
+                >
                   Left Side
                 </label>
               </div>
@@ -131,7 +136,10 @@ export default function NameEngravingForm({
                   onChange={() => setEngravingPosition("right")}
                   className="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500"
                 />
-                <label htmlFor="position-right" className="text-gray-900">
+                <label
+                  htmlFor="position-right"
+                  className="text-gray-900 text-sm"
+                >
                   Right Side
                 </label>
               </div>
@@ -140,9 +148,9 @@ export default function NameEngravingForm({
         </div>
       )}
 
-      <div className="text-gray-900">
+      <div className="text-gray-900 text-sm">
         Selections will add{" "}
-        <span className="text-green-600">Rs.200.00 PKR</span> to the price
+        <span className="font-bold text-blue-600">Rs.200 PKR</span> to the total price
       </div>
     </div>
   );

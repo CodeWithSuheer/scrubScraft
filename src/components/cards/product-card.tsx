@@ -4,7 +4,6 @@ import { StarRating } from "../../helpers/star-rating";
 
 export default function ProductCard({ data }: { data: any }) {
   const navigate = useNavigate();
-  console.log("data", data);
 
   const handleItemClick = (productId: string) => {
     navigate(`/selectedItem/${productId}`);

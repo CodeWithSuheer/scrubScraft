@@ -1,29 +1,51 @@
 import { useState, useRef } from "react";
-import { validateForm } from "./validateForm";
 import toast from "react-hot-toast";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  createOrderAsync,
+  createOrderForGuestAsync,
+  getallOrderAsync,
+} from "../../features/orderSlice";
+import { clearCart } from "../../features/ActionsSlice";
+import AuthButton from "../auth/components/auth-button";
 
 export default function DetailsForm() {
+  const dispatch = useAppDispatch();
   const formRef = useRef(null);
 
+  const user = useAppSelector((state) => state.auth.user);
+  const userID = user?.user?.id;
+
+  const { cart, totalPrice } = useAppSelector((state) => state.actions);
+  const { createOrderLoading } = useAppSelector((state) => state.orders);
+
   const [formData, setFormData] = useState({
-    fullname: "",
+    name: "",
     email: "",
     phone: "",
     city: "",
     postal_code: "",
+    area: "",
+    province: "",
     address: "",
+    delivery_instruction: "",
   });
 
   const initialFormState = {
-    fullname: "",
+    name: "",
     email: "",
     phone: "",
     city: "",
+    area: "",
     postal_code: "",
+    province: "",
     address: "",
+    delivery_instruction: "",
   };
 
-  const handleInputChange = (e: any) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -31,36 +53,58 @@ export default function DetailsForm() {
     });
   };
 
+  const validateForm = (): boolean => {
+    for (const key in formData) {
+      if (formData[key as keyof typeof formData] === "") {
+        toast.error("Please fill in all fields.");
+        return false;
+      }
+    }
+    return true;
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const validationError = validateForm(formData);
-    if (validationError) {
-      toast.error(validationError);
-      return;
+    if (!validateForm()) return;
+
+    let totalAmount = totalPrice;
+    const deliveryCharges = 280;
+
+    if (totalAmount < 5000) {
+      totalAmount += deliveryCharges;
     }
 
-    try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+    const requestData = {
+      ...formData,
+      items: cart,
+      totalAmount: totalAmount.toString(),
+    };
 
-      if (!response.ok) {
-        throw new Error("Something went wrong. Please try again.");
+    try {
+      let response;
+
+      if (userID) {
+        response = await dispatch(createOrderAsync({ ...requestData, userID }));
+      } else {
+        response = await dispatch(
+          createOrderForGuestAsync({ ...requestData, userID: undefined })
+        );
       }
 
-      const data = await response.json();
-      console.log("Order successful:", data);
-      alert("Order placed successfully!");
-
-      setFormData(initialFormState);
+      if (response.payload.message === "Order PLaced Succcessfully") {
+        dispatch(clearCart());
+        if (userID) {
+          dispatch(getallOrderAsync(userID));
+        }
+        setFormData(initialFormState);
+        toast.success("Order placed successfully!");
+      } else {
+        throw new Error("Failed to place the order.");
+      }
     } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("Error submitting order. Please try again.");
+      console.error("Error creating order:", error);
+      toast.error("There was an error placing your order. Please try again.");
     }
   };
 
@@ -79,10 +123,10 @@ export default function DetailsForm() {
             <form ref={formRef} onSubmit={handleSubmit} className="mt-5">
               <div className="mb-3 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-4">
                 <input
-                  name="fullname"
+                  name="name"
                   type="text"
-                  placeholder="Enter Full Name"
-                  value={formData.fullname}
+                  placeholder="Enter your name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
                   required
@@ -90,7 +134,7 @@ export default function DetailsForm() {
                 <input
                   name="email"
                   type="email"
-                  placeholder="Enter Email"
+                  placeholder="Enter email"
                   value={formData.email}
                   onChange={handleInputChange}
                   className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
@@ -99,7 +143,7 @@ export default function DetailsForm() {
                 <input
                   name="phone"
                   type="number"
-                  placeholder="Enter Phone Number"
+                  placeholder="Enter phone number"
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
@@ -108,8 +152,18 @@ export default function DetailsForm() {
                 <input
                   name="city"
                   type="text"
-                  placeholder="Enter City Name"
+                  placeholder="Enter city name"
                   value={formData.city}
+                  onChange={handleInputChange}
+                  className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
+                  required
+                />
+
+                <input
+                  name="province"
+                  type="text"
+                  placeholder="Enter province"
+                  value={formData.province}
                   onChange={handleInputChange}
                   className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
                   required
@@ -117,7 +171,7 @@ export default function DetailsForm() {
                 <input
                   name="postal_code"
                   type="number"
-                  placeholder="Enter Postal Code"
+                  placeholder="Enter postal code"
                   value={formData.postal_code}
                   onChange={handleInputChange}
                   className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
@@ -125,23 +179,43 @@ export default function DetailsForm() {
                 />
               </div>
 
+              <input
+                name="area"
+                type="text"
+                placeholder="Enter your area"
+                value={formData.area}
+                onChange={handleInputChange}
+                className="mb-3 px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
+                required
+              />
+
               <textarea
-                rows={4}
+                rows={2}
                 name="address"
-                placeholder="Enter Shipping Address"
+                placeholder="Enter shipping address"
                 value={formData.address}
+                onChange={handleInputChange}
+                className="mb-2 px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
+                required
+              ></textarea>
+
+              <textarea
+                rows={3}
+                name="delivery_instruction"
+                placeholder="Enter delivery instruction"
+                value={formData.delivery_instruction}
                 onChange={handleInputChange}
                 className="px-4 py-3 bg-white text-[#333] w-full text-md border rounded-md border-gray-400 focus:border-gray-500 outline-none placeholder:text-gray-400 transition-shadow duration-200 focus:shadow-md"
                 required
               ></textarea>
 
-              <div className="buttons">
-                <button
+              <div className="buttons mt-2">
+                <AuthButton
+                  text="Order Now"
                   type="submit"
-                  className="mt-5 py-3 text-center hover:bg-primary/90 bg-primary text-white w-full rounded-md"
-                >
-                  Order Now
-                </button>
+                  isLoading={createOrderLoading}
+                  className="text-white bg-blue-500 hover:bg-blue-600"
+                />
               </div>
             </form>
           </div>

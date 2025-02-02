@@ -5,7 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCartTotal } from "../../features/ActionsSlice";
-import { navigation } from "./navigation-links";
+import { mobileAuthRoute, navigation } from "./navigation-links";
 import { logoutUserAsync } from "../../features/authSlice";
 
 export default function Header() {
@@ -77,7 +77,7 @@ export default function Header() {
           : "bg-white shadow-none py-4"
       }`}
     >
-      <div className={`items-center px-4 container mx-auto md:flex md:px-8`}>
+      <div className={`items-center px-4 max-w-7xl mx-auto md:flex md:px-8`}>
         <div className="flex items-center justify-between py-0 md:py-0.5 md:block">
           <Link
             to="/"
@@ -149,7 +149,79 @@ export default function Header() {
               );
             })}
 
-            <li className="text-[1rem] text-gray-700 hover:text-indigo-600 flex flex-col md:flex-row justify-start items-start sm:items-center space-y-4 md:space-y-0 md:space-x-7">
+            {mobileAuthRoute?.map((item, idx) => {
+              return (
+                <li
+                  key={idx}
+                  className={`${
+                    user?.login && state ? "flex md:hidden" : "hidden"
+                  } text-[1rem]`}
+                >
+                  <Link
+                    to={item.path}
+                    onClick={handleCloseNavbar}
+                    className="block tracking-wide"
+                  >
+                    {item.title}
+                  </Link>
+                </li>
+              );
+            })}
+
+            {/* CART BUTTON MOBILE */}
+            <li className={`${state ? "flex md:hidden" : "hidden"}`}>
+              <Link
+                to="/cart"
+                onClick={handleCloseNavbar}
+                className={`block w-full px-0 text-left`}
+                id="menu-item-logout"
+                role="menuitem"
+                type="submit"
+              >
+                <span className="flex text-md font-normal gap-2">
+                  Cart ({totalQuantity || ""})
+                </span>
+              </Link>
+            </li>
+
+            {/* LOGOUT BUTTON MOBILE */}
+            <li
+              className={`${
+                user?.login && state ? "flex md:hidden" : "hidden"
+              }`}
+            >
+              <div role="menu">
+                <button
+                  onClick={handleLogout}
+                  className="text-red-700 block w-full px-0 text-left hover:bg-gray-200"
+                  id="menu-item-logout"
+                  role="menuitem"
+                  type="submit"
+                >
+                  <span className="flex text-md font-normal gap-2">Logout</span>
+                </button>
+              </div>
+            </li>
+
+            {/* LOGIN BUTTON MOBILE */}
+            <li
+              className={`${
+                !user?.login && state ? "flex md:hidden" : "hidden"
+              }`}
+            >
+              <Link
+                to="/login"
+                onClick={handleCloseNavbar}
+                className="bg-blue-700 text-center text-white px-4 py-2 rounded-lg block w-full hover:bg-primary/90"
+                id="menu-item-logout"
+                role="menuitem"
+                type="submit"
+              >
+                <span className="flex text-md font-normal gap-2">Login</span>
+              </Link>
+            </li>
+
+            <li className="hidden text-[1rem] text-gray-700 hover:text-indigo-600 sm:flex flex-col md:flex-row justify-start items-start sm:items-center space-y-4 md:space-y-0 md:space-x-7">
               <Link
                 to="/cart"
                 onClick={handleCloseNavbar}

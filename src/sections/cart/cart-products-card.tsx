@@ -1,15 +1,29 @@
-import { FiMinus } from "react-icons/fi";
-import { IoAddOutline } from "react-icons/io5";
-import { BsFillTrash3Fill } from "react-icons/bs";
+import { FiMinus, FiPlus, FiTrash2 } from "react-icons/fi";
 
 interface CartProductCardProps {
   product: {
     id: string;
     name: string;
-    image: { downloadURL: string };
+    category: string;
+    fabric_type: string;
+    sizes: string;
+    color: string;
     price: number;
     sale_price?: number;
     quantity: number;
+    images: {
+      primary: { downloadURL: string };
+      image2?: { downloadURL: string };
+      image3?: { downloadURL: string };
+      image4?: { downloadURL: string };
+    };
+    description: string;
+    product_code: string;
+    name_engraving?: {
+      name: string;
+      position: string;
+    };
+    averageRating: number;
   };
   onIncrease: (id: string) => void;
   onDecrease: (id: string) => void;
@@ -22,96 +36,99 @@ export default function CartProductCard({
   onDecrease,
   onRemove,
 }: CartProductCardProps) {
-  console.log("cart product", product);
-
   return (
-    <div
-      key={product.id}
-      className="grid md:grid-cols-4 items-center gap-8 px-4 py-4 mb-4 shadow-lg bg-white border border-gray-200 rounded-xl"
-    >
-      {/* Product Image and Info */}
-      <div className="md:col-span-2 flex flex-wrap sm:flex-nowrap items-start justify-center sm:justify-start gap-4 sm:gap-4">
-        <div className="w-28 h-full shrink-0 shadow-[0_0px_4px_0px_rgba(6,81,237,0.2)] p-0">
-          <img
-            className="aspect-[3/4] object-cover rounded-md"
-            src={product?.images?.primary?.downloadURL}
-            alt={product?.name}
-          />
-        </div>
+    <div className="bg-white border border-gray-200 rounded-xl shadow-lg overflow-hidden mb-4">
+      <div className="p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row items-start gap-4">
+          {/* Product Image */}
+          <div className="w-full sm:w-1/4 aspect-[3/4] rounded-lg overflow-hidden">
+            <img
+              src={product.images.primary.downloadURL || "/placeholder.svg"}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
+          </div>
 
-        <div>
-          <h3 className="text-center md:text-start text-md tracking-wide font-bold text-[#333]">
-            {product?.name}{" "}
-            <span className="text-base">({product?.category})</span>
-          </h3>
-          <h6 className="text-md text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
-            <strong className="mr-1 flex items-center">Price:</strong>
-            {product?.sale_price && product?.sale_price > 0 ? (
-              <p className="">Rs. {product?.sale_price}</p>
-            ) : (
-              <p className="">Rs. {product?.price}</p>
+          {/* Product Details */}
+          <div className="flex-1 w-full">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-bold text-gray-900">
+                  {product.name}
+                </h3>
+                <p className="text-sm text-gray-500">{product.category}</p>
+              </div>
+
+              <div className="text-right">
+                <p className="text-lg font-semibold text-gray-900">
+                  Rs. {(product.sale_price || product.price) * product.quantity}
+                </p>
+                {/* {product.sale_price && (
+                  <p className="text-sm text-gray-500 line-through">
+                    Rs. {product.price * product.quantity}
+                  </p>
+                )} */}
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <div>
+                <p className="text-sm text-gray-500">Fabric</p>
+                <p className="font-medium">{product.fabric_type}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Size</p>
+                <p className="font-medium">{product.sizes}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Color</p>
+                <p className="font-medium">{product.color}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-500">Product Code</p>
+                <p className="font-medium">{product.product_code}</p>
+              </div>
+            </div>
+
+            {product.name_engraving && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-500">Name Engraving</p>
+                <p className="font-medium">
+                  {product.name_engraving.name} (
+                  {product.name_engraving.position} side)
+                </p>
+              </div>
             )}
-          </h6>
 
-          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
-            <strong className="mr-1 flex items-center">Fabric:</strong>
-            {product?.fabric_type}
-          </h3>
-          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
-            <strong className="mr-1 flex items-center">Sizes:</strong>
-            {product?.sizes}
-          </h3>
-          <h3 className="text-sm text-gray-500 mt-2 flex justify-center sm:justify-start items-center">
-            <strong className="mr-1 flex items-center">Color:</strong>
-            {product?.colors[0]?.label}
-          </h3>
-        </div>
-      </div>
-
-      {/* Quantity Controls */}
-      <div className="flex justify-center sm:justify-start">
-        <button
-          type="button"
-          title="decrease quantity"
-          onClick={() => onDecrease(product.id)}
-          className="bg-transparent py-2 font-semibold text-[#333]"
-        >
-          <FiMinus size={22} />
-        </button>
-
-        <input
-          title="quantity"
-          type="text"
-          className="mx-1 h-8 w-10 rounded-md border border-gray-400 text-center bg-transparent text-black"
-          value={product.quantity}
-          readOnly
-        />
-
-        <button
-          type="button"
-          title="increase quantity"
-          onClick={() => onIncrease(product.id)}
-          className="bg-transparent py-2 font-semibold text-[#333]"
-        >
-          <IoAddOutline size={22} />
-        </button>
-      </div>
-
-      {/* Total Price and Remove */}
-      <div className="flex items-center">
-        <h4 className="text-lg font-bold text-[#333]">
-          {product?.sale_price && product?.sale_price > 0 ? (
-            <p className="">Rs. {product?.sale_price * product.quantity}</p>
-          ) : (
-            <p className="">Rs. {product?.price * product.quantity}</p>
-          )}
-        </h4>
-
-        <div
-          onClick={() => onRemove(product.id)}
-          className="w-3 mr-4 cursor-pointer shrink-0 ml-auto"
-        >
-          <BsFillTrash3Fill size={18} className="text-red-600" />
+            <div className="mt-4 flex items-center justify-between">
+              <div className="flex items-center border rounded-md">
+                <button
+                  onClick={() => onDecrease(product.id)}
+                  className="p-2 hover:bg-gray-100"
+                  aria-label="Decrease quantity"
+                >
+                  <FiMinus />
+                </button>
+                <span className="px-4 py-2 font-medium">
+                  {product.quantity}
+                </span>
+                <button
+                  onClick={() => onIncrease(product.id)}
+                  className="p-2 hover:bg-gray-100"
+                  aria-label="Increase quantity"
+                >
+                  <FiPlus />
+                </button>
+              </div>
+              <button
+                onClick={() => onRemove(product.id)}
+                className="text-red-600 hover:text-red-800 flex items-center"
+              >
+                <FiTrash2 className="mr-1" />
+                Remove
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

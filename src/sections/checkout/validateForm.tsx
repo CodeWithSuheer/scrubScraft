@@ -13,7 +13,6 @@ export const validateForm = (data: {
   if (!emailRegex.test(data.email)) return "Invalid email format.";
   if (!data.phone) return "Phone number is required.";
   if (!data.city) return "City is required.";
-  if (!data.postal_code) return "Postal code is required.";
   if (!data.address) return "Address is required.";
 
   return null; 

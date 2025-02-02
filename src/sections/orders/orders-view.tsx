@@ -15,13 +15,22 @@ interface Image {
   name: string;
   type: string;
 }
+
+interface Images {
+  primary: Image;
+  image2?: Image;
+  image3?: Image;
+  image4?: Image;
+}
+
 interface Product {
   id: string;
   name: string;
   category: string;
-  image: Image;
+  images: Images;
   averageRating: number;
   sale_price: number | undefined;
+  name_engraving: any;
   price: number;
   stock: number;
   quantity: number;
@@ -55,7 +64,7 @@ const OrdersView = () => {
   const { allOrders, loading } = useAppSelector((state) => state.orders);
   console.log("allOrder", allOrders);
 
-  const updateLoading = useAppSelector((state) => state.orders.updateLoading);
+  const { updateLoading } = useAppSelector((state) => state.orders);
   const selectedOrder = allOrders.find((data) => data?.id === orderId);
 
   useEffect(() => {
@@ -105,7 +114,7 @@ const OrdersView = () => {
         <LoadingScreen />
       ) : (
         <>
-          <section className="w-full pt-14 pb-14 sm:pt-24 sm:pb-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[100vh] bg-gray-50">
+          <section className="w-full pt-20 pb-14 sm:pt-24 sm:pb-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[100vh] bg-gray-50">
             <div className="max-w-5xl xl:max-w-6xl mx-auto">
               {allOrders?.length === 0 ? (
                 <>
@@ -115,7 +124,9 @@ const OrdersView = () => {
                 </>
               ) : (
                 <>
-                  <h2 className="playfair text-3xl font-bold">Order Details</h2>
+                  <h2 className="text-2xl sm:text-3xl font-bold">
+                    Order Details
+                  </h2>
                   <div className="mt-3 text-sm">
                     Check the status of recent and old orders
                   </div>
@@ -193,20 +204,22 @@ const OrdersView = () => {
                               data?.items?.map((product: Product) => (
                                 <li
                                   key={product?.name}
-                                  className="flex px-3 py-5 flex-col justify-between space-x-5 md:flex-row border rounded-xl bg-[#f3f7ff]"
+                                  className="flex px-3 py-3 flex-col justify-between space-x-5 md:flex-row border rounded-xl bg-[#f3f7ff]"
                                 >
                                   <div className="flex flex-1 items-stretch">
                                     <div className="flex-shrink-0">
                                       <img
                                         className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
-                                        src={product?.image?.downloadURL}
+                                        src={
+                                          product?.images?.primary?.downloadURL
+                                        }
                                         alt="order_img"
                                       />
                                     </div>
 
                                     <div className="ml-5 flex flex-col justify-between">
                                       <div className="flex-1">
-                                        <p className="text-sm font-bold text-gray-900">
+                                        <p className="text-sm font-bold text-gray-900 capitalize">
                                           {product?.name}
                                         </p>
                                         <p className="mt-1.5 text-sm font-medium text-gray-500">
@@ -222,17 +235,26 @@ const OrdersView = () => {
 
                                   <div className="ml-auto flex flex-col items-end justify-between">
                                     <p className="text-right text-sm font-bold text-gray-900">
-                                      {(product?.sale_price &&
+                                      {/* {(product?.sale_price &&
                                         product?.sale_price !== 0) ||
                                       (product?.sale_price ?? 0) > 0 ? (
-                                        <>
-                                          <p className="">
-                                            Rs. {product?.sale_price}
-                                          </p>
-                                        </>
+                                        <p className="">
+                                          Rs. {product?.sale_price}
+                                        </p>
                                       ) : (
                                         <p className="">Rs. {product?.price}</p>
-                                      )}
+                                      )} */}
+                                      {(product.sale_price || product.price) *
+                                        product.quantity}
+                                    </p>
+                                    <p className="mt-3 text-sm font-normal text-gray-500">
+                                      {/* {product?.name_engraving && "+200"} */}
+                                      {product?.name_engraving &&
+                                        `+${200 * product.quantity}`}
+                                    </p>
+                                    <p className="mt-3 text-xs font-normal text-gray-500">
+                                      {product?.name_engraving &&
+                                        "(Name engraving)"}
                                     </p>
                                   </div>
                                 </li>
@@ -259,44 +281,6 @@ const OrdersView = () => {
           />
         </>
       )}
-      {/* ORDER CANCEL MODAL */}
-      {/* <Modal isOpen={isOpen} onClose={closeModal}>
-        <Modal.Body className="space-y-3">
-          <Modal.Content>
-            <div className="!mb-6">
-              <h3 className="mt-3 mb-2 text-body-1 font-medium text-metal-900">
-                Confirm order cancellation?
-              </h3>
-            </div>
-          </Modal.Content>
-          <Modal.Footer>
-            {updateLoading ? (
-              <div className="flex justify-center items-center w-full">
-                <Loader type="ball-beat" active={true} />
-              </div>
-            ) : (
-              <>
-                {" "}
-                <Button
-                  onClick={closeModal}
-                  size="sm"
-                  variant="outline"
-                  color="secondary"
-                >
-                  Cancel
-                </Button>
-                <Button
-                  onClick={() => handleDelete(selectedOrder?.id)}
-                  className="bg-primary hover:bg-primary"
-                  size="sm"
-                >
-                  Confirm
-                </Button>
-              </>
-            )}
-          </Modal.Footer>
-        </Modal.Body>
-      </Modal> */}
     </>
   );
 };

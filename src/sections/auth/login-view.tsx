@@ -127,13 +127,6 @@ const LoginView = () => {
                   </Link>
                 </div>
 
-                {/* <button
-                  type="submit"
-                  className="w-full h-11 items-center mx-auto bg-primary text-white flex justify-center tracking-wide"
-                >
-                  LOGIN NOW
-                </button> */}
-
                 <AuthButton
                   text="Login Now"
                   type="submit"

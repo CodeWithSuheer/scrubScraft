@@ -6,7 +6,6 @@ import AboutUsPage from "../pages/aboutUs/about-us";
 import ProductsPage from "../pages/products/products";
 import SingleProductPage from "../pages/singleProduct/singleProduct";
 import CartPage from "../pages/cart/cart";
-import CheckoutPage from "../pages/checkout/Checkout";
 import OrdersPage from "../pages/order/order";
 import PrivacyPolicy from "../pages/PrivacyPolicy";
 import Terms from "../pages/Terms";
@@ -16,12 +15,15 @@ import ForgetPage from "../pages/auth/forget";
 import ProfilePage from "../pages/auth/profile";
 import OtpPage from "../pages/auth/otp";
 import ResetPage from "../pages/auth/reset";
+import SizeChart from "../sections/size-chart/size-chart";
+import CheckoutPage from "../pages/checkout/checkout";
 
 const mainRoutes = [
   <Route path="/" element={<MainLayout />}>
     <Route path="/" element={<Homepage />} />
     <Route path="products" element={<ProductsPage />} />
     <Route path="selectedItem/:id" element={<SingleProductPage />} />
+    <Route path="size-chart" element={<SizeChart />} />
     <Route path="cart" element={<CartPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="orders" element={<OrdersPage />} />
