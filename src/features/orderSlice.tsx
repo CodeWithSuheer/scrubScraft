@@ -10,6 +10,7 @@ const createOrderUrl = `${Base_url}/orders/createOrder`;
 const createOrderForGuestUrl = `${Base_url}/orders/createOrderAsGuest`;
 const getAllOrderUrl = `${Base_url}/orders/getAllOrdersForUser`;
 const updateOrderUrl = `${Base_url}/orders/updateOrder`;
+const trackOrderUrl = `${Base_url}/orders/trackOrder`;
 
 // CREATE REVIEWS ASYNC THUNK
 export const createOrderAsync = createAsyncThunk(
@@ -29,6 +30,19 @@ export const createOrderForGuestAsync = createAsyncThunk(
   async (formData: RequestData) => {
     try {
       const response = await axios.post(createOrderForGuestUrl, formData);
+      return response.data;
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+    }
+  }
+);
+
+// TRACK ORDER ASYNC THUNK
+export const trackOrderAsync = createAsyncThunk(
+  "track/order",
+  async (orderId: any) => {
+    try {
+      const response = await axios.post(trackOrderUrl, orderId);
       return response.data;
     } catch (error: any) {
       toast.error(error.response.data.error);
@@ -98,6 +112,7 @@ interface ReviewsState {
   createOrderLoading: boolean;
   updateLoading: boolean;
   allOrders: Orders[];
+  trackOrder: Orders[];
 }
 
 const initialState: ReviewsState = {
@@ -105,6 +120,7 @@ const initialState: ReviewsState = {
   createOrderLoading: false,
   updateLoading: false,
   allOrders: [],
+  trackOrder: [],
 };
 
 const orderSlice = createSlice({
@@ -145,6 +161,15 @@ const orderSlice = createSlice({
       })
       .addCase(updateOrderAsync.fulfilled, (state) => {
         state.updateLoading = false;
+      })
+
+      // TRACK ORDER ADD CASE
+      .addCase(trackOrderAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(trackOrderAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.trackOrder = action.payload;
       });
   },
 });

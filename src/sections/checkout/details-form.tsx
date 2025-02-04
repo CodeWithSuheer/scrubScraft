@@ -8,8 +8,10 @@ import {
 } from "../../features/orderSlice";
 import { clearCart } from "../../features/ActionsSlice";
 import AuthButton from "../auth/components/auth-button";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailsForm() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const formRef = useRef(null);
 
@@ -92,8 +94,10 @@ export default function DetailsForm() {
         );
       }
 
-      if (response.payload.message === "Order PLaced Succcessfully") {
+      if (response.payload.success) {
         dispatch(clearCart());
+        navigate(`/order-success`);
+
         if (userID) {
           dispatch(getallOrderAsync(userID));
         }

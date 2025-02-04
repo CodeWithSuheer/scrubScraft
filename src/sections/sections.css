@@ -60,3 +60,11 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.orderSectionbg {
+    background-image: url("https://cdn.shopify.com/s/files/1/0649/1399/8024/files/order.png?v=1717691411");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  

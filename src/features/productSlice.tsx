@@ -1,6 +1,6 @@
 import axios from "axios";
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Base_url } from "./constant";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 const getAllProductUrl = `${Base_url}/products/getProducts`;
 const getProductById = `${Base_url}/products/getProductById`;
@@ -43,6 +43,21 @@ export const getProductByIdAsync = createAsyncThunk(
   async (id: string | undefined) => {
     try {
       const response = await axios.post(getProductById, { id });
+      return response.data;
+    } catch (error: any) {
+      throw new Error(error);
+    }
+  }
+);
+
+// GET ALL PRODUCT ASYNC THUNK
+export const getProductSizeChart = createAsyncThunk(
+  "products/sizechart ",
+  async () => {
+    try {
+      const response = await axios.post(
+        "https://admin.scrubscraft.shop/picturesrRouter/getAllSizePictures"
+      );
       return response.data;
     } catch (error: any) {
       throw new Error(error);
@@ -98,7 +113,9 @@ interface Product {
 interface ProductState {
   loading: boolean;
   Productloading: boolean;
+  sizeCharttloading: boolean;
   singleProductloading: boolean;
+  sizeChart: Product[] | any;
   products: Product[] | any;
   latestProducts: Product[] | any;
   singleProduct: Product | null;
@@ -115,6 +132,8 @@ const initialState: ProductState = {
   loading: false,
   Productloading: false,
   singleProductloading: false,
+  sizeCharttloading: false,
+  sizeChart: [],
   products: [],
   latestProducts: [],
   singleProduct: null,
@@ -138,7 +157,15 @@ const productSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // GET ALL PRODUCTS ADD CASE
+      // GET SIZE CHART ADD CASE
+      .addCase(getProductSizeChart.pending, (state) => {
+        state.sizeCharttloading = true;
+      })
+      .addCase(getProductSizeChart.fulfilled, (state, action) => {
+        state.sizeCharttloading = false;
+        state.sizeChart = action.payload;
+      })
+
       .addCase(getAllProductsAsync.pending, (state) => {
         state.Productloading = true;
       })

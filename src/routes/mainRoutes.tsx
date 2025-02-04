@@ -17,6 +17,8 @@ import OtpPage from "../pages/auth/otp";
 import ResetPage from "../pages/auth/reset";
 import SizeChart from "../sections/size-chart/size-chart";
 import CheckoutPage from "../pages/checkout/checkout";
+import OrderTrackingPage from "../pages/order/order-tracking";
+import OrderSuccessPage from "../pages/order/order-success-page";
 
 const mainRoutes = [
   <Route path="/" element={<MainLayout />}>
@@ -27,6 +29,8 @@ const mainRoutes = [
     <Route path="cart" element={<CartPage />} />
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="orders" element={<OrdersPage />} />
+    <Route path="order-track" element={<OrderTrackingPage />} />
+    <Route path="order-success" element={<OrderSuccessPage />} />
 
     {/* ---------- AUTH ROUTES ---------- */}
     <Route path="/signup" element={<SignupPage />} />

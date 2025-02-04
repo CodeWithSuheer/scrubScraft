@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { useNavigate } from "react-router-dom";
 import DetailsForm from "./details-form";
 
 export interface RequestData {
@@ -17,15 +17,15 @@ export interface RequestData {
 }
 
 const CheckoutDetails: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const { cart, totalPrice } = useAppSelector((state) => state.actions);
 
-  useEffect(() => {
-    if (cart.length === 0) {
-      navigate("/cart");
-    }
-  }, [cart, navigate]);
+  // useEffect(() => {
+  //   if (cart?.length === 0) {
+  //     navigate("/cart");
+  //   }
+  // }, [cart, navigate]);
 
   return (
     <>
