@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Confetti from "react-confetti";
 import { useAppSelector } from "../../app/hooks";
 
 const OrderSuccessView = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const [windowDimesion, setDimesion] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -68,6 +70,11 @@ const OrderSuccessView = () => {
                 Thank you for your purchase! Your order has been successfully
                 placed and is being processed.
               </p>
+              {id && (
+                <p className="mt-5 text-lg max-w-lg text-center font-normal">
+                  Order ID: <span className="antialiased font-bold">{id}</span>
+                </p>
+              )}
 
               <div className="buttons flex flex-col sm:flex-row  justify-center items-center mt-6">
                 {userID && (

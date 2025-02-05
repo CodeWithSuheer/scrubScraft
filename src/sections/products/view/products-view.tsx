@@ -8,8 +8,12 @@ const ProductsView = () => {
 
   return (
     <>
-      <TopHeader title="Products" subtitle="SHOP" backgroundClass="contact" />
-      
+      <TopHeader
+        title="Products"
+        subtitle="SHOP"
+        backgroundClass="allProducts"
+      />
+
       <AllProducts />
       <LatestProducts latestProducts={latestProducts} />
     </>

@@ -7,7 +7,7 @@ const SingleProductView = () => {
       <TopHeader
         title="Product Details"
         subtitle="shop"
-        backgroundClass="contact"
+        backgroundClass="singleProduct"
       />
       <ProductPage />
     </>

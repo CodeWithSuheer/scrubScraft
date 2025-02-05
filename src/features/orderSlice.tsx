@@ -110,6 +110,7 @@ interface Orders {
 interface ReviewsState {
   loading: boolean;
   createOrderLoading: boolean;
+  orderTrackingLoading: boolean;
   updateLoading: boolean;
   allOrders: Orders[];
   trackOrder: Orders[];
@@ -117,6 +118,7 @@ interface ReviewsState {
 
 const initialState: ReviewsState = {
   loading: false,
+  orderTrackingLoading: false,
   createOrderLoading: false,
   updateLoading: false,
   allOrders: [],
@@ -165,10 +167,10 @@ const orderSlice = createSlice({
 
       // TRACK ORDER ADD CASE
       .addCase(trackOrderAsync.pending, (state) => {
-        state.loading = true;
+        state.orderTrackingLoading = true;
       })
       .addCase(trackOrderAsync.fulfilled, (state, action) => {
-        state.loading = false;
+        state.orderTrackingLoading = false;
         state.trackOrder = action.payload;
       });
   },

@@ -89,10 +89,10 @@ const ContactView: React.FC = () => {
                   <p className="flex items-start">
                     <IoMail className="text-white size-9 p-2" />
                     <a
-                      href="mailto:scrubscraft75@gmail.com"
+                      href="mailto:info@scrubscraft.shop"
                       className="mx-3 mt-1 text-white text-wrap"
                     >
-                      scrubscraft75@gmail.com
+                      info@scrubscraft.shop
                     </a>
                   </p>
                   <p className="flex items-start">

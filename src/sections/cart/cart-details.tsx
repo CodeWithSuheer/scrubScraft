@@ -67,10 +67,10 @@ const CartDetails: React.FC = () => {
                           <div className="flex-1 w-full">
                             <div className="flex justify-between items-start">
                               <div>
-                                <h3 className="text-xl font-bold text-gray-900">
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 capitalize">
                                   {product.name}
                                 </h3>
-                                <p className="text-sm text-gray-500">
+                                <p className="text-sm text-gray-500 capitalize">
                                   {product.category}
                                 </p>
                               </div>
@@ -92,23 +92,30 @@ const CartDetails: React.FC = () => {
                             <div className="mt-4 grid grid-cols-2 gap-4">
                               <div>
                                 <p className="text-sm text-gray-500">Fabric</p>
-                                <p className="font-medium">
+                                <p className="font-medium text-[14px] sm:text-[15px] capitalize">
                                   {product.fabric_type}
                                 </p>
                               </div>
                               <div>
                                 <p className="text-sm text-gray-500">Size</p>
-                                <p className="font-medium">{product.sizes}</p>
+                                {/* <p className="font-medium">{product?.sizes}</p> */}
+                                <p className="font-medium text-[14px] sm:text-[15px]">
+                                  {!product.sizes && product?.custom_size
+                                    ? "Custom size selected"
+                                    : product.sizes}
+                                </p>
                               </div>
                               <div>
                                 <p className="text-sm text-gray-500">Color</p>
-                                <p className="font-medium">{product?.color}</p>
+                                <p className="font-medium text-[14px] sm:text-[15px] capitalize">
+                                  {product?.color}
+                                </p>
                               </div>
                               <div>
                                 <p className="text-sm text-gray-500">
                                   Product Code
                                 </p>
-                                <p className="font-medium">
+                                <p className="font-medium text-[14px] sm:text-[15px]">
                                   {product.product_code}
                                 </p>
                               </div>

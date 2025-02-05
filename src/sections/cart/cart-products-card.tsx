@@ -7,6 +7,7 @@ interface CartProductCardProps {
     category: string;
     fabric_type: string;
     sizes: string;
+    custom_size: any;
     color: string;
     price: number;
     sale_price?: number;
@@ -78,7 +79,11 @@ export default function CartProductCard({
               </div>
               <div>
                 <p className="text-sm text-gray-500">Size</p>
-                <p className="font-medium">{product.sizes}</p>
+                <p className="font-medium">{product?.sizes}</p>
+                {product.sizes && product?.custom_size
+                  ? "Custom size selected"
+                  : product.sizes}
+                asa
               </div>
               <div>
                 <p className="text-sm text-gray-500">Color</p>

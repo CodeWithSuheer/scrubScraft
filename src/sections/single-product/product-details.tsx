@@ -16,6 +16,7 @@ import {
 } from "../../features/reviewsSlice";
 import NameEngravingForm from "./components/name-engraving";
 import LoadingScreen from "../../components/loading-screen/loading-screen";
+import CustomSizeModal from "./components/custom-size-modal";
 
 export interface ReviewFormData {
   review: string;
@@ -42,8 +43,17 @@ export const ProductPage: React.FC = () => {
 
   const [mainImage, setMainImage] = useState<string | null>(null);
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => {
+    setIsOpen(true);
+  };
+
+  const closeModal = () => setIsOpen(false);
+
   const { id } = useParams<{ id: string }>();
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [customSize, setCustomSize] = useState();
 
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
@@ -95,8 +105,21 @@ export const ProductPage: React.FC = () => {
     });
 
   const handleAddToCart = () => {
-    if (!selectedSize || !selectedColor || !selectedFabric) {
-      toast.error("Please select size, color, and fabric type!");
+    if ((!selectedSize && !customSize) || !selectedColor || !selectedFabric) {
+      let errorMessage = "Please select";
+      if (!selectedSize && !customSize) errorMessage += " size";
+      if (!selectedColor)
+        errorMessage += (!selectedSize && !customSize ? "," : "") + " color";
+      if (!selectedFabric)
+        errorMessage +=
+          ((!selectedSize && !customSize) || !selectedColor ? "," : "") +
+          " fabric type";
+      toast.error(errorMessage + "!");
+      return;
+    }
+
+    if (selectedSize && customSize) {
+      toast.error("Please select either a size or a custom size, not both!");
       return;
     }
 
@@ -113,15 +136,17 @@ export const ProductPage: React.FC = () => {
 
       const productToCart: any = {
         ...singleProduct,
-        sizes: selectedSize,
+        sizes: selectedSize ? selectedSize : false,
         color: selectedColor,
         fabric_type: selectedFabric,
-        name_engraving: nameEngraving ? nameEngraving : null,
-        custom_size: false,
+        name_engraving: nameEngraving ? nameEngraving : false,
+        custom_size: customSize,
         uniqueId,
         quantity: 1,
         _id: singleProduct.id,
       };
+
+      console.log("productToCart", productToCart);
 
       dispatch(addToCart(productToCart));
       navigate("/products");
@@ -336,9 +361,18 @@ export const ProductPage: React.FC = () => {
                 {/* SIZES */}
                 <div>
                   <div className="header flex justify-between items-center">
-                    <h3 className="text-sm font-semibold text-gray-700">
-                      Sizes
-                    </h3>
+                    <div className="left flex justify-start items-center gap-2">
+                      <h3 className="text-sm font-semibold text-gray-700">
+                        Sizes:
+                      </h3>
+                      <button
+                        type="button"
+                        onClick={openModal}
+                        className="text-xs font-semibold text-primary underline underline-offset-2 cursor-pointer"
+                      >
+                        Custom Size {customSize && "Added"}
+                      </button>
+                    </div>
                     <Link
                       to="/size-chart"
                       className="text-sm font-semibold text-primary hover:underline underline-offset-2 cursor-pointer"
@@ -381,9 +415,17 @@ export const ProductPage: React.FC = () => {
                   </button>
                 </div>
 
-                <p className="text-gray-600">{singleProduct?.description}</p>
+                <p className="text-gray-600 capitalize">
+                  {singleProduct?.description}
+                </p>
               </div>
             </div>
+
+            <CustomSizeModal
+              setCustomSize={setCustomSize}
+              isOpen={isOpen}
+              onCancel={closeModal}
+            />
 
             {/* Reviews Section */}
             <AllReviews

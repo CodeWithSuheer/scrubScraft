@@ -30,7 +30,7 @@ const mainRoutes = [
     <Route path="checkout" element={<CheckoutPage />} />
     <Route path="orders" element={<OrdersPage />} />
     <Route path="order-track" element={<OrderTrackingPage />} />
-    <Route path="order-success" element={<OrderSuccessPage />} />
+    <Route path="order-success/:id" element={<OrderSuccessPage />} />
 
     {/* ---------- AUTH ROUTES ---------- */}
     <Route path="/signup" element={<SignupPage />} />

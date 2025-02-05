@@ -29,7 +29,7 @@ export default function ConfirmCheckoutModal({
           onClick={onCancel}
         >
           <div
-            className="shadow-xl w-full max-w-md mx-auto h-full sm:h-auto sm:max-h-[90vh] flex flex-col"
+            className="shadow-xl w-full max-w-sm mx-auto sm:max-h-[90vh] flex flex-col bg-white rounded-xl p-0 sm:px-0 sm:py-0"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto w-full bg-white rounded-xl shadow-lg p-4 sm:px-6 sm:py-7">

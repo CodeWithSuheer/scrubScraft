@@ -99,7 +99,7 @@ const Terms = () => {
             If you have any questions about these Terms and Conditions, please
             contact us at{" "}
             <a href="mailto:support@scrubscraft.com" target="_blank">
-              scrubscraft75@gmail.com
+              info@scrubscraft.shop
             </a>
           </p>
         </div>

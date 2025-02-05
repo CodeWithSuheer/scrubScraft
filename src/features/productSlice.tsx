@@ -6,6 +6,10 @@ const getAllProductUrl = `${Base_url}/products/getProducts`;
 const getProductById = `${Base_url}/products/getProductById`;
 const getLatestProductUrl = `${Base_url}/products/getLatestPRoducts`;
 
+// /productDetails/getAllCategories
+// /productDetails/getAllFabrics
+// /productDetails/getAllColors
+
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
   "products/fetchAll",

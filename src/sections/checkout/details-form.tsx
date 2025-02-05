@@ -94,9 +94,9 @@ export default function DetailsForm() {
         );
       }
 
-      if (response.payload.success) {
+      if (response?.payload?.success) {
         dispatch(clearCart());
-        navigate(`/order-success`);
+        navigate(`/order-success/${response?.payload?.OrderID}`);
 
         if (userID) {
           dispatch(getallOrderAsync(userID));

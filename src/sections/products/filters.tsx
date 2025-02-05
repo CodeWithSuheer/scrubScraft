@@ -13,7 +13,7 @@ const ProductFilters: React.FC<{
 
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
 
-  const sortOptions = ["Newest", "Price: Low to High", "Price: High to Low"];
+  // const sortOptions = ["Newest", "Price: Low to High", "Price: High to Low"];
   const categoryOptions = ["All", "Workspace", "Home", "Travel"];
   const fabricOptions = ["Cotton", "Silk", "Wool"];
   const colorOptions = ["Black", "White", "Red", "Blue"];
@@ -47,11 +47,11 @@ const ProductFilters: React.FC<{
         }`}
       >
         <div className="flex flex-wrap gap-4 items-center justify-start">
-          <FilterDropdown
+          {/* <FilterDropdown
             label="Sort"
             options={sortOptions}
             onSelect={(value) => onFilterChange("sort", value)}
-          />
+          /> */}
           <FilterDropdown
             label="Category"
             options={categoryOptions}

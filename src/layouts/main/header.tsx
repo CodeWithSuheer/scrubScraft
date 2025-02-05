@@ -62,6 +62,7 @@ export default function Header() {
   const handleLogout = () => {
     dispatch(logoutUserAsync());
     setMenuOpen(!isMenuOpen);
+    setState(false);
   };
 
   return (
@@ -101,7 +102,31 @@ export default function Header() {
           </Link>
 
           {/* HAMBURGER BUTTON */}
-          <div className="md:hidden">
+          <div className="flex items-center gap-4 md:hidden">
+            <Link
+              to="/cart"
+              onClick={handleCloseNavbar}
+              className="block tracking-wide"
+            >
+              <span className="relative">
+                <ShoppingCart
+                  size={21}
+                  className={`${
+                    state
+                      ? "text-gray-700"
+                      : isOnHomePage
+                      ? scrolled
+                        ? "text-gray-700"
+                        : "text-gray-50"
+                      : "text-gray-700"
+                  } `}
+                />
+                <span className="absolute -right-2.5 -top-2.5 rounded-full bg-red-500 px-1 py-0 text-xs text-white">
+                  {totalQuantity || ""}
+                </span>
+              </span>
+            </Link>
+
             <button
               type="button"
               className={`mt-1 ${
@@ -115,10 +140,11 @@ export default function Header() {
               }`}
               onClick={() => setState(!state)}
             >
-              {state ? <RxCross2 size={22} /> : <RiMenu3Fill size={22} />}
+              {state ? <RxCross2 size={23} /> : <RiMenu3Fill size={22} />}
             </button>
           </div>
         </div>
+
         <div
           className={`flex-1 pb-4 mt-6 md:block md:pb-0 md:mt-0 ${
             state ? "block" : "hidden"
@@ -169,7 +195,7 @@ export default function Header() {
             })}
 
             {/* CART BUTTON MOBILE */}
-            <li className={`${state ? "flex md:hidden" : "hidden"}`}>
+            {/* <li className={`${state ? "flex md:hidden" : "hidden"}`}>
               <Link
                 to="/cart"
                 onClick={handleCloseNavbar}
@@ -182,7 +208,7 @@ export default function Header() {
                   Cart ({totalQuantity || ""})
                 </span>
               </Link>
-            </li>
+            </li> */}
 
             {/* LOGOUT BUTTON MOBILE */}
             <li

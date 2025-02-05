@@ -110,7 +110,7 @@ const PrivacyPolicy = () => {
             If you have questions about this Privacy Policy or how we handle
             your information, please reach out to us at{" "}
             <a href="mailto:support@scrubscraft.com" target="_blank">
-              scrubscraft75@gmail.com
+              info@scrubscraft.shop
             </a>
           </p>
         </div>

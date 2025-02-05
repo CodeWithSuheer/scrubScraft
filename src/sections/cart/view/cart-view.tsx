@@ -4,7 +4,7 @@ import CartDetails from "../cart-details";
 const CartView = () => {
   return (
     <>
-      <TopHeader title="Cart" subtitle="CART" backgroundClass="contact" />
+      <TopHeader title="Cart" subtitle="CART" backgroundClass="cartBanner" />
       <CartDetails />
     </>
   );

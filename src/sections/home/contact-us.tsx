@@ -70,8 +70,8 @@ export default function ContactUs() {
                   <div>
                     <div className="font-medium">Email</div>
                     <div className="text-gray-600">
-                      <a href="mailto:scrubscraft75@gmail.com">
-                        scrubscraft75@gmail.com
+                      <a href="mailto:info@scrubscraft.shop">
+                        info@scrubscraft.shop
                       </a>
                     </div>
                   </div>

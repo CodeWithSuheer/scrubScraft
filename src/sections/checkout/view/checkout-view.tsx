@@ -7,7 +7,7 @@ const CheckoutView = () => {
       <TopHeader
         title="Checkout"
         subtitle="Checkout"
-        backgroundClass="contact"
+        backgroundClass="checkoutBanner"
       />
       <CheckoutDetails />
     </>

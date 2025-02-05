@@ -101,12 +101,20 @@ export default function UpdateReviewModal({
   return (
     <>
       {isOpen && (
+        // <div
+        //   className="fixed inset-0 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 sm:p-0"
+        //   onClick={onCancel}
+        // >
+        //   <div
+        //     className="rounded-lg shadow-xl w-full max-w-2xl mx-auto h-full sm:h-auto sm:max-h-[90vh] flex flex-col"
+        //     onClick={(e) => e.stopPropagation()}
+        //   >
         <div
           className="fixed inset-0 overflow-y-auto bg-black bg-opacity-70 flex items-center justify-center z-50 p-4 sm:p-0"
           onClick={onCancel}
         >
           <div
-            className="rounded-lg shadow-xl w-full max-w-2xl mx-auto h-full sm:h-auto sm:max-h-[90vh] flex flex-col"
+            className="shadow-xl w-full max-w-2xl mx-auto sm:max-h-[90vh] flex flex-col bg-white rounded-xl p-0 sm:px-0 sm:py-0"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mx-auto w-full bg-white rounded-[1.2rem] shadow-lg p-4 sm:px-6 sm:py-6">
@@ -118,7 +126,7 @@ export default function UpdateReviewModal({
                 <div className="">
                   <textarea
                     id="OrderNotes"
-                    className="w-full resize-y border border-gray-800 capitalize rounded-xl align-top focus:ring-0 focus:outline-none focus:border-primary-500 sm:text-sm p-4"
+                    className="w-full resize-y border border-gray-800 capitalize rounded-lg sm:rounded-xl align-top focus:ring-0 focus:outline-none focus:border-primary-500 sm:text-sm p-3 sm:p-4"
                     rows={4}
                     placeholder="Write a comment..."
                     value={updateReviewData.review}
@@ -145,7 +153,7 @@ export default function UpdateReviewModal({
                   </div>
                 </div>
 
-                <div className="flex justify-start items-center">
+                <div className="flex justify-start items-center flex-col sm:flex-row gap-3">
                   <button
                     type="button"
                     // disabled={isLoading}

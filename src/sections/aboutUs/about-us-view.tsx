@@ -4,13 +4,17 @@ import TopHeader from "../../components/header/top-header";
 import "../sections.css";
 import Testimonials from "../home/testimonials";
 
+import img06 from "../../assets/aboutImg/img06.jpg";
+import img07 from "../../assets/aboutImg/img07.jpg";
+import img08 from "../../assets/aboutImg/img08.jpg";
+
 const AboutUsView = () => {
   return (
     <>
       <TopHeader
         title="About Us"
         subtitle="ABOUT US"
-        backgroundClass="contact"
+        backgroundClass="aboutBanner"
       />
 
       <section className="py-3 lg:py-16 px-4 sm:px-4 xl:px-0">
@@ -20,8 +24,8 @@ const AboutUsView = () => {
             {/* LEFT SIDE */}
             <div className="left_img group overflow-hidden">
               <img
-                className="transition duration-500 group-hover:scale-105 w-full"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/2543.jpg?v=1717101293"
+                className="transition duration-500 group-hover:scale-105 w-full rounded-md"
+                src={img06}
                 alt=""
               />
             </div>
@@ -76,8 +80,8 @@ const AboutUsView = () => {
             {/* RIGHT SIDE */}
             <div className="left_img group overflow-hidden">
               <img
-                className="transition duration-500 object-fill group-hover:scale-105 w-full"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/118966.jpg?v=1717101726"
+                className="transition duration-500 object-fill group-hover:scale-105 w-full rounded-md"
+                src={img07}
                 alt=""
               />
             </div>
@@ -87,8 +91,8 @@ const AboutUsView = () => {
             {/* LEFT SIDE */}
             <div className="left_img group overflow-hidden">
               <img
-                className="transition duration-500 group-hover:scale-105 w-full"
-                src="https://cdn.shopify.com/s/files/1/0852/5099/8550/files/2543.jpg?v=1717101293"
+                className="transition duration-500 group-hover:scale-105 w-full rounded-md"
+                src={img08}
                 alt=""
               />
             </div>

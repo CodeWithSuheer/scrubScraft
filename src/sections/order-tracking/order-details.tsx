@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getallOrderAsync, updateOrderAsync } from "../../features/orderSlice";
+import { updateOrderAsync } from "../../features/orderSlice";
 import DeleteModal from "../../components/custom-dialog/delete-modal";
 
 export interface data {
@@ -25,6 +25,7 @@ interface Product {
   id: string;
   name: string;
   category: string;
+  uniqueId: string;
   images: Images;
   averageRating: number;
   sale_price: number | undefined;
@@ -34,12 +35,10 @@ interface Product {
   quantity: number;
 }
 
-const OrdersDetails = () => {
+const OrdersDetails = ({ trackOrder }: { trackOrder: any }) => {
   const dispatch = useAppDispatch();
 
-  const user = useAppSelector((state) => state.auth.user);
-  const userID = user?.user?.id;
-  console.log("userID", userID);
+  let data = trackOrder.order;
 
   const [isOpen, setIsOpen] = useState(false);
   const [orderId, setOrderId] = useState<string>();
@@ -53,17 +52,9 @@ const OrdersDetails = () => {
   };
 
   const { allOrders } = useAppSelector((state) => state.orders);
-  console.log("allOrder", allOrders);
 
   const { updateLoading } = useAppSelector((state) => state.orders);
   const selectedOrder = allOrders.find((data) => data?.id === orderId);
-
-  useEffect(() => {
-    if (userID) {
-      const id = userID;
-      dispatch(getallOrderAsync(id));
-    }
-  }, [userID, dispatch]);
 
   // HANDLE DELETE
   const handleDelete = (id: string | undefined) => {
@@ -71,12 +62,7 @@ const OrdersDetails = () => {
       id,
       orderProgress: "Cancelled",
     };
-    dispatch(updateOrderAsync(formData)).then((res) => {
-      const id = userID;
-      if (res.payload.message === "Order Updated") {
-        dispatch(getallOrderAsync(id));
-        closeModal();
-      }
+    dispatch(updateOrderAsync(formData)).then(() => {
       window.scroll({
         behavior: "smooth",
         top: 0,
@@ -103,11 +89,11 @@ const OrdersDetails = () => {
     <>
       <section className="w-full pt-16 pb-14 sm:pt-12 sm:pb-12 px-5 sm:px-8 lg:px-10 xl:px-0 min-h-[100vh] bg-gray-50">
         <div className="max-w-5xl xl:max-w-6xl mx-auto">
-          {allOrders?.length === 0 ? (
+          {!trackOrder?.order ? (
             <>
-              <span className="playfair text-3xl font-semibold uppercase">
-                No Orders
-              </span>
+              <h3 className="text-2xl sm:text-3xl font-semibold text-center w-full uppercase">
+                No Order
+              </h3>
             </>
           ) : (
             <>
@@ -115,110 +101,106 @@ const OrdersDetails = () => {
               <div className="mt-3 text-sm">
                 Check the status of recent and old orders
               </div>
-              {allOrders.map((data: any) => (
-                <div
-                  key={data?.OrderID}
-                  className="mt-8 flex flex-col overflow-hidden rounded-xl hover:shadow-blue-100 hover:shadow-md border border-primary/50 md:flex-row"
-                >
-                  {/* ORDER DETAILS */}
-                  <div className="w-full border-r border-gray-300 bg-[#f3f7ff] md:max-w-xs">
-                    <div className="parent py-6 px-6 flex flex-col justify-between h-full gap-y-10">
-                      {/* ORDER DETAILS */}
-                      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Order ID
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            {data?.OrderID}
-                          </div>
+              <div className="mt-8 flex flex-col overflow-hidden rounded-xl hover:shadow-blue-100 hover:shadow-md border border-primary/50 md:flex-row">
+                {/* ORDER DETAILS */}
+                <div className="w-full border-r border-gray-300 bg-[#f3f7ff] md:max-w-xs">
+                  <div className="parent py-6 px-6 flex flex-col justify-between h-full gap-y-10">
+                    {/* ORDER DETAILS */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-2">
+                      <div className="mb-4">
+                        <div className="text-md sm:text-md font-semibold">
+                          Order ID
                         </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Date
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            {new Date(data?.createdAt).toLocaleDateString()}
-                          </div>
-                        </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Total Amount
-                          </div>
-                          <div className="text-md font-medium text-gray-700">
-                            Rs. {data?.totalAmount}
-                          </div>
-                        </div>
-                        <div className="mb-4">
-                          <div className="text-md sm:text-md font-semibold">
-                            Order Status
-                          </div>
-                          <div
-                            className={`text-md font-medium ${getStatusColor(
-                              data?.orderProgress
-                            )}`}
-                          >
-                            {data?.orderProgress}
-                          </div>
+                        <div className="text-md font-medium text-gray-700">
+                          {data?.OrderID}
                         </div>
                       </div>
-
-                      {/* ORDER CANCEL BUTTON */}
-                      <div className="button">
-                        {data?.orderProgress &&
-                          data?.orderProgress === "Pending" && (
-                            <div>
-                              <button
-                                type="button"
-                                onClick={() => openModal(data?.id)}
-                                className="mt-5 flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg"
-                              >
-                                <span>Cancel Order</span>
-                              </button>
-                            </div>
-                          )}
+                      <div className="mb-4">
+                        <div className="text-md sm:text-md font-semibold">
+                          Date
+                        </div>
+                        <div className="text-md font-medium text-gray-700">
+                          {new Date(data?.createdAt).toLocaleDateString()}
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <div className="text-md sm:text-md font-semibold">
+                          Total Amount
+                        </div>
+                        <div className="text-md font-medium text-gray-700">
+                          Rs. {data?.totalAmount}
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <div className="text-md sm:text-md font-semibold">
+                          Order Status
+                        </div>
+                        <div
+                          className={`text-md font-medium ${getStatusColor(
+                            data?.orderProgress
+                          )}`}
+                        >
+                          {data?.orderProgress}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* ORDER ITEMS */}
-                  <div className="flex-1 bg-white">
-                    <div className="py-6 px-3 sm:px-6">
-                      <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
-                        {data &&
-                          data?.items?.map((product: Product) => (
-                            <li
-                              key={product?.name}
-                              className="flex px-3 py-3 flex-col justify-between space-x-5 md:flex-row border rounded-xl bg-[#f3f7ff]"
+                    {/* ORDER CANCEL BUTTON */}
+                    <div className="button">
+                      {data?.orderProgress &&
+                        data?.orderProgress === "Pending" && (
+                          <div>
+                            <button
+                              type="button"
+                              onClick={() => openModal(data?.id)}
+                              className="mt-5 flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-lg"
                             >
-                              <div className="flex flex-1 items-stretch">
-                                <div className="flex-shrink-0">
-                                  <img
-                                    className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
-                                    src={product?.images?.primary?.downloadURL}
-                                    alt="order_img"
-                                  />
-                                </div>
+                              <span>Cancel Order</span>
+                            </button>
+                          </div>
+                        )}
+                    </div>
+                  </div>
+                </div>
 
-                                <div className="ml-5 flex flex-col justify-between">
-                                  <div className="flex-1">
-                                    <p className="text-sm font-bold text-gray-900 capitalize">
-                                      {product?.name}
-                                    </p>
-                                    <p className="mt-1.5 text-sm font-medium text-gray-500">
-                                      {product?.category}
-                                    </p>
-                                  </div>
-
-                                  <p className="mt-4 text-sm font-medium text-gray-500">
-                                    x {product?.quantity}
-                                  </p>
-                                </div>
+                {/* ORDER ITEMS */}
+                <div className="flex-1 bg-white">
+                  <div className="py-6 px-3 sm:px-6">
+                    <ul className="gap-4 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
+                      {data &&
+                        data?.items?.map((product: Product) => (
+                          <li
+                            key={product?.uniqueId}
+                            className="flex px-3 py-3 flex-col justify-between space-x-5 md:flex-row border rounded-xl bg-[#f3f7ff]"
+                          >
+                            <div className="flex flex-1 items-stretch">
+                              <div className="flex-shrink-0">
+                                <img
+                                  className="h-20 w-20 rounded-lg bg-white border border-gray-200 object-contain"
+                                  src={product?.images?.primary?.downloadURL}
+                                  alt="order_img"
+                                />
                               </div>
 
-                              <div className="ml-auto flex flex-col items-end justify-between">
-                                <p className="text-right text-sm font-bold text-gray-900">
-                                  {/* {(product?.sale_price &&
+                              <div className="ml-5 flex flex-col justify-between">
+                                <div className="flex-1">
+                                  <p className="text-sm font-bold text-gray-900 capitalize">
+                                    {product?.name}
+                                  </p>
+                                  <p className="mt-1.5 text-sm font-medium text-gray-500">
+                                    {product?.category}
+                                  </p>
+                                </div>
+
+                                <p className="mt-4 text-sm font-medium text-gray-500">
+                                  x {product?.quantity}
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="ml-auto flex flex-col items-end justify-between">
+                              <p className="text-right text-sm font-bold text-gray-900">
+                                {/* {(product?.sale_price &&
                                         product?.sale_price !== 0) ||
                                       (product?.sale_price ?? 0) > 0 ? (
                                         <p className="">
@@ -227,26 +209,24 @@ const OrdersDetails = () => {
                                       ) : (
                                         <p className="">Rs. {product?.price}</p>
                                       )} */}
-                                  {(product.sale_price || product.price) *
-                                    product.quantity}
-                                </p>
-                                <p className="mt-3 text-sm font-normal text-gray-500">
-                                  {/* {product?.name_engraving && "+200"} */}
-                                  {product?.name_engraving &&
-                                    `+${200 * product.quantity}`}
-                                </p>
-                                <p className="mt-3 text-xs font-normal text-gray-500">
-                                  {product?.name_engraving &&
-                                    "(Name engraving)"}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                      </ul>
-                    </div>
+                                {(product.sale_price || product.price) *
+                                  product.quantity}
+                              </p>
+                              <p className="mt-3 text-sm font-normal text-gray-500">
+                                {/* {product?.name_engraving && "+200"} */}
+                                {product?.name_engraving &&
+                                  `+${200 * product.quantity}`}
+                              </p>
+                              <p className="mt-3 text-xs font-normal text-gray-500">
+                                {product?.name_engraving && "(Name engraving)"}
+                              </p>
+                            </div>
+                          </li>
+                        ))}
+                    </ul>
                   </div>
                 </div>
-              ))}
+              </div>
             </>
           )}
         </div>

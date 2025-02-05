@@ -15,7 +15,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
   const [hover, setHover] = React.useState<number | null>(null);
 
   return (
-    <div className="flex gap-1">
+    <div className="flex gap-0.5">
       {[...Array(5)].map((_, index) => {
         const ratingValue = index + 1;
         return (
@@ -32,7 +32,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
             }`}
           >
             <FaStar
-              size={18}
+              size={16}
               className={`
                 ${
                   (hover || rating) >= ratingValue

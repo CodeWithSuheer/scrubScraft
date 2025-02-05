@@ -116,11 +116,11 @@ const Footer = () => {
                   </svg>
 
                   <a
-                    href="mailto:scrubscraft75@gmail.com"
+                    href="mailto:info@scrubscraft.shop"
                     target="_blank"
                     className="sm:flex-1 text-black"
                   >
-                    scrubscraft75@gmail.com
+                    info@scrubscraft.shop
                   </a>
                 </div>
 
