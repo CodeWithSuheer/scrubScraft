@@ -17,6 +17,7 @@ import {
 import NameEngravingForm from "./components/name-engraving";
 import LoadingScreen from "../../components/loading-screen/loading-screen";
 import CustomSizeModal from "./components/custom-size-modal";
+import CapForm from "./components/cap";
 
 export interface ReviewFormData {
   review: string;
@@ -58,6 +59,11 @@ export const ProductPage: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<string | null>(null);
   const [selectedFabric, setSelectedFabric] = useState<string | null>(null);
   const [nameEngraving, setNameEngraving] = useState<{
+    name: string;
+    position: "left" | "right";
+  } | null>(null);
+
+  const [cap, setCap] = useState<{
     name: string;
     position: "left" | "right";
   } | null>(null);
@@ -140,6 +146,7 @@ export const ProductPage: React.FC = () => {
         color: selectedColor,
         fabric_type: selectedFabric,
         name_engraving: nameEngraving ? nameEngraving : false,
+        cap: cap ? cap : false,
         custom_size: customSize,
         uniqueId,
         quantity: 1,
@@ -402,6 +409,8 @@ export const ProductPage: React.FC = () => {
                 </div>
 
                 <NameEngravingForm setNameEngraving={setNameEngraving} />
+                
+                {/* <CapForm setCap={setCap} /> */}
 
                 <div className="flex gap-4">
                   <button

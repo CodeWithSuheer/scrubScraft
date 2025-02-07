@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react";
 
-type NameEngravingFormProps = {
-  setNameEngraving: (
-    value: { name: string; position: "left" | "right" } | null
-  ) => void;
-};
+// type NameEngravingFormProps = {
+//   setNameEngraving: (
+//     value: { name: string; position: "left" | "right" } | null
+//   ) => void;
+// };
 
 type EngravingPosition = "left" | "right";
 type EngravingOption = "yes" | "no";
 
-export default function NameEngravingForm({
-  setNameEngraving,
-}: NameEngravingFormProps) {
+export default function CapForm({ setCap }: any) {
   const [engravingOption, setEngravingOption] = useState<EngravingOption>("no");
   const [engravingText, setEngravingText] = useState("");
   const [engravingPosition, setEngravingPosition] =
@@ -22,33 +20,31 @@ export default function NameEngravingForm({
     if (value === "no") {
       setEngravingText("");
       setEngravingPosition("left");
-      setNameEngraving(null);
+      setCap(null);
     }
   };
 
   useEffect(() => {
     if (engravingOption === "yes" && engravingText && engravingPosition) {
-      setNameEngraving({
+      setCap({
         name: engravingText,
         position: engravingPosition,
       });
     } else {
-      setNameEngraving(null);
+      setCap(null);
     }
-  }, [engravingOption, engravingText, engravingPosition, setNameEngraving]);
+  }, [engravingOption, engravingText, engravingPosition, setCap]);
 
   return (
     <div className="max-w-xl space-y-4">
       <div className="space-y-2 text-sm">
         <div className="flex items-center gap-1">
-          <span className="text-gray-900">
-            Do You want to Engrave Name Tag?
-          </span>
+          <span className="text-gray-900">Do You want to add cap?</span>
           <span className="text-red-500">*</span>
           {/* <span className="text-gray-600">(+ Rs.200.00 PKR)</span> */}
         </div>
 
-        <div className="space-y-2 ">
+        <div className="space-y-2">
           <div className="flex items-center gap-2">
             <input
               type="radio"
@@ -150,7 +146,8 @@ export default function NameEngravingForm({
 
       {/* <div className="text-gray-900 text-sm">
         Selections will add{" "}
-        <span className="font-bold text-blue-600">Rs.200 PKR</span> to the total price
+        <span className="font-bold text-blue-600">Rs.200 PKR</span> to the total
+        price
       </div> */}
     </div>
   );

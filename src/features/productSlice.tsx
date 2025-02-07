@@ -6,20 +6,20 @@ const getAllProductUrl = `${Base_url}/products/getProducts`;
 const getProductById = `${Base_url}/products/getProductById`;
 const getLatestProductUrl = `${Base_url}/products/getLatestPRoducts`;
 
-// /productDetails/getAllCategories
-// /productDetails/getAllFabrics
-// /productDetails/getAllColors
+const getAllFabricsUrl = `https://admin.scrubscraft.shop/productDetails/getAllFabrics`;
+const getAllColorsUrl = `https://admin.scrubscraft.shop/productDetails/getAllColors`;
+const getAllCategoriesUrl = `https://admin.scrubscraft.shop/productDetails/getAllCategories`;
+
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getAllProductsAsync = createAsyncThunk(
   "products/fetchAll",
   async (filters: ProductState["filters"]) => {
-    // const searchQuery =
-    //   data?.search !== undefined && data?.search !== null
-    //     ? `&search=${data?.search}`
-    //     : "";
     try {
-      const queryString = new URLSearchParams(filters as any).toString();
+      const filteredParams = Object.fromEntries(
+        Object.entries(filters).filter(([_, value]) => value)
+      );
+      const queryString = new URLSearchParams(filteredParams as any).toString();
       const response = await axios.post(`${getAllProductUrl}?${queryString}`);
       return response.data;
     } catch (error: any) {
@@ -27,6 +27,26 @@ export const getAllProductsAsync = createAsyncThunk(
     }
   }
 );
+
+// export const getAllProductsAsync = createAsyncThunk(
+//   "Shop/getProduts",
+//   async (data) => {
+//     const query = buildQueryParams({
+//       name: data.name,
+//       category: data.filtersData.category,
+//       color: data.filtersData.color,
+//       size: data.filtersData.size,
+//       fabric_type: data.filtersData.fabric_type,
+//       page:data.page
+//     });
+//     try {
+//       const response = await axios.post(${getProductsUrl}?${query});
+//       return response.data;
+//     } catch (error) {
+
+// throw new Error(error)    }
+//   }
+// );
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getLatestProductsAsync = createAsyncThunk(
@@ -65,6 +85,42 @@ export const getProductSizeChart = createAsyncThunk(
       return response.data;
     } catch (error: any) {
       throw new Error(error);
+    }
+  }
+);
+
+export const getAllCategoriesAsync = createAsyncThunk(
+  "categories/getAllCategories",
+  async () => {
+    try {
+      const response = await axios.get(getAllCategoriesUrl);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getAllColorsAsync = createAsyncThunk(
+  "colors/getAllColors",
+  async () => {
+    try {
+      const response = await axios.get(getAllColorsUrl);
+      return response.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+);
+
+export const getAllFabricsAsync = createAsyncThunk(
+  "fabrics/getAllFabrics",
+  async () => {
+    try {
+      const response = await axios.get(getAllFabricsUrl);
+      return response.data;
+    } catch (error) {
+      throw error;
     }
   }
 );
@@ -123,6 +179,9 @@ interface ProductState {
   products: Product[] | any;
   latestProducts: Product[] | any;
   singleProduct: Product | null;
+  category: any;
+  colors: any;
+  fabric: any;
   filters: {
     category: string;
     fabric_type: string;
@@ -141,6 +200,9 @@ const initialState: ProductState = {
   products: [],
   latestProducts: [],
   singleProduct: null,
+  category: [],
+  colors: [],
+  fabric: [],
   filters: {
     category: "",
     fabric_type: "",
@@ -197,6 +259,33 @@ const productSlice = createSlice({
       .addCase(getLatestProductsAsync.fulfilled, (state, action) => {
         state.loading = false;
         state.latestProducts = action.payload;
+      })
+
+      // GET ALL CATEGORIES ADD CASE
+      .addCase(getAllCategoriesAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllCategoriesAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.category = action.payload;
+      })
+
+      // GET ALL COLORS ADD CASE
+      .addCase(getAllColorsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllColorsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.colors = action.payload;
+      })
+
+      // GET ALL FABRICS ADD CASE
+      .addCase(getAllFabricsAsync.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllFabricsAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.fabric = action.payload;
       });
   },
 });

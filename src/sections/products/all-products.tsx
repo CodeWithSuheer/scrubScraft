@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { getAllProductsAsync, setFilters } from "../../features/productSlice";
+import {
+  getAllCategoriesAsync,
+  getAllColorsAsync,
+  getAllFabricsAsync,
+  getAllProductsAsync,
+  setFilters,
+} from "../../features/productSlice";
 import ProductCard from "../../components/cards/product-card";
 import NoProducts from "./no-products";
 import "../sections.css";
@@ -61,6 +67,26 @@ const AllProducts: React.FC = () => {
       behavior: "smooth",
     });
   };
+
+  useEffect(() => {
+    dispatch(getAllCategoriesAsync()).then((res) => {
+      if (res?.payload) {
+        // setCategories(res.payload.map((item) => item.name));
+      }
+    });
+
+    dispatch(getAllColorsAsync()).then((res) => {
+      if (res?.payload) {
+        // setColorsData(res.payload.map((item) => item.label));
+      }
+    });
+
+    dispatch(getAllFabricsAsync()).then((res) => {
+      if (res?.payload) {
+        // setFabricData(res.payload.map((item) => item.name));
+      }
+    });
+  }, []);
 
   return (
     <>
