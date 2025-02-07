@@ -1,5 +1,6 @@
 import { ArrowRight, Shield } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import img from '../../assets/top-banners/img05.jpg'
 
 export default function HeroSection() {
   const navigate = useNavigate();
@@ -62,24 +63,24 @@ export default function HeroSection() {
             {/* Floating Images Grid */}
             <div className="grid grid-cols-2 gap-4">
               <img
-                src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&q=80"
+                src={img}
                 alt="Medical Professional"
-                className="rounded-2xl transform hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-52"
+                className="rounded-2xl transform hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-48"
               />
               <img
                 src="https://media.istockphoto.com/id/811283212/photo/doctors-lab-coat-on-hanger-in-laboratory.jpg?s=612x612&w=0&k=20&c=7UD1HqNOIILijJA0qQzkRmdix2ni5g_VwNBPuv0GAek="
                 alt="Medical Professional"
-                className="rounded-2xl transform translate-y-8 hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-52"
+                className="rounded-2xl transform translate-y-8 hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-48"
               />
               <img
                 src="https://media.istockphoto.com/id/1353357410/photo/unrecognizable-head-nurse-doctor-surgeon-uses-digital-tablet-computer-health-care-vitals.jpg?s=612x612&w=0&k=20&c=11rJ26jRYVYsL68rd-Pt_rX0YLoAe6rd6C-2gJna_dc="
                 alt="Medical Professional"
-                className="rounded-2xl transform -translate-y-4 hover:-translate-y-6 transition duration-500 shadow-lg  w-full h-52"
+                className="rounded-2xl transform -translate-y-4 hover:-translate-y-6 transition duration-500 shadow-lg  w-full h-48"
               />
               <img
                 src="https://media.istockphoto.com/id/855467380/photo/these-hands-will-take-care-of-you.jpg?s=612x612&w=0&k=20&c=UEISS4WF2o0VJuEvKkDyCz0FfEEbgTomXapmxbl-UP0="
                 alt="Medical Professional"
-                className="rounded-2xl transform translate-y-4 hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-52"
+                className="rounded-2xl transform translate-y-4 hover:-translate-y-2 transition duration-500 shadow-lg  w-full h-48"
               />
             </div>
 
