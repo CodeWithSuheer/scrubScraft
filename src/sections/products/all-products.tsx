@@ -6,6 +6,7 @@ import {
   getAllColorsAsync,
   getAllFabricsAsync,
   getAllProductsAsync,
+  getLatestProductsAsync,
   setFilters,
 } from "../../features/productSlice";
 import ProductCard from "../../components/cards/product-card";
@@ -56,6 +57,10 @@ const AllProducts: React.FC = () => {
   useEffect(() => {
     dispatch(getAllProductsAsync(filters));
   }, [dispatch, filters]);
+
+  useEffect(() => {
+    dispatch(getLatestProductsAsync());
+  }, []);
 
   const handleFilterChange = (filterType: string, value: string) => {
     dispatch(setFilters({ [filterType]: value }));
