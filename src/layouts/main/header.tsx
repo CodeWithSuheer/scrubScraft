@@ -67,17 +67,20 @@ export default function Header() {
   };
 
   return (
+    // <nav
+    //   className={`fixed w-full z-50 transition-all duration-300
+    //   ${
+    //     state
+    //       ? "bg-white text-black py-2"
+    //       : isOnHomePage
+    //       ? scrolled
+    //         ? "bg-white shadow-lg py-3"
+    //         : "bg-white py-4"
+    //       : "bg-white shadow-none py-4"
+    //   }`}
+    // >
     <nav
-      className={`fixed w-full z-50 transition-all duration-300  
-      ${
-        state
-          ? "bg-white text-black py-4"
-          : isOnHomePage
-          ? scrolled
-            ? "bg-white shadow-lg py-4"
-            : "bg-transparent py-6"
-          : "bg-white shadow-none py-4"
-      }`}
+      className={`fixed w-full z-50 transition-all duration-300   bg-white text-black py-3 sm:py-3`}
     >
       <div className={`items-center px-4 max-w-7xl mx-auto md:flex md:px-8`}>
         <div className="flex items-center justify-between py-0 md:py-0.5 md:block">
@@ -86,15 +89,19 @@ export default function Header() {
             onClick={() => window.scroll(0, 0)}
             className="flex items-center space-x-2"
           >
-            <img src="/src/assets/logo/logo.png" alt="logo" className="h-6" />
+            <img
+              src="/src/assets/logo/newLogo.png"
+              alt="logo"
+              className="h-10"
+            />
             <h1
-              className={`text-xl sm:text-2xl font-bold ${
+              className={`text-xl sm:text-[1.35rem] font-bold ${
                 state
                   ? "text-blue-600"
                   : isOnHomePage
                   ? scrolled
                     ? "text-blue-600"
-                    : "text-blue-100"
+                    : "text-blue-800"
                   : "text-blue-600"
               }`}
             >
@@ -118,7 +125,7 @@ export default function Header() {
                       : isOnHomePage
                       ? scrolled
                         ? "text-gray-700"
-                        : "text-gray-50"
+                        : "text-gray-700"
                       : "text-gray-700"
                   } `}
                 />
@@ -136,7 +143,7 @@ export default function Header() {
                   : isOnHomePage
                   ? scrolled
                     ? "text-gray-600 hover:text-gray-800"
-                    : "text-gray-100 hover:text-white"
+                    : "text-gray-700 hover:text-white"
                   : "text-gray-700"
               }`}
               onClick={() => setState(!state)}
@@ -158,7 +165,7 @@ export default function Header() {
                 : isOnHomePage
                 ? scrolled
                   ? "text-gray-700"
-                  : "text-gray-50"
+                  : "text-gray-700"
                 : "text-gray-700"
             }`}
           >
@@ -247,7 +254,7 @@ export default function Header() {
                         : isOnHomePage
                         ? scrolled
                           ? "text-gray-700"
-                          : "text-gray-50"
+                          : "text-gray-700"
                         : "text-gray-700"
                     } `}
                   />
@@ -268,7 +275,7 @@ export default function Header() {
                         : isOnHomePage
                         ? scrolled
                           ? "text-gray-700"
-                          : "text-gray-50"
+                          : "text-gray-700"
                         : "text-gray-700"
                     } `}
                   />
@@ -277,6 +284,19 @@ export default function Header() {
                   </span>
                 </span>
               </Link>
+
+              {/* <div
+                        className={`w-9 h-9 flex items-center justify-center rounded-full font-semibold 
+                           ${
+                             state
+                               ? "bg-blue-500 text-gray-100"
+                               : isOnHomePage
+                               ? scrolled
+                                 ? "bg-blue-500 text-gray-100"
+                                 : "bg-gray-100 text-blue-800"
+                               : "bg-blue-500 text-gray-100"
+                           }`}
+                      > */}
 
               {user && user?.login ? (
                 <div className="relative">
@@ -297,7 +317,7 @@ export default function Header() {
                                : isOnHomePage
                                ? scrolled
                                  ? "bg-blue-500 text-gray-100"
-                                 : "bg-gray-100 text-blue-800"
+                                 : "bg-blue-500 text-gray-100"
                                : "bg-blue-500 text-gray-100"
                            }`}
                       >
