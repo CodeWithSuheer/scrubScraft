@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { getCartTotal } from "../../features/ActionsSlice";
 import { mobileAuthRoute, navigation } from "./navigation-links";
 import { logoutUserAsync } from "../../features/authSlice";
+import { FiTruck } from "react-icons/fi";
 
 export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -194,22 +195,6 @@ export default function Header() {
               );
             })}
 
-            {/* CART BUTTON MOBILE */}
-            {/* <li className={`${state ? "flex md:hidden" : "hidden"}`}>
-              <Link
-                to="/cart"
-                onClick={handleCloseNavbar}
-                className={`block w-full px-0 text-left`}
-                id="menu-item-logout"
-                role="menuitem"
-                type="submit"
-              >
-                <span className="flex text-md font-normal gap-2">
-                  Cart ({totalQuantity || ""})
-                </span>
-              </Link>
-            </li> */}
-
             {/* LOGOUT BUTTON MOBILE */}
             <li
               className={`${
@@ -247,7 +232,28 @@ export default function Header() {
               </Link>
             </li>
 
-            <li className="hidden text-[1rem] text-gray-700 hover:text-indigo-600 sm:flex flex-col md:flex-row justify-start items-start sm:items-center space-y-4 md:space-y-0 md:space-x-7">
+            <li className="hidden text-[1rem] text-gray-700 hover:text-indigo-600 sm:flex flex-col md:flex-row justify-start items-start sm:items-center space-y-4 md:space-y-0 md:space-x-6">
+              <Link
+                to="/order-track"
+                onClick={handleCloseNavbar}
+                className="block tracking-wide"
+              >
+                <span className="relative">
+                  <FiTruck
+                    size={21}
+                    className={`${
+                      state
+                        ? "text-gray-700"
+                        : isOnHomePage
+                        ? scrolled
+                          ? "text-gray-700"
+                          : "text-gray-50"
+                        : "text-gray-700"
+                    } `}
+                  />
+                </span>
+              </Link>
+
               <Link
                 to="/cart"
                 onClick={handleCloseNavbar}
