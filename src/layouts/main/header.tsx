@@ -202,6 +202,16 @@ export default function Header() {
               );
             })}
 
+            <li className={`flex text-[1rem]`}>
+              <Link
+                to="/order-track"
+                onClick={handleCloseNavbar}
+                className="block tracking-wide"
+              >
+                Order Track
+              </Link>
+            </li>
+
             {/* LOGOUT BUTTON MOBILE */}
             <li
               className={`${
@@ -317,7 +327,7 @@ export default function Header() {
                                : isOnHomePage
                                ? scrolled
                                  ? "bg-blue-500 text-gray-100"
-                                 : "bg-blue-500 text-gray-100"
+                                 : "bg-gray-100 text-blue-800"
                                : "bg-blue-500 text-gray-100"
                            }`}
                       >
