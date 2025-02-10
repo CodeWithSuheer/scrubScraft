@@ -95,7 +95,7 @@ export default function Header() {
               className="h-10"
             />
             <h1
-              className={`text-xl sm:text-[1.35rem] font-bold ${
+              className={`text-xl sm:text-[1.25rem] font-bold ${
                 state
                   ? "text-blue-600"
                   : isOnHomePage
