@@ -162,7 +162,7 @@ export const ProductPage: React.FC = () => {
         _id: singleProduct.id,
       };
 
-      console.log("productToCart", productToCart);
+      // console.log("productToCart", productToCart);
 
       dispatch(addToCart(productToCart));
       navigate(path);
@@ -185,7 +185,7 @@ export const ProductPage: React.FC = () => {
   const handleSubmitReview = async () => {
     const productID = id;
 
-    console.log("formData", formData);
+    // console.log("formData", formData);
 
     if (!formData.review || formData.rating === 0) {
       toast.error("Please leave a review to rate the product");
@@ -196,7 +196,7 @@ export const ProductPage: React.FC = () => {
       const response = await dispatch(
         createreviewsAsync({ productID, userID, ...formData })
       );
-      console.log("response ", response);
+      // console.log("response ", response);
       if (response.payload !== undefined) {
         await dispatch(getallreviewsAsync(id));
       }
@@ -332,9 +332,9 @@ export const ProductPage: React.FC = () => {
                   <div className="flex flex-wrap gap-2 mt-2">
                     {singleProduct?.colors?.map((color: any) => (
                       <button
-                        key={color._id}
+                        key={color?._id}
                         type="button"
-                        title="button"
+                        title={color?.label}
                         className={`w-9 h-9 border-2 rounded-full shrink-0 flex items-center justify-center ${
                           selectedColor === color.label
                             ? "border-gray-800"
@@ -448,9 +448,14 @@ export const ProductPage: React.FC = () => {
                 </div>
 
                 {/* DESCRIPTION */}
-                <p className="text-gray-600 capitalize">
-                  {singleProduct?.description}
-                </p>
+                <div className="description">
+                  <h3 className="mb-1 text-md font-semibold text-gray-700">
+                    Description
+                  </h3>
+                  <p className="text-gray-600 capitalize">
+                    {singleProduct?.description}
+                  </p>
+                </div>
               </div>
             </div>
 

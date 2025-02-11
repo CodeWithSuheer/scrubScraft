@@ -1,34 +1,36 @@
 import React, { useEffect } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+// Redux hooks
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+// Redux actions
 import {
   getAllCategoriesAsync,
   getAllColorsAsync,
   getAllFabricsAsync,
   getAllProductsAsync,
-  getLatestProductsAsync,
   setFilters,
 } from "../../features/productSlice";
+// Icons
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+// Components
 import ProductCard from "../../components/cards/product-card";
-import "../sections.css";
 import ProductFilters from "./filters";
 import ProductsLoading from "./no-products";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { ToTop } from "./product-helpers";
+import "../sections.css";
 
 const AllProducts: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
 
-  // const { products: allproducts, Productloading } = useAppSelector(
-  //   (state) => state.products
-  // );
+  const category: string = searchParams.get("category") || "All";
+  const page: number = parseInt(searchParams.get("page") || "1", 10);
+
+  console.log("category in params", category);
 
   const { products, Productloading, filters } = useAppSelector(
     (state) => state.products
   );
-
-  const [searchParams] = useSearchParams();
-  const page: number = parseInt(searchParams.get("page") || "1", 10);
-  const category: string = searchParams.get("category") || "All";
 
   const renderPaginationLinks = () => {
     const totalPages = products?.totalPages;
@@ -56,16 +58,12 @@ const AllProducts: React.FC = () => {
   // }, [dispatch, page, category]);
 
   useEffect(() => {
-    dispatch(setFilters({ ...filters, page })); // Ensure page is updated in filters
+    dispatch(setFilters({ ...filters, page }));
   }, [page]);
 
   useEffect(() => {
     dispatch(getAllProductsAsync(filters));
   }, [dispatch, filters]);
-
-  useEffect(() => {
-    dispatch(getLatestProductsAsync());
-  }, []);
 
   // const handleFilterChange = (filterType: string, value: string) => {
   //   dispatch(setFilters({ [filterType]: value }));
@@ -73,13 +71,6 @@ const AllProducts: React.FC = () => {
 
   const handleFilterChange = (filterType: string, value: string) => {
     dispatch(setFilters({ ...filters, [filterType]: value, page: 1 }));
-  };
-
-  const ToTop = () => {
-    window.scrollTo({
-      top: 450,
-      behavior: "smooth",
-    });
   };
 
   useEffect(() => {
