@@ -147,16 +147,19 @@ const AllProducts: React.FC = () => {
               <FilterDropdown
                 label="Category"
                 options={categoryOptions}
+                selected={paramCategory}
                 onSelect={(value) => handleFilterChange("category", value)}
               />
               <FilterDropdown
                 label="Fabric"
                 options={fabricOptions}
+                selected={paramFabric}
                 onSelect={(value) => handleFilterChange("fabric_type", value)}
               />
               <FilterDropdown
                 label="Color"
                 options={colorOptions}
+                selected={paramColor}
                 onSelect={(value) => handleFilterChange("color", value)}
               />
 

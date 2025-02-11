@@ -60,7 +60,7 @@ export function FilterDropdown({
                 }}
                 className={`text-sm sm:text-[15px] w-full px-4 py-2 text-left hover:bg-gray-50 transition-colors ${
                   selected === option
-                    ? "text-blue-600 bg-blue-50"
+                    ? "text-blue-600 bg-blue-50 font-semibold"
                     : "text-gray-700"
                 }`}
               >
