@@ -18,7 +18,7 @@ import ProductsLoading from "./no-products";
 import { ToTop } from "./product-helpers";
 import "../sections.css";
 import { FilterDropdown } from "../../components/dropdown/filter-dropdown";
-import { RiResetLeftLine } from "react-icons/ri";
+import { MdRestartAlt } from "react-icons/md";
 
 const AllProducts: React.FC = () => {
   const navigate = useNavigate();
@@ -121,15 +121,13 @@ const AllProducts: React.FC = () => {
   const handleFilterChange = (filterType: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
     newParams.set(filterType, value);
-    newParams.set("page", "1"); // Reset to first page when filter changes
+    newParams.set("page", "1");
     setSearchParams(newParams);
     navigate(`/products?${newParams.toString()}`);
   };
 
   return (
     <>
-      {/* <ProductFilters onFilterChange={handleFilterChange} /> */}
-
       <section>
         <div className="mx-auto max-w-5xl xl:max-w-6xl xxl:max-w-7xl px-4 py-3 sm:px-6 sm:py-0 lg:px-5 xl:px-0">
           <div className="mt-6 w-full">
@@ -164,14 +162,34 @@ const AllProducts: React.FC = () => {
               />
 
               <button
-                title="reset filter"
                 type="button"
                 onClick={handleResetFilters}
-                className="px-[0.75rem] sm:px-[0.85rem] py-2.5 sm:py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                className="bg-primary/90 hover:bg-primary/80 text-white p-2 rounded-full transition duration-300 transform hover:rotate-180"
+                title="Reset Filters"
               >
-                <RiResetLeftLine size={18} />
+                <MdRestartAlt className="w-6 h-6" />
               </button>
             </div>
+
+            {[paramCategory, paramFabric, paramColor].some(
+              (filter) => filter && filter !== "All"
+            ) && (
+              <div className="mb-4 flex flex-wrap gap-2 sm:gap-3 items-center justify-start">
+                <span className="text-[14px] font-medium text-gray-700 tracking-wide">
+                  Filters:{" "}
+                </span>
+                {[paramCategory, paramFabric, paramColor]
+                  .filter((filter) => filter && filter !== "All")
+                  .map((filter) => (
+                    <span
+                      key={filter}
+                      className="bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md font-medium text-[13px]"
+                    >
+                      {filter}
+                    </span>
+                  ))}
+              </div>
+            )}
 
             <div className="products">
               <div className="grid gap-3 sm:gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
