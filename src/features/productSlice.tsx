@@ -10,22 +10,34 @@ const getAllFabricsUrl = `https://admin.scrubscraft.shop/productDetails/getAllFa
 const getAllColorsUrl = `https://admin.scrubscraft.shop/productDetails/getAllColors`;
 const getAllCategoriesUrl = `https://admin.scrubscraft.shop/productDetails/getAllCategories`;
 
+// const filteredParams = Object.fromEntries(Object.entries(filters).filter(([_, value]) => value !== undefined && value !== ""));
+// const queryString = new URLSearchParams(filteredParams as any).toString();
+
+
 // GET ALL PRODUCT ASYNC THUNK
-export const getAllProductsAsync = createAsyncThunk(
-  "products/fetchAll",
-  async (filters: ProductState["filters"]) => {
-    try {
-      const filteredParams = Object.fromEntries(
-        Object.entries(filters).filter(([_, value]) => value !== undefined && value !== "")
-      );
-      const queryString = new URLSearchParams(filteredParams as any).toString();
-      const response = await axios.post(`${getAllProductUrl}?${queryString}`);
+export const getAllProductsAsync = createAsyncThunk("products/fetchAll", async (data:any) => {
+  try {
+      const category = data?.category !== undefined && data?.category !== null ? `&category=${data?.category}` : "";
+      const color = data?.color !== undefined && data?.color !== null ? `&color=${data?.color}` : "";
+      const fabric_type = data?.fabric_type !== undefined && data?.fabric_type !== null ? `&fabric_type=${data?.fabric_type}` : "";
+
+      const response = await axios.post(`${getAllProductUrl}?&page=${data?.page}${category}${color}${fabric_type}`);
       return response.data;
     } catch (error: any) {
       throw new Error(error);
     }
   }
 );
+
+// export const getAllProductsAsync = createAsyncThunk("products/fetchAll", async (data) => {
+//   const searchQuery = data?.search !== undefined && data?.search !== null ? `&search=${data?.search}` : "";
+//   try {
+//     const response = await axios.post(`${getaccessories}?&page=${data.page}${searchQuery}`);
+//     return response.data;
+//   } catch (error) {
+//     throw new Error(error.response.data.error);
+//   }
+// });
 
 // GET ALL PRODUCT ASYNC THUNK
 export const getLatestProductsAsync = createAsyncThunk(
