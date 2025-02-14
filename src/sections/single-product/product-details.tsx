@@ -156,11 +156,23 @@ export const ProductPage: React.FC = () => {
           : "no-engraving",
       ].join("-");
 
+      const updatedPrice =
+        singleProduct.price && selectedFabricPrice
+          ? singleProduct.price + selectedFabricPrice
+          : singleProduct.price;
+
+      const updatedSalePrice =
+        singleProduct.sale_price && selectedFabricPrice
+          ? singleProduct.sale_price + selectedFabricPrice
+          : singleProduct.sale_price;
+
       const productToCart: any = {
         ...singleProduct,
         sizes: selectedSize ? selectedSize : false,
         color: selectedColor,
         fabric_type: selectedFabric,
+        price: updatedPrice,
+        sale_price: updatedSalePrice,
         name_engraving: nameEngraving ? nameEngraving : false,
         name_engraving_charges: pricing[1]?.amount,
         cap_charges: pricing[2]?.amount,
