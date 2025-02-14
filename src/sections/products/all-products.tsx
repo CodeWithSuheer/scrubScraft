@@ -35,7 +35,7 @@ const AllProducts: React.FC = () => {
   const paramFabric: string = searchParams.get("fabric_type") || "";
   const page: number = parseInt(searchParams.get("page") || "1", 10);
 
-  console.log("category in params", paramCategory);
+  // console.log("category in params", paramCategory);
 
   const { products, Productloading } = useAppSelector(
     (state) => state.products
@@ -111,7 +111,7 @@ const AllProducts: React.FC = () => {
     (state) => state.products
   );
 
-  console.log("category from admin side ===>", category);
+  // console.log("category from admin side ===>", category);
 
   const categoryOptions = category?.map((item: any) => item.name) || [];
   const fabricOptions = fabric?.map((item: any) => item.name) || [];
